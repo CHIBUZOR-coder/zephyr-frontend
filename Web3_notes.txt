@@ -1,0 +1,77 @@
+1. Run scripts in powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+
+
+
+
+//Potential full structure
+src/
+│
+│── core/
+│   ├── store/
+│   │   └── useAppStore.ts
+│   │
+│   ├── query/
+│   │   └── reactQuery.ts
+│   │
+│   └── config/
+│
+│── features/
+│   ├── home/
+│   │   └── HomePage.tsx
+│   │
+│   ├── wallet/
+│   │   ├── WalletPage.tsx
+│   │   ├── wallet.store.ts
+│   │   ├── useWallet.ts
+│   │   └── WalletButton.tsx
+│   │
+│   ├── dashboard/
+│   │   ├── DashboardPage.tsx
+│   │   ├── dashboard.store.ts
+│   │   │
+│   │   ├── dashboardComponents/
+│   │   │   ├── Leaderboard/
+│   │   │   │   ├── Leaderboard.tsx
+│   │   │   │   ├── LeaderboardRow.tsx
+│   │   │   │   └── leaderboard.types.ts
+│   │   │   │
+│   │   │   ├── Badges/
+│   │   │   │   ├── Badges.tsx
+│   │   │   │   └── BadgeCard.tsx
+│   │   │   │
+│   │   │   └── SocialFeed/
+│   │   │       ├── SocialFeed.tsx
+│   │   │       ├── FeedItem.tsx
+│   │   │       └── socialFeed.types.ts
+│   │
+│   ├── trader/
+│   │   ├── TraderProfilePage.tsx
+│   │   ├── trader.store.ts
+│   │   ├── useTrader.ts
+│   │   └── traderComponents/
+│   │       ├── TraderStats.tsx
+│   │       ├── TraderVaults.tsx
+│   │       └── CopyTradeButton.tsx
+│   │
+│   └── vault/
+│       ├── VaultPage.tsx
+│       ├── vault.store.ts
+│       └── vaultComponents/
+│           ├── VaultList.tsx
+│           ├── VaultCard.tsx
+│           └── VaultActions.tsx
+│
+│── shared/
+│   ├── components/
+│   │   ├── Loader.tsx
+│   │   ├── EmptyState.tsx
+│   │   └── ErrorBoundary.tsx
+│   │
+│   └── hooks/
+│       ├── useDebounce.ts
+│       └── usePagination.ts
+│
+│── App.tsx
+│── main.tsx
