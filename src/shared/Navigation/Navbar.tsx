@@ -1,7 +1,25 @@
+import { useWallet } from '@solana/wallet-adapter-react'
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Link, NavLink } from 'react-router-dom'
+import { useWalletStore } from '../../features/wallet/wallet.store'
+import { useEffect } from 'react'
 
 // src/components/Navbar.tsx
 const Navbar = () => {
+  const { publicKey, connected } = useWallet()
+  const { setWallet, resetWallet } = useWalletStore()
+
+
+
+
+  useEffect(() => {
+    if (connected && publicKey) {
+      setWallet(publicKey.toBase58(), true)
+    } else {
+      resetWallet()
+    }
+  }, [connected, publicKey, setWallet, resetWallet])
+
   return (
     <nav className='flex items-center justify-between px-6 py-4 bg-slate-900 border-b border-slate-800 text-white'>
       <Link to={'/'} className='flex items-center gap-2'>
@@ -28,9 +46,7 @@ const Navbar = () => {
       </div>
 
       <div>
-        <button className='px-5 py-2 bg-blue-600 hover:bg-blue-500 text-sm font-semibold rounded-full transition-all active:scale-95'>
-          Connect Wallet
-        </button>
+        <WalletMultiButton />
       </div>
     </nav>
   )
