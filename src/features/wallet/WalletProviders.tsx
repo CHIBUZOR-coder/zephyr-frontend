@@ -12,6 +12,7 @@ interface Props {
   children: ReactNode
 }
 
+
 export const WalletProviders: FC<Props> = ({ children }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>

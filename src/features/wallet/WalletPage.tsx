@@ -19,14 +19,14 @@ const WalletPage = () => {
   }
 
   return (
-    <div>
+    <Layout>
       <h1>Your Wallet</h1>
 
       <p>Address: {publicKey}</p>
 
       {isLoading && <p>Loading balance...</p>}
       {data && <p>Balance: {data.balance} SOL</p>}
-    </div>
+    </Layout>
   )
 }
 

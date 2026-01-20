@@ -10,10 +10,17 @@ import { queryClient } from './core/query/reactQuery.ts'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { WalletProviders } from './features/wallet/WalletProviders.tsx'
+// import { SignInPage } from './features/auth/SignInPage.tsx'
+
+
 
 // Lazy-loaded pages
 const HomePage = lazy(() => import('./features/home/HomePage.tsx'))
 const WalletPage = lazy(() => import('./features/wallet/WalletPage.tsx'))
+const SignInPage = lazy(()=> import('./features/auth/SignInPage.tsx'))
+
+// const SignInPage= lazy(() => import('./features/auth/SignInPage.tsx'))
+// const SignInPage = lazy(()=> import('./features/auth/SignInPage.tsx'))
 const DashboardPage = lazy(
   () => import('./features/dashboard/DashboardPage.tsx')
 )
@@ -25,7 +32,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'wallet', element: <WalletPage /> },
-      { path: 'dashboard', element: <DashboardPage /> }
+      { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'signup', element: <SignInPage /> }
     ]
   }
 ])
