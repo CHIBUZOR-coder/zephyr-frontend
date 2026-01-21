@@ -1,55 +1,68 @@
 1. Run scripts in powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
-
-
-//folder
 src/
 │
-│── core/
+├── core/
 │   ├── store/
 │   │   ├── useAppStore.ts
-│   │   └── auth.store.ts              # 🆕 DAY 6 (global auth state)
+│   │   └── auth.store.ts                 # Day 6 – global auth/session state
 │   │
 │   ├── query/
 │   │   ├── reactQuery.ts
-│   │   └── authClient.ts              # 🆕 DAY 6 (backend fetch wrapper)
+│   │   └── authClient.ts                 # Day 6 – auth API wrapper
 │   │
 │   └── config/
 │       ├── solanaWallet.ts
 │       └── WalletProviders.tsx
 │
-│── features/
-│   ├── auth/                           # 🆕 DAY 6 (NEW FEATURE)
+├── features/
+│   │
+│   ├── auth/                             # Day 6 – authentication feature
 │   │   ├── SignInPage.tsx
-│   │   ├── useAuthLogin.ts             # React Query mutation
-│   │   ├── useAuthSession.ts           # React Query query
+│   │   ├── useAuthLogin.ts
+│   │   ├── useAuthSession.ts
 │   │   └── auth.types.ts
-│
+│   │
 │   ├── wallet/
 │   │   ├── WalletPage.tsx
 │   │   ├── WalletButton.tsx
 │   │   ├── useWallet.ts
 │   │   ├── wallet.store.ts
 │   │   └── wallet.types.ts
-│
-│   ├── dashboard/
+│   │
+│   ├── dashboard/                       # Day 6–7 – User Dashboard
 │   │   ├── DashboardPage.tsx
 │   │   ├── dashboard.store.ts
 │   │   ├── dashboard.types.ts
+│   │   │
 │   │   └── dashboardComponents/
+│   │       │
+│   │       ├── Badges/
+│   │       │   ├── Badges.tsx
+│   │       │   └── BadgeCard.tsx
+│   │       │
+│   │       ├── Leaderboard/
+│   │       │   ├── Leaderboard.tsx
+│   │       │   ├── LeaderboardRow.tsx
+│   │       │   └── leaderboard.types.ts
+│   │       │
+│   │       └── SocialFeed/
+│   │           ├── SocialFeed.tsx
+│   │           ├── FeedItem.tsx
+│   │           └── socialFeed.types.ts
 │   │
 │   ├── trader/
 │   │   ├── TraderProfilePage.tsx
 │   │   ├── trader.store.ts
 │   │   ├── useTrader.ts
 │   │   └── trader.types.ts
-│
+│   │
 │   └── vault/
 │       ├── VaultPage.tsx
 │       ├── vault.store.ts
 │       └── vault.types.ts
 │
-│── shared/
+├── shared/
 │   ├── components/
 │   │   ├── Loader.tsx
 │   │   ├── EmptyState.tsx
@@ -59,8 +72,8 @@ src/
 │       ├── useDebounce.ts
 │       └── usePagination.ts
 │
-│── App.tsx
-│── main.tsx
+├── App.tsx
+└── main.tsx
 
 
 
