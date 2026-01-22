@@ -9,7 +9,7 @@ export default function LeaderboardRow ({ user }: Props) {
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all 
+      className={` w-[99%] flex items-center justify-between px-4 py-3 rounded-xl border transition-all 
       duration-200 hover:scale-[1.01] hover:bg-slate-800 cursor-pointer
       ${
         isTopThree

@@ -32,14 +32,17 @@ const MOCK_FEED: FeedItemType[] = [
 
 export default function SocialFeed () {
   return (
-    <section className=''>
-      <h2 className='text-xl font-semibold mb-4'>Social Feed</h2>
+    <div  className=''>
 
-      <div className='space-y-3 max-h-[500px] overflow-y-auto'>
-        {MOCK_FEED.map(item => (
-          <FeedItem key={item.id} item={item} />
-        ))}
-      </div>
-    </section>
+      <section className=''>
+        <h2 className='text-xl font-semibold mb-4'>Social Feed</h2>
+
+        <div className='space-y-3 max-h-[500px] overflow-y-auto'>
+          {MOCK_FEED.map(item => (
+            <FeedItem key={item.id} item={item} />
+          ))}
+        </div>
+      </section>
+    </div>
   )
 }

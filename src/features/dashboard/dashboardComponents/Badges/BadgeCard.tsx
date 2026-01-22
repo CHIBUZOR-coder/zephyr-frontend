@@ -32,7 +32,7 @@ export default function BadgeCard ({ badge }: Props) {
     >
       {/* Medal */}
       <div
-        className='absolute -top-4 -right-4 w-10 h-10 rounded-full 
+        className='absolute -top-2 -right-1 w-8 h-8 rounded-full 
         bg-slate-950 border flex items-center justify-center text-lg'
       >
         {tier.icon}

@@ -38,12 +38,16 @@ const MOCK_LEADERBOARD: LeaderboardUser[] = [
 export default function Leaderboard () {
   return (
     <section className=''>
-      <h2 className='text-xl font-semibold mb-4'>Leaderboard</h2>
+      <div className='border-2 border-amber-400 rounded-md p-4'>
+        <h2 className='text-xl font-semibold mb-4'>Leaderboard</h2>
 
-      <div className='space-y-3 max-h-[400px] overflow-y-auto p-4'>
-        {MOCK_LEADERBOARD.map(user => (
-          <LeaderboardRow key={user.id} user={user} />
-        ))}
+        <div
+          className='flex flex-col justify-center items-center min-h-[300px] gap-3  overflow-y-auto w-full  '
+        >
+          {MOCK_LEADERBOARD.map(user => (
+            <LeaderboardRow key={user.id} user={user} />
+          ))}
+        </div>
       </div>
     </section>
   )

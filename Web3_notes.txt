@@ -5,23 +5,27 @@ src/
 ├── core/
 │   ├── store/
 │   │   ├── useAppStore.ts
-│   │   └── auth.store.ts                 # Day 6 – global auth/session state
+│   │   └── auth.store.ts                  # Global auth/session (persisted)
 │   │
 │   ├── query/
 │   │   ├── reactQuery.ts
-│   │   └── authClient.ts                 # Day 6 – auth API wrapper
+│   │   └── authClient.ts                  # Auth API wrapper
 │   │
-│   └── config/
-│       ├── solanaWallet.ts
-│       └── WalletProviders.tsx
+│   ├── config/
+│   │   ├── solanaWallet.ts
+│   │   └── WalletProviders.tsx
+│   │
+│   └── hooks/                             # 🔥 NEW (core-level hooks)
+│       └── useWalletAuthSync.ts           # Wallet ↔ Auth bridge
 │
 ├── features/
 │   │
-│   ├── auth/                             # Day 6 – authentication feature
+│   ├── auth/
 │   │   ├── SignInPage.tsx
 │   │   ├── useAuthLogin.ts
 │   │   ├── useAuthSession.ts
-│   │   └── auth.types.ts
+│   │   ├── auth.types.ts
+│   │   └── auth.guard.tsx                 # (optional – Day 9 route guard)
 │   │
 │   ├── wallet/
 │   │   ├── WalletPage.tsx
@@ -30,26 +34,27 @@ src/
 │   │   ├── wallet.store.ts
 │   │   └── wallet.types.ts
 │   │
-│   ├── dashboard/                       # Day 6–7 – User Dashboard
+│   ├── dashboard/
 │   │   ├── DashboardPage.tsx
 │   │   ├── dashboard.store.ts
 │   │   ├── dashboard.types.ts
 │   │   │
-│   │   └── dashboardComponents/
-│   │       │
-│   │       ├── Badges/
-│   │       │   ├── Badges.tsx
-│   │       │   └── BadgeCard.tsx
-│   │       │
-│   │       ├── Leaderboard/
-│   │       │   ├── Leaderboard.tsx
-│   │       │   ├── LeaderboardRow.tsx
-│   │       │   └── leaderboard.types.ts
-│   │       │
-│   │       └── SocialFeed/
-│   │           ├── SocialFeed.tsx
-│   │           ├── FeedItem.tsx
-│   │           └── socialFeed.types.ts
+│   │   ├── components/                    # 🔁 renamed (cleaner)
+│   │   │   ├── PortfolioOverview.tsx      # 🔥 NEW (Day 8)
+│   │   │   │
+│   │   │   ├── Badges/
+│   │   │   │   ├── Badges.tsx
+│   │   │   │   └── BadgeCard.tsx
+│   │   │   │
+│   │   │   ├── Leaderboard/
+│   │   │   │   ├── Leaderboard.tsx
+│   │   │   │   ├── LeaderboardRow.tsx
+│   │   │   │   └── leaderboard.types.ts
+│   │   │   │
+│   │   │   └── SocialFeed/
+│   │   │       ├── SocialFeed.tsx
+│   │   │       ├── FeedItem.tsx
+│   │   │       └── socialFeed.types.ts
 │   │
 │   ├── trader/
 │   │   ├── TraderProfilePage.tsx
@@ -64,6 +69,7 @@ src/
 │
 ├── shared/
 │   ├── components/
+│   │   ├── Navbar.tsx                     # 🔥 NEW (global UI)
 │   │   ├── Loader.tsx
 │   │   ├── EmptyState.tsx
 │   │   └── ErrorBoundary.tsx
@@ -72,8 +78,9 @@ src/
 │       ├── useDebounce.ts
 │       └── usePagination.ts
 │
-├── App.tsx
+├── App.tsx                                # uses useAuthSession + useWalletAuthSync
 └── main.tsx
+
 
 
 
@@ -882,3 +889,58 @@ USER clicks "Sign In" (SignInPage)
 │ Authenticated UI / Dashboard            │
 └─────────────────────────────────────────┘
 
+///updatedAPP LOAD / PAGE REFRESH
+│
+▼
+┌─────────────────────────────────────────┐
+│ App.tsx mounts                          │
+│ - useAuthSession()                     │
+│ - useWalletAuthSync()   🆕             │
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌═════════════════════════════════════════┐
+║ ZUSTAND — AUTH STORE (persist)          ║
+║ Reads from localStorage:                ║
+║ auth-storage                            ║
+║                                         ║
+║ CASE A: stored auth exists              ║
+║ → authenticated = true                  ║
+║ → user restored                         ║
+║                                         ║
+║ CASE B: no stored auth                  ║
+║ → authenticated = false                 ║
+║ → user = null                           ║
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌═════════════════════════════════════════┐
+║ WALLET ADAPTER                          ║
+║ - tries autoConnect                    ║
+║ - restores last wallet if allowed       ║
+║                                         ║
+║ connected = true | false                ║
+║ publicKey = value | null                ║
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌═════════════════════════════════════════┐
+║ useWalletAuthSync (THE BRIDGE) 🧠       ║
+║                                         ║
+║ IF connected && publicKey               ║
+║ AND authenticated === false             ║
+║                                         ║
+║ → setAuth({                              ║
+║     id: 'mock-user-id',                 ║
+║     walletAddress,                      ║
+║     role: 'user'                        ║
+║   })                                    ║
+║                                         ║
+║ (Mock backend auto-auth)                ║
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌─────────────────────────────────────────┐
+│ AUTH STATE IS NOW RESTORED               │
+│ even after reload                       │
+└─────────────────────────────────────────┘

@@ -84,19 +84,19 @@ import { useEffect } from 'react'
 
 const Navbar = () => {
   const { publicKey, connected } = useWallet()
-  const { setWallet, resetWallet } = useWalletStore()
+  const { setWallet } = useWalletStore()
   const { authenticated } = useAuthStore() // get auth state
 
   useEffect(() => {
-    if (connected && publicKey) {
+    if (!publicKey) return
+
+    if (connected) {
       setWallet(publicKey.toBase58(), true)
-    } else {
-      resetWallet()
     }
-  }, [connected, publicKey, setWallet, resetWallet])
+  }, [connected, publicKey, setWallet])
 
   return (
-    <nav className='flex items-center justify-between px-6 py-4 bg-slate-900 border-b border-slate-800 text-white'>
+    <nav className='flex items-center justify-between px-6 py-4 bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50 w-full'>
       <Link to={'/'} className='flex items-center gap-2'>
         <div className='w-8 h-8 bg-blue-600 rounded-lg shadow-lg shadow-blue-500/20' />
         <span className='text-xl font-bold tracking-tight'>ZEPHYR</span>
@@ -132,7 +132,7 @@ const Navbar = () => {
         {/* Wallet button always shows */}
         <WalletMultiButton />
         {/* Conditional Sign In button */}
-        {connected && !authenticated && publicKey && (
+        {connected && !authenticated && (
           <NavLink
             to='/signup'
             className='bg-blue-500 rounded-md px-4 py-2 text-sm hover:bg-blue-600 transition'

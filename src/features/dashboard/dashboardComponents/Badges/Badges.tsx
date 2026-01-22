@@ -24,14 +24,17 @@ const MOCK_BADGES: Badge[] = [
 
 export default function Badges () {
   return (
-    <section>
-      <h2 className='text-xl font-semibold mb-4'>Achievements</h2>
+    <div className='p-4 border-2 border-amber-400 rounded-md'>
+      
+      <section>
+        <h2 className='text-xl font-semibold mb-4'>Achievements</h2>
 
-      <div className='grid grid-cols-1  gap-4'>
-        {MOCK_BADGES.map(badge => (
-          <BadgeCard key={badge.id} badge={badge} />
-        ))}
-      </div>
-    </section>
+        <div className='grid grid-cols-1  gap-4'>
+          {MOCK_BADGES.map(badge => (
+            <BadgeCard key={badge.id} badge={badge} />
+          ))}
+        </div>
+      </section>
+    </div>
   )
 }
