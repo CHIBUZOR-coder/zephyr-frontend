@@ -5,6 +5,7 @@ import type { AuthUser } from "./auth.types";
 type AuthState = {
   authenticated: boolean;
   user: AuthUser | null;
+  hydrated: boolean;
   setAuth: (user: AuthUser) => void;
   logout: () => void;
 };
@@ -14,6 +15,7 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       authenticated: false,
       user: null,
+      hydrated: false,
 
       setAuth: (user) =>
         set({
@@ -28,7 +30,12 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: "auth-storage", // 👈 localStorage key
+      name: "auth-storage",
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.hydrated = true;
+        }
+      },
     },
   ),
 );
