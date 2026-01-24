@@ -10,6 +10,9 @@ import { queryClient } from './core/query/reactQuery.ts'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { WalletProviders } from './features/wallet/WalletProviders.tsx'
+import AuthGuard from './features/auth/auth.guard.tsx'
+
+
 // import { SignInPage } from './features/auth/SignInPage.tsx'
 
 
@@ -32,11 +35,17 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'wallet', element: <WalletPage /> },
-      { path: 'dashboard', element: <DashboardPage /> },
-      { path: 'signup', element: <SignInPage /> }
+      { path: 'signup', element: <SignInPage /> },
+
+      // 🔐 PROTECTED ROUTES
+      {
+        element: <AuthGuard />,
+        children: [{ path: 'dashboard', element: <DashboardPage /> }]
+      }
     ]
   }
 ])
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

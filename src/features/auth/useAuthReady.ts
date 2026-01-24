@@ -1,0 +1,3 @@
+import { useAuthStore } from "./auth.store";
+
+export const useAuthReady = () => useAuthStore((s) => s.hydrated);

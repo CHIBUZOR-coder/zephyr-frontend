@@ -7,19 +7,56 @@ import Leaderboard from './dashboardComponents/Leaderboard/Leaderboard'
 import SocialFeed from './dashboardComponents/SocialFeed/SocialFeed'
 
 // Auth & Wallet
-import { useAuthStore } from '../auth/auth.store'
+import { useAuthReady, useAuthStore } from '../auth/auth.store'
 import { useWallet } from '@solana/wallet-adapter-react'
 import PortfolioOverview from './dashboardComponents/PortfolioOverview/PortfolioOverview'
+import StateScreen from '../../shared/components/StateScreen'
+import { useWalletMismatch } from '../../core/hooks/useWalletMismatch'
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+// import PortfolioOverview from './dashboardComponents/PortfolioOverview/PortfolioOverview'
+// import { useWalletMismatch } from '../../core/hooks/useWalletMismatch'
 
 export default function DashboardPage () {
   const { user, authenticated } = useAuthStore()
   const { publicKey, connected } = useWallet()
 
+  const hydrated = useAuthReady()
+  const mismatch = useWalletMismatch()
+
+  if (!hydrated) {
+    return (
+      <StateScreen
+        title='Restoring session…'
+        description='Please wait a moment'
+      />
+    )
+  }
+
+  if (!connected) {
+    return (
+      <StateScreen
+        title='Wallet not connected'
+        description='Please connect your wallet to continue.'
+        action={<WalletMultiButton />}
+      />
+    )
+  }
+
+  if (mismatch) {
+    return (
+      <StateScreen
+        title='Wallet mismatch detected'
+        description='Please reconnect the wallet you signed in with.'
+        tone='error'
+      />
+    )
+  }
+
   return (
     <Layout>
       <div className='min-h-screen bg-slate-950 text-white p-6 space-y-10'>
         {/* Header */}
-    
+
         <div>
           <h1 className='text-3xl font-bold'>Dashboard</h1>
           <p className='text-slate-400 mt-1'>

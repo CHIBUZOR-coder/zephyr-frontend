@@ -3,13 +3,13 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Link, NavLink } from 'react-router-dom'
 import { useWalletStore } from '../../features/wallet/wallet.store'
-import { useAuthStore } from '../../features/auth/auth.store'
+// import { useAuthStore } from '../../features/auth/auth.store'
 import { useEffect } from 'react'
 
 const Navbar = () => {
   const { publicKey, connected } = useWallet()
   const { setWallet } = useWalletStore()
-  const { authenticated, hydrated } = useAuthStore() // get auth state
+  // const { authenticated, hydrated } = useAuthStore() // get auth state
 
   useEffect(() => {
     if (!publicKey) return
@@ -56,14 +56,14 @@ const Navbar = () => {
         {/* Wallet button always shows */}
         <WalletMultiButton />
         {/* Conditional Sign In button */}
-        {hydrated && connected && !authenticated && (
+        {/* {hydrated && connected && !authenticated && (
           <NavLink
             to='/signup'
             className='bg-blue-500 rounded-md px-4 py-2 text-sm hover:bg-blue-600 transition'
           >
             Sign In
           </NavLink>
-        )}
+        )} */}
       </div>
     </nav>
   )

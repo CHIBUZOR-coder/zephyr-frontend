@@ -39,3 +39,7 @@ export const useAuthStore = create<AuthState>()(
     },
   ),
 );
+
+// ✅ selector helper (Day 9)
+export const useAuthReady = () =>
+  useAuthStore((s) => s.hydrated);
