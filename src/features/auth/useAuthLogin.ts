@@ -67,7 +67,7 @@ export function useAuthLogin() {
       });
 
       // Optional: log the JWT token
-      console.log("JWT token returned from /verify:", token);
+      // console.log("JWT token returned from /verify:", token);
 
       setAuth(user, token);
       return user;
