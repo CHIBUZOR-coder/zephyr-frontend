@@ -6,6 +6,8 @@ import { useAuthStore } from './features/auth/auth.store'
 import { useWalletAuthSync } from './core/hooks/useWalletAuthSync'
 import { useRestoreAuth } from './core/hooks/useRestoreAuth'
 import ErrorBoundary from './shared/components/ErrorBoundary'
+// import { useAuthSession } from './features/auth/useAuthSession'
+// import { useAuthSession } from './features/auth/useAuthSession'
 
 
 function App () {
@@ -13,35 +15,50 @@ function App () {
   useRestoreAuth()
   // useAuthSession()
 
-
-
   const navigate = useNavigate()
   const { authenticated, hydrated } = useAuthStore()
   const { publicKey, connected, signMessage } = useWallet()
   const loginMutation = useAuthLogin()
 
-  const handleSignIn = async () => {
-    if (!publicKey || !signMessage) return
+  // const handleSignIn = async () => {
+  //   if (!publicKey || !signMessage) return
 
-    const message = 'Sign in to Zephyr'
-    const encodedMessage = new TextEncoder().encode(message)
-    const signatureBytes = await signMessage(encodedMessage)
-    const signature = Buffer.from(signatureBytes).toString('base64')
+  //   const message = 'Sign in to Zephyr'
+  //   const encodedMessage = new TextEncoder().encode(message)
+  //   const signatureBytes = await signMessage(encodedMessage)
+  //   const signature = Buffer.from(signatureBytes).toString('base64')
 
-    loginMutation.mutate({
-      publicKey: publicKey.toBase58(),
-      signature,
-      message
-    })
+  //   loginMutation.mutate({
+  //     publicKey: publicKey.toBase58(),
+  //     signature,
+  //     message
+  //   })
+  // }
+
+
+
+
+const handleSignIn = () => {
+  if (!publicKey || !signMessage) return
+
+  console.log("pub", publicKey);
+  console.log("messg:", signMessage);
+  
+
+  loginMutation.mutate({
+    publicKey: publicKey.toBase58(),
+    signMessage
+  })
+}
+
+useEffect(() => {
+  if (hydrated && connected && !authenticated) {
+    console.log("siging called");
+    
+    handleSignIn()
   }
-
-  // 🔐 auto sign-in (only when needed)
-  useEffect(() => {
-    if (hydrated && connected && !authenticated) {
-      handleSignIn()
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrated, connected, authenticated]) // 👈 do NOT add handleSignIn
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [hydrated, connected, authenticated])
 
   // 🚀 redirect after successful login
   useEffect(() => {

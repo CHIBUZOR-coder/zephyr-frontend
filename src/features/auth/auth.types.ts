@@ -1,7 +1,6 @@
 export type AuthLoginPayload = {
   publicKey: string;
-  signature: string;
-  message: string;
+  signMessage: (message: Uint8Array) => Promise<Uint8Array>;
 };
 
 export type AuthUser = {

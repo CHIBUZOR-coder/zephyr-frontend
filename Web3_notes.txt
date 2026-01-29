@@ -1,72 +1,52 @@
-1. Run scripts in powershell
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 src/
-│
 ├── core/
 │   ├── store/
 │   │   ├── useAppStore.ts
-│   │   └── auth.store.ts                  # Global auth/session (persisted + hydrated)
-│   │                                      # 🆕 updated: hydration-aware
+│   │   └── auth.store.ts
 │   │
 │   ├── query/
-│   │   ├── reactQuery.ts
-│   │   └── authClient.ts                  # Auth API wrapper (used later w/ backend)
+│   │   ├── reactQuery.ts          # React Query client
+│   │   └── authClient.ts          # Auth API wrapper
 │   │
 │   ├── config/
 │   │   ├── solanaWallet.ts
 │   │   └── WalletProviders.tsx
 │   │
 │   └── hooks/
-│       ├── useWalletAuthSync.ts           # Wallet ↔ Auth sync (NO auto-logout on mount)
-│       │
-│       └── useRestoreAuth.ts              # 🆕 RESTORES zustand session on app load
-│       │                                  # 🆕 sets `hydrated=true` safely
+│       ├── useRestoreAuth.ts
+│       └── useWalletAuthSync.ts
 │
 ├── features/
-│   │
 │   ├── auth/
-│   │   ├── SignInPage.tsx
-│   │   ├── useAuthLogin.ts                # Login mutation (mock or real)
-│   │
-│   │   ├── useAuthSession.ts              # Backend session check
-│   │   │                                  # ⚠️ disabled until backend exists
-│   │
 │   │   ├── auth.types.ts
-│   │   └── auth.guard.tsx                 # (optional – Day 9 route guard)
+│   │   ├── useAuthLogin.ts
+│   │   ├── useAuthSession.ts
+│   │   ├── auth.guard.tsx
+│   │   └── SignInPage.tsx        # optional, may not be used
+│   │
+│   ├── users/                     # <-- NEW
+│   │   ├── user.types.ts          # UserProfile type
+│   │   └── useUserProfile.ts      # GET /api/users/:wallet
 │   │
 │   ├── wallet/
 │   │   ├── WalletPage.tsx
 │   │   ├── WalletButton.tsx
-│   │   ├── useWallet.ts
 │   │   ├── wallet.store.ts
 │   │   └── wallet.types.ts
 │   │
 │   ├── dashboard/
-│   │   ├── DashboardPage.tsx              # 🆕 hydration-aware rendering
+│   │   ├── DashboardPage.tsx
 │   │   ├── dashboard.store.ts
 │   │   ├── dashboard.types.ts
-│   │   │
-│   │   ├── components/
-│   │   │   ├── PortfolioOverview.tsx      # 🆕 Day 8 core feature
-│   │   │
-│   │   │   ├── Badges/
-│   │   │   │   ├── Badges.tsx
-│   │   │   │   └── BadgeCard.tsx
-│   │   │   │
-│   │   │   ├── Leaderboard/
-│   │   │   │   ├── Leaderboard.tsx
-│   │   │   │   ├── LeaderboardRow.tsx
-│   │   │   │   └── leaderboard.types.ts
-│   │   │   │
-│   │   │   └── SocialFeed/
-│   │   │       ├── SocialFeed.tsx
-│   │   │       ├── FeedItem.tsx
-│   │   │       └── socialFeed.types.ts
+│   │   └── components/
+│   │       ├── PortfolioOverview.tsx
+│   │       ├── Badges/
+│   │       ├── Leaderboard/
+│   │       └── SocialFeed/
 │   │
 │   ├── trader/
 │   │   ├── TraderProfilePage.tsx
 │   │   ├── trader.store.ts
-│   │   ├── useTrader.ts
 │   │   └── trader.types.ts
 │   │
 │   └── vault/
@@ -76,24 +56,21 @@ src/
 │
 ├── shared/
 │   ├── components/
-│   │   ├── Navbar.tsx                     # 🆕 hydration-safe auth UI
+│   │   ├── Navbar.tsx
+│   │   ├── RequireWallet.tsx
+│   │   ├── StateScreen.tsx
 │   │   ├── Loader.tsx
-│   │   ├── EmptyState.tsx
 │   │   └── ErrorBoundary.tsx
 │   │
 │   └── hooks/
 │       ├── useDebounce.ts
 │       └── usePagination.ts
 │
-├── App.tsx                                # 🆕 orchestrates auth lifecycle
-│                                          # uses:
-│                                          # - useRestoreAuth ✅
-│                                          # - useWalletAuthSync ✅
-│                                          # - useAuthSession ❌ (disabled for now)
+├── utils/                        # <-- NEW
+│   └── encoding.ts                # uint8ArrayToBase64 helper
 │
+├── App.tsx
 └── main.tsx
-
-
 
 
 
@@ -957,3 +934,751 @@ USER clicks "Sign In" (SignInPage)
 │ AUTH STATE IS NOW RESTORED               │
 │ even after reload                       │
 └─────────────────────────────────────────┘
+
+
+//updated app flow
+
+
+INITIAL APP LOAD / PAGE REFRESH
+App mounts
+ ↓
+useAuthSession()
+ ↓
+React Query fetches GET /auth/session
+ ↓
+CASE A: 200 OK (session exists)
+ ↓
+data arrives { user, walletAddress }
+ ↓
+useEffect syncs → Zustand auth store
+ ↓
+authenticated = true
+user set
+hydrated = true
+ ↓
+UI updates (authenticated)
+
+CASE B: 401 Unauthorized (no session)
+ ↓
+useAuthSession error
+ ↓
+authenticated = false
+user = null
+hydrated = true
+ ↓
+Public UI only
+
+
+✅ Backend session decides auth
+❌ Zustand does NOT invent auth
+❌ Wallet does NOT auto-auth
+
+🔹 WALLET CONNECTION (STILL NOT AUTH)
+USER
+ │
+ ▼
+Clicks "Connect Wallet" (Navbar)
+ │
+ ▼
+┌─────────────────────────────────────────┐
+│ Wallet Adapter (External SDK)            │
+│ Phantom / Solflare / Backpack            │
+│ wallet.connect()                         │
+│ ❌ Only connects wallet, no auth         │
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌═════════════════════════════════════════┐
+║ ZUSTAND — WALLET STORE                  ║   ← DAY 5
+║ publicKey                               ║
+║ connected                               ║
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌─────────────────────────────────────────┐
+│ UI shows: Address + "Sign In" button     │
+└─────────────────────────────────────────┘
+
+════════════ CONNECTED (NOT AUTHENTICATED) ════════════
+
+🔹 SIGN IN FLOW (AUTH BEGINS HERE)
+USER clicks "Sign In" (SignInPage)
+ │
+ ▼
+┌─────────────────────────────────────────┐
+│ wallet.signMessage()                    │
+│ Second modal: "Sign message"            │
+│ User approves OR rejects                │
+│ ✅ Approval proves wallet ownership     │
+│ ❌ Rejection → no authentication        │
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌═════════════════════════════════════════┐
+║ REACT QUERY — MUTATION                  ║   ← DAY 6
+║ useAuthLogin                            ║
+║ POST /auth/login                       ║
+│ (REAL backend via authClient)           │
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌─────────────────────────────────────────┐
+│ Backend                                 │
+│ - verify signature                      │
+│ - find / create user                   │
+│ - create session (cookie / JWT)         │
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌═════════════════════════════════════════┐
+║ ZUSTAND — AUTH STORE                    ║   ← DAY 6
+║ authenticated = true                   ║
+║ user = { id, role, walletAddress }     ║
+║ hydrated = true                        ║
+└───────────────┬─────────────────────────┘
+
+🔹 POST-AUTH DATA FLOW
+authenticated === true
+ ↓
+┌═════════════════════════════════════════┐
+║ REACT QUERY — QUERIES                   ║   ← DAY 6+
+║ useAuthSession                          ║
+║ useProfile                              ║
+║ usePortfolio                           ║
+║ enabled: authenticated === true        ║
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌─────────────────────────────────────────┐
+│ Auth-protected Backend APIs             │
+└───────────────┬─────────────────────────┘
+                │
+                ▼
+┌─────────────────────────────────────────┐
+│ Authenticated UI / Dashboard            │
+└─────────────────────────────────────────┘
+
+🔹 WALLET MISMATCH (DASHBOARD-LEVEL CHECK)
+Dashboard renders
+ ↓
+wallet.publicKey !== user.walletAddress
+ ↓
+┌─────────────────────────────────────────┐
+│ StateScreen                             │
+│ "Wallet mismatch detected"              │
+│ "Reconnect the wallet you signed in with"│
+└─────────────────────────────────────────┘
+
+
+✅ This is why RequireWallet does NOT handle auth
+✅ This logic belongs in Dashboard (or AuthGuard + Dashboard)
+
+🚫 REMOVED IN DAY 10 (IMPORTANT)
+❌ useWalletAuthSync
+❌ Auto-auth on wallet connect
+❌ Auth restoration from localStorage alone
+❌ Wallet == Auth assumption
+
+🧠 FINAL MENTAL MODEL (LOCK THIS IN)
+Wallet connection ≠ Authentication
+Authentication ≠ UI persistence
+Backend session = source of truth
+Zustand = cache
+React Query = server sync
+
+
+
+APP LOAD / USER ACTION
+│
+│
+│  (A) App starts OR user clicks "Connect Wallet"
+│
+▼
+┌───────────────────────────────────────────────┐
+│ App.tsx mounts                                │
+│                                               │
+│ - WalletProviders (Solana SDK)                │
+│ - React Query Provider                        │
+│ - Zustand stores created                     │
+│ - useRestoreAuth()                            │
+│ - useAutoSignIn()   ✅                        │
+└───────────────────────────────────────────────┘
+│
+│
+│  (B) Restore AUTH from localStorage
+│
+▼
+┌───────────────────────────────────────────────┐
+│ useRestoreAuth                                │
+│                                               │
+│ Reads: localStorage("auth-storage")           │
+│                                               │
+│ CASE 1: user exists                           │
+│   → authenticated = true                      │
+│                                               │
+│ CASE 2: nothing stored                        │
+│   → authenticated = false                     │
+│                                               │
+│ hydrated = true                               │
+└───────────────────────────────────────────────┘
+│
+│
+│  (C) Wallet Adapter runs (autoConnect OR user click)
+│
+▼
+┌───────────────────────────────────────────────┐
+│ Wallet Adapter (External SDK)                 │
+│                                               │
+│ wallet.connect()                              │
+│                                               │
+│ RESULT:                                       │
+│ - connected = true                            │
+│ - publicKey = "DemoWalletAddress123"          │
+└───────────────────────────────────────────────┘
+│
+│
+│  (D) Wallet state becomes available to React
+│
+▼
+┌───────────────────────────────────────────────┐
+│ useWallet() / wallet context updates          │
+│                                               │
+│ publicKey now exists                          │
+│ connected === true                            │
+└───────────────────────────────────────────────┘
+│
+│
+│  (E) React re-renders components
+│
+▼
+┌───────────────────────────────────────────────┐
+│ Components re-render                          │
+│                                               │
+│ Navbar                                       │
+│ WalletPage                                   │
+│ Dashboard (if allowed)                        │
+└───────────────────────────────────────────────┘
+│
+│
+│  (F) useAutoSignIn EFFECT RUNS (IMPORTANT)
+│
+▼
+┌───────────────────────────────────────────────┐
+│ useAutoSignIn useEffect                       │
+│                                               │
+│ CHECKS (in order):                            │
+│                                               │
+│ 1. hydrated === true        ✅                │
+│ 2. connected === true       ✅                │
+│ 3. publicKey exists         ✅                │
+│ 4. authenticated === false  ✅                │
+│ 5. loginMutation.isPending  ❌                │
+│ 6. attemptedRef === false   ✅                │
+│                                               │
+│ All checks pass → CONTINUE                    │
+└───────────────────────────────────────────────┘
+│
+│
+│  (G) Wallet signs message
+│
+▼
+┌───────────────────────────────────────────────┐
+│ wallet.signMessage()                          │
+│                                               │
+│ Message: "Sign in to Zephyr"                  │
+│                                               │
+│ User approves signature                      │
+└───────────────────────────────────────────────┘
+│
+│
+│  (H) useAuthLogin is TRIGGERED
+│
+▼
+┌───────────────────────────────────────────────┐
+│ loginMutation.mutate(payload)                 │
+│                                               │
+│ payload = {                                  │
+│   publicKey,                                 │
+│   signature,                                 │
+│   message                                   │
+│ }                                            │
+│                                               │
+│ ⚠️ This is the FIRST auth call                │
+└───────────────────────────────────────────────┘
+│
+│
+│  (I) useAuthLogin mutationFn runs
+│
+▼
+┌───────────────────────────────────────────────┐
+│ useAuthLogin → mutationFn                     │
+│                                               │
+│ (Days 1–9 mock backend)                       │
+│                                               │
+│ - fake delay                                 │
+│ - create mock user                           │
+└───────────────────────────────────────────────┘
+│
+│
+│  (J) Auth store is updated
+│
+▼
+┌───────────────────────────────────────────────┐
+│ onSuccess()                                  │
+│                                               │
+│ setAuth(user)                                │
+│                                               │
+│ Zustand auth.store updates:                  │
+│ - authenticated = true                       │
+│ - user = { id, walletAddress, role }         │
+│                                               │
+│ persisted to localStorage                    │
+└───────────────────────────────────────────────┘
+│
+│
+│  (K) React re-renders AGAIN
+│
+▼
+┌───────────────────────────────────────────────┐
+│ Authenticated UI unlocks                     │
+│                                               │
+│ - Navbar shows signed-in state                │
+│ - Dashboard allowed                           │
+│ - Auth queries can run                        │
+└───────────────────────────────────────────────┘
+│
+│
+│  (L) Data queries run (wallet + auth)
+│
+▼
+┌───────────────────────────────────────────────┐
+│ React re-renders after authentication         │
+│                                               │
+│ - Navbar updates                              │
+│ - AuthGuard allows Dashboard                 │
+│ - DashboardPage renders                      │
+│                                               │
+│ (Future: React Query data hooks go here)     │
+└───────────────────────────────────────────────┘
+
+│
+│
+│  (M) Final UI state
+│
+▼
+┌───────────────────────────────────────────────┐
+│ Fully authenticated dashboard                │
+│                                               │
+│ Wallet + User + Data in sync                  │
+└───────────────────────────────────────────────┘
+
+
+///Written model
+🔁 APP START → WALLET → AUTO SIGN-IN
+Exact file tree + execution order
+🟢 0️⃣ Entry point (React bootstraps)
+📁 src/main.tsx
+
+Runs first. Always.
+
+createRoot(...).render(
+  <App />
+);
+
+
+What happens:
+
+React starts
+
+<App /> is mounted
+
+➡️ Nothing auth or wallet-related yet
+
+🟢 1️⃣ App orchestration layer
+📁 src/App.tsx
+
+This is the MOST IMPORTANT file in the entire app
+
+Runs once on app load, then again on refresh.
+
+<WalletProviders>
+  <QueryClientProvider>
+    <Router />
+  </QueryClientProvider>
+</WalletProviders>
+
+Hooks that run here (ORDER MATTERS):
+Order	Hook	File
+1	useRestoreAuth()	core/hooks/useRestoreAuth.ts
+2	useAutoSignIn()	features/auth/useAutoSignIn.ts
+3	(later) useAuthSession()	⏸️ disabled
+
+➡️ This is where the whole flow starts
+
+🟢 2️⃣ Wallet SDK becomes active
+📁 src/core/config/WalletProviders.tsx
+<ConnectionProvider>
+  <WalletProvider autoConnect wallets={wallets}>
+    <WalletModalProvider>
+      {children}
+    </WalletModalProvider>
+  </WalletProvider>
+</ConnectionProvider>
+
+What runs here:
+
+Solana Wallet Adapter initializes
+
+Reads last-used wallet
+
+If allowed → autoConnect happens
+
+📌 You do NOT control this step
+
+🟢 3️⃣ Auth restoration (localStorage → Zustand)
+📁 src/core/hooks/useRestoreAuth.ts
+
+Runs immediately when App mounts
+
+const stored = localStorage.getItem("auth-storage");
+
+Outcomes:
+Case	Result
+Stored user exists	authenticated = true
+No stored user	authenticated = false
+
+Always sets:
+
+hydrated = true
+
+
+➡️ This unlocks auth-dependent logic
+
+🟢 4️⃣ Wallet connects (auto OR user click)
+📍 Triggered by:
+
+autoConnect in WalletProvider OR
+
+Clicking <WalletMultiButton /> in:
+
+📁 src/shared/components/Navbar.tsx
+<WalletMultiButton />
+
+Result:
+connected = true
+publicKey = PublicKey(...)
+
+
+➡️ Wallet state becomes available globally
+
+🟢 5️⃣ Wallet state is exposed to React
+📍 Anywhere that calls:
+const { connected, publicKey, signMessage } = useWallet();
+
+
+Common places:
+
+Navbar.tsx
+
+DashboardPage.tsx
+
+useAutoSignIn.ts
+
+➡️ React re-renders when wallet state changes
+
+🟢 6️⃣ AUTO SIGN-IN TRIGGERS (critical step)
+📁 features/auth/useAutoSignIn.ts
+
+This hook reacts — it does NOT initiate anything.
+
+Runs when ALL are true:
+hydrated === true
+connected === true
+publicKey exists
+authenticated === false
+
+What it does:
+
+Calls wallet.signMessage()
+
+Gets signature
+
+Calls loginMutation.mutate(payload)
+
+📌 This is where auth begins
+
+🟢 7️⃣ Login mutation runs
+📁 features/auth/useAuthLogin.ts
+
+Triggered ONLY by:
+
+loginMutation.mutate(payload)
+
+mutationFn runs:
+Days	Behavior
+Days 1–9	mock backend
+Day 10+	real Rust backend
+
+Returns:
+
+{ user }
+
+🟢 8️⃣ Auth store updates (source of truth in frontend)
+📁 core/store/auth.store.ts
+setAuth(user)
+
+
+Updates:
+
+authenticated = true
+user = { id, walletAddress, role }
+
+
+Persisted to:
+
+localStorage("auth-storage")
+
+
+➡️ This unlocks protected UI
+
+🟢 9️⃣ UI unlocks + data queries run
+📁 features/dashboard/DashboardPage.tsx
+
+Now allowed because:
+
+authenticated === true
+hydrated === true
+
+React Query hooks now enabled:
+
+useWalletBalance(publicKey)
+
+useProfile()
+
+usePortfolio()
+
+➡️ Backend + wallet data flow together
+
+🧠 FINAL ONE-SCREEN MENTAL MODEL
+main.tsx
+  ↓
+App.tsx
+  ├─ useRestoreAuth()
+  ├─ WalletProvider (SDK runs)
+  ├─ useAutoSignIn()
+        ↓ reacts to wallet
+        ↓ signs message
+        ↓ mutate()
+  ├─ useAuthLogin()
+        ↓ setAuth()
+  └─ Dashboard unlocked
+
+🚨 THE MOST IMPORTANT REALIZATION
+
+There is NO “connect wallet” file
+Wallet connection is owned by the SDK
+Your code only REACTS to its state
+
+If you want next, I can:
+
+Show this as a single ASCII timeline
+
+Explain exactly what to delete on Day 10
+
+Or map this to a real Rust backend request flow
+
+You’re very close — this is senior-level understanding already 💪
+
+
+
+
+┌──────────────────────────────────────────────────────────┐
+│ main.tsx                                                  │
+│ React boots                                               │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ App.tsx mounts                                            │
+│                                                          │
+│ Providers:                                               │
+│ - WalletProviders (Solana SDK)                            │
+│ - ReactQueryProvider                                     │
+│                                                          │
+│ Hooks (TOP → DOWN):                                      │
+│ - useRestoreAuth()                                       │
+│ - useAutoSignIn()                                        │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ useRestoreAuth.ts                                        │
+│                                                          │
+│ Reads localStorage("auth-storage")                        │
+│                                                          │
+│ CASE A: user exists → authenticated = true               │
+│ CASE B: no user     → authenticated = false              │
+│                                                          │
+│ hydrated = true                                          │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ WalletProviders.tsx (External SDK)                        │
+│                                                          │
+│ - autoConnect OR user clicks WalletMultiButton           │
+│ - Phantom / Solflare / Backpack                          │
+│                                                          │
+│ RESULT:                                                  │
+│ connected = true                                         │
+│ publicKey = PubKey                                       │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ useWallet() context updates                              │
+│                                                          │
+│ Any component using useWallet() re-renders               │
+│ Navbar / Dashboard / Hooks                               │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ useAutoSignIn.ts (REACTION, NOT INITIATION)              │
+│                                                          │
+│ CHECKS:                                                  │
+│ hydrated === true        ✅                               │
+│ connected === true       ✅                               │
+│ publicKey exists         ✅                               │
+│ authenticated === false  ✅                               │
+│ isPending === false      ✅                               │
+│ attemptedRef === false   ✅                               │
+│                                                          │
+│ → ALL PASS                                               │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ wallet.signMessage()                                     │
+│                                                          │
+│ "Sign in to Zephyr"                                      │
+│ User approves                                            │
+│                                                          │
+│ signature created                                       │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ useAuthLogin.ts                                         │
+│                                                          │
+│ loginMutation.mutate({                                  │
+│   publicKey,                                             │
+│   signature,                                             │
+│   message                                                │
+│ })                                                       │
+│                                                          │
+│ FIRST AUTH EVENT                                         │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ mutationFn                                               │
+│                                                          │
+│ Days 1–9: mock backend                                   │
+│ Day 10+: Rust backend                                    │
+│                                                          │
+│ returns { user }                                         │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ auth.store.ts (Zustand)                                  │
+│                                                          │
+│ setAuth(user)                                            │
+│                                                          │
+│ authenticated = true                                    │
+│ user = { id, walletAddress, role }                       │
+│                                                          │
+│ persisted to localStorage                                │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ React re-renders                                         │
+│                                                          │
+│ - Navbar shows signed-in                                 │
+│ - AuthGuard passes                                      │
+│ - Dashboard unlocks                                     │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ React Query DATA HOOKS                                   │
+│                                                          │
+│ enabled: authenticated === true                          │
+│                                                          │
+│ useWalletBalance(publicKey)                              │
+│ useProfile()                                             │
+│ usePortfolio()                                          │
+└───────────────┬──────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────┐
+│ FINAL STATE                                              │
+│                                                          │
+│ Wallet ✔                                                 │
+│ Auth ✔                                                   │
+│ Data ✔                                                   │
+│ Dashboard ✔                                              │
+└──────────────────────────────────────────────────────────┘
+
+
+
+User opens app
+     |
+     v
+1️⃣ Consent: "Sign in to Zephyr"
+     - Frontend encodes consent message
+     - Calls wallet.signMessage(consentMessage)
+     - Wallet may show **UI modal** for approval
+     |
+     v
+2️⃣ Request Nonce from Backend
+     - POST /api/auth/nonce { walletAddress }
+     - Backend returns:
+         {
+           message: "nonce-message-for-signing",
+           nonce: "random-nonce"
+         }
+     - **No UI triggered**
+     |
+     v
+3️⃣ Sign Nonce Programmatically
+     - Frontend encodes nonceMessage
+     - Calls wallet.signMessage(nonceMessage)
+     - Wallet signs in background → returns signatureBytes
+     - **No UI modal here**
+     |
+     v
+4️⃣ Verify Signature
+     - POST /api/auth/verify
+       Body: { walletAddress, signature, message: nonceMessage }
+     - Backend validates signature using wallet public key
+     - Returns:
+         {
+           success: true,
+           token: "JWT-token",
+           user: { ...user-info }
+         }
+     - **No UI modal**
+     |
+     v
+5️⃣ Store JWT & User Info
+     - Frontend stores JWT in memory / localStorage
+     - Sets user in app state
+     - App can now make authenticated API requests
+     |
+     v
+6️⃣ Future API Requests
+     - Include JWT in Authorization header
+     - No signing needed unless session expires

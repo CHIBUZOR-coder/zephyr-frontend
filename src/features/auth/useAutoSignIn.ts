@@ -8,7 +8,7 @@ export function useAutoSignIn() {
   const { authenticated, hydrated } = useAuthStore();
   const loginMutation = useAuthLogin();
 
-  // 🛑 prevents duplicate signature prompts
+  // 🛑 prevents duplicate prompts
   const attemptedRef = useRef(false);
 
   useEffect(() => {
@@ -20,21 +20,10 @@ export function useAutoSignIn() {
 
     attemptedRef.current = true;
 
-    const signIn = async () => {
-      const message = "Sign in to Zephyr";
-      const encodedMessage = new TextEncoder().encode(message);
-
-      const signatureBytes = await signMessage(encodedMessage);
-      const signature = Buffer.from(signatureBytes).toString("base64");
-
-      loginMutation.mutate({
-        publicKey: publicKey.toBase58(),
-        signature,
-        message,
-      });
-    };
-
-    signIn();
+    loginMutation.mutate({
+      publicKey: publicKey.toBase58(),
+      signMessage,
+    });
   }, [
     hydrated,
     connected,
