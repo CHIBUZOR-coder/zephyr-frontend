@@ -1,3 +1,49 @@
+/* Import Inter from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
+
+/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.herochild {
+  @apply w-full  lg:w-1/2;
+}
+.smallcircl {
+  @apply h-[15px] w-[15px] p-4 rounded-full text-[9.35px] flex justify-center items-center text-white font-[600] absolute border-l-black border-l-2;
+}
+
+.num {
+  @apply text-[29px] font-[900] text-center w-full;
+}
+.label {
+  @apply text-[11px] text-[#577884] font-jetbrains font-[700] uppercase tracking-[1.169px];
+}
+
+/* Container2 */
+.box {
+  @apply flex flex-col gap-4 bg-[#0C1517]  border-[1px] border-[#FFFFFF1A] rounded-md p-[30px];
+}
+
+.boximg {
+  @apply  bg-center bg-cover h-full w-full;
+}
+
+.boximgcon {
+  @apply bg-boximage p-[6px] w-[33px] h-[33px] rounded-md;
+}
+.numero {
+  @apply h-2 w-2 p-2 rounded-full text-[#00A991] bg-[#334155] flex justify-center items-center text-[11px] font-[900];
+}
+
+.boxtext {
+  @apply text-white font-[700] text-[18px];
+}
+.boxtextcon {
+  @apply flex  items-center gap-4;
+}
+
+.boxinfo {
+  @apply text-[#94A3B8] text-[15px] font-[400];
+}

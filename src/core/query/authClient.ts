@@ -19,8 +19,6 @@
 //   return res.json();
 // }
 
-
-
 // const API_BASE = "http://localhost:3000"; // mock for now
 
 // export async function authFetch<T>(
@@ -43,7 +41,6 @@
 //   return res.json();
 // }
 
-
 // core/query/authClient.ts
 
 // ✅ Change this to your production backend when ready
@@ -58,21 +55,24 @@ export async function authFetch<T>(
   options: RequestInit = {},
 ): Promise<T> {
   // 🔐 Read JWT directly from Zustand (safe outside React)
-  const token = useAuthStore.getState().token;
+  const accessToken = useAuthStore.getState().accessToken;
+  console.log("tok:", accessToken);
 
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
       ...(options.headers || {}),
     },
   });
 
+  
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Auth request failed (${res.status}): ${text}`);
   }
-
+  // const data = await res.json();
+  // console.log("data:", data);
   return res.json() as Promise<T>;
 }

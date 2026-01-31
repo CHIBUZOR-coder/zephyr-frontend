@@ -1,3 +1,61 @@
+// import { create } from "zustand";
+// import { persist } from "zustand/middleware";
+// import type { AuthUser } from "./auth.types";
+
+// type AuthState = {
+//   authenticated: boolean;
+//   user: AuthUser | null;
+//   accessToken: string | null;
+//   hydrated: boolean;
+//   setAuth: (user: AuthUser, accessToken?: string) => void;
+//   logout: () => void;
+// };
+
+// export const useAuthStore = create<AuthState>()(
+//   persist(
+//     (set) => ({
+//       authenticated: false,
+//       user: null,
+//       accessToken: null,
+//       hydrated: false,
+
+//       setAuth: (user, accessToken) =>
+//         set((state) => ({
+//           authenticated: true,
+//           user,
+//           // ✅ FIX: Keep existing accessToken if new one not provided
+//           accessToken:
+//             accessToken !== undefined ? accessToken : state.accessToken,
+//         })),
+
+//       logout: () =>
+//         set({
+//           authenticated: false,
+//           user: null,
+//           accessToken: null,
+//         }),
+//     }),
+//     {
+//       name: "auth-storage",
+//       // ✅ Add partialize to ensure accessToken is persisted
+//       partialize: (state) => ({
+//         authenticated: state.authenticated,
+//         user: state.user,
+//         accessToken: state.accessToken,
+//       }),
+//       onRehydrateStorage: () => (state) => {
+//         if (state) {
+//           state.hydrated = true;
+//         }
+//       },
+//     },
+//   ),
+// );
+
+// export const useAuthReady = () => useAuthStore((s) => s.hydrated);
+
+
+
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AuthUser } from "./auth.types";
@@ -5,31 +63,39 @@ import type { AuthUser } from "./auth.types";
 type AuthState = {
   authenticated: boolean;
   user: AuthUser | null;
-  token: string | null;
+  accessToken: string | null;
+
   hydrated: boolean;
-  setAuth: (user: AuthUser, token?: string) => void; // 🔧 token optional
+  authResolved: boolean;
+
+  setAuth: (user: AuthUser, token: string) => void;
   logout: () => void;
 };
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       authenticated: false,
       user: null,
-      token: null, // ✅ ADD
+      accessToken: null,
+
       hydrated: false,
+      authResolved: false,
 
       setAuth: (user, token) =>
         set({
           authenticated: true,
           user,
-          token, // ✅ STORE JWT
+          accessToken: token,
+          authResolved: true,
         }),
 
       logout: () =>
         set({
           authenticated: false,
           user: null,
-          token: null, // ✅ CLEAR JWT
+          accessToken: null,
+          authResolved: true,
         }),
     }),
     {
@@ -43,5 +109,6 @@ export const useAuthStore = create<AuthState>()(
   ),
 );
 
-// ✅ selector helper (unchanged)
-export const useAuthReady = () => useAuthStore((s) => s.hydrated);
+// helpers
+export const useAuthReady = () =>
+  useAuthStore((s) => s.hydrated && s.authResolved);

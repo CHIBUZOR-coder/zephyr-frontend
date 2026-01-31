@@ -53,9 +53,9 @@ export function useAuthLogin() {
       console.log("Nonce value returned from backend:", nonce);
 
       // 3️⃣ Verify
-      const { user, token } = await authFetch<{
+      const { user, accessToken } = await authFetch<{
         success: boolean;
-        token: string;
+        accessToken: string;
         user: AuthUser;
       }>("/api/auth/verify", {
         method: "POST",
@@ -69,7 +69,7 @@ export function useAuthLogin() {
       // Optional: log the JWT token
       // console.log("JWT token returned from /verify:", token);
 
-      setAuth(user, token);
+      setAuth(user, accessToken);
       return user;
     },
 
