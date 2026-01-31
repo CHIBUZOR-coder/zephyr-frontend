@@ -24,7 +24,7 @@ import AuthGuard from './features/auth/auth.guard.tsx'
 // Lazy-loaded pages
 const HomePage = lazy(() => import('./features/home/HomePage.tsx'))
 const WalletPage = lazy(() => import('./features/wallet/WalletPage.tsx'))
-const SignInPage = lazy(()=> import('./features/auth/SignInPage.tsx'))
+// const SignInPage = lazy(()=> import('./features/auth/SignInPage.tsx'))
 
 // const SignInPage= lazy(() => import('./features/auth/SignInPage.tsx'))
 // const SignInPage = lazy(()=> import('./features/auth/SignInPage.tsx'))
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'wallet', element: <WalletPage /> },
-      { path: 'signup', element: <SignInPage /> },
+      // { path: 'signup', element: <SignInPage /> },
 
       // 🔐 PROTECTED ROUTES
       {
