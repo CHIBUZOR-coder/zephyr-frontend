@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Layout from '../../shared/Layout/Layout'
 
 // Components
@@ -15,21 +16,96 @@ import { useWalletMismatch } from '../../core/hooks/useWalletMismatch'
 import StateScreen from '../../shared/components/StateScreen'
 import RequireWallet from '../../shared/components/RequireWallet'
 
-// User
-import { useUserProfile } from '../users/useUserProfile'
+// Types
+import type { UserProfile } from '../users/user.types'
+
+const API_BASE = 'https://0e14cca7cfb4.ngrok-free.app'
 
 export default function DashboardPage () {
-  const { user, authenticated } = useAuthStore()
+  const authReady = useAuthReady()
+  const { user, authenticated, accessToken } = useAuthStore()
+
   const { publicKey, connected } = useWallet()
-  const hydrated = useAuthReady()
   const mismatch = useWalletMismatch()
 
   const walletAddress = publicKey?.toBase58()
 
-  // Fetch user profile (safe, always call hook)
-  const { data: profile, isLoading, error } = useUserProfile()
-  const authReady = useAuthReady()
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [loadingProfile, setLoadingProfile] = useState(false)
+  const [profileError, setProfileError] = useState<string | null>(null)
 
+  // 🔐 Fetch user profile from /auth/me
+  useEffect(() => {
+    if (!authReady) return
+    if (!accessToken) {
+      console.log('no accessToken')
+      return
+    }
+
+    if (profile) return // prevent refetch
+
+    let cancelled = false
+
+    console.log('accesToken:', accessToken)
+
+    const fetchMe = async () => {
+      try {
+        console.log('Hellow')
+
+        setLoadingProfile(true)
+        setProfileError(null)
+
+        console.log('token inFetch', accessToken)
+
+        const res = await fetch(`${API_BASE}/api/auth/me`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+            'ngrok-skip-browser-warning': 'true'
+          }
+        })
+        const data = await res.json()
+
+        console.log('data:', data)
+
+        const contentType = res.headers.get('content-type')
+
+        if (!res.ok) {
+          const text = await res.text()
+          throw new Error(text || 'Failed to fetch user')
+        }
+
+        if (!contentType?.includes('application/json')) {
+          const text = await res.text()
+          throw new Error(`Expected JSON, got: ${text.slice(0, 200)}`)
+        }
+
+        // const data = await res.json()
+
+        if (!cancelled) {
+          setProfile(data.user)
+        }
+      } catch (err) {
+        console.error('❌  failed:', err)
+        if (!cancelled) {
+          setProfileError('Failed to load profile details')
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingProfile(false)
+        }
+      }
+    }
+
+    fetchMe()
+
+    return () => {
+      cancelled = true
+    }
+  }, [authReady, accessToken, profile])
+
+  // ---------- Guards ----------
   if (!authReady) {
     return (
       <StateScreen
@@ -39,11 +115,12 @@ export default function DashboardPage () {
     )
   }
 
-  if (!hydrated) {
+  if (!accessToken) {
     return (
       <StateScreen
-        title='Restoring session…'
-        description='Please wait a moment'
+        title='Not authenticated'
+        description='Please sign in again.'
+        tone='error'
       />
     )
   }
@@ -58,6 +135,7 @@ export default function DashboardPage () {
     )
   }
 
+  // ---------- UI ----------
   return (
     <Layout>
       <RequireWallet>
@@ -84,13 +162,11 @@ export default function DashboardPage () {
           </div>
 
           {/* Profile feedback */}
-          {isLoading && (
+          {loadingProfile && (
             <p className='text-sm text-slate-500'>Loading profile…</p>
           )}
-          {error && (
-            <p className='text-sm text-red-400'>
-              Failed to load profile details
-            </p>
+          {profileError && (
+            <p className='text-sm text-red-400'>{profileError}</p>
           )}
 
           {/* Portfolio */}

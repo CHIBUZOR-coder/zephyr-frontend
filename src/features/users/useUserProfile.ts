@@ -93,7 +93,7 @@ export function useUserProfile(walletAddress?: string) {
     queryKey: ["user-profile", walletAddress],
     queryFn: async () => {
       const res = await authFetch<UserProfileResponse>(
-        `/api/users/${walletAddress!}`,
+        `/api/auth/me`,
       );
       return res.user;
     },

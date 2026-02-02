@@ -10,7 +10,7 @@
             margin: 50px auto;
             padding: 20px;
         }
-        
+
         button {
             background: #512da8;
             color: white;
@@ -78,6 +78,18 @@
             const authBtn = document.getElementById('authBtn');
 
             try {
+
+
+                const testResp = await fetch(`${API_URL}/health`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    // body: JSON.stringify({ walletAddress })
+                });
+
+
+                const data = await testResp.json()
+                console.log("data:", data);
+
                 // Check if Phantom is installed
                 if (!window.solana || !window.solana.isPhantom) {
                     alert('Please install Phantom wallet: https://phantom.app/');

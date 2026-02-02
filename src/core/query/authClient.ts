@@ -48,7 +48,7 @@
 import { useAuthStore } from "../../features/auth/auth.store";
 
 // ✅ Production backend
-export const API_BASE = "https://da0f423465dd.ngrok-free.app";
+export const API_BASE = "https://0e14cca7cfb4.ngrok-free.app";
 
 export async function authFetch<T>(
   path: string,
@@ -57,17 +57,16 @@ export async function authFetch<T>(
   // 🔐 Read JWT directly from Zustand (safe outside React)
   const accessToken = useAuthStore.getState().accessToken;
   console.log("tok:", accessToken);
-
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true",
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-      ...(options.headers || {}),
+      ...(options.headers || {}), // ← Move this to the end
     },
   });
 
-  
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Auth request failed (${res.status}): ${text}`);

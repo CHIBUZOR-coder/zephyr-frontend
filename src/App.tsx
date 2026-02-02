@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect} from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useAuthLogin } from './features/auth/useAuthLogin'
 import { useAuthStore } from './features/auth/auth.store'
@@ -20,26 +20,13 @@ function App () {
   const { publicKey, connected, signMessage } = useWallet()
   const loginMutation = useAuthLogin()
 
-  // const handleSignIn = async () => {
-  //   if (!publicKey || !signMessage) return
-
-  //   const message = 'Sign in to Zephyr'
-  //   const encodedMessage = new TextEncoder().encode(message)
-  //   const signatureBytes = await signMessage(encodedMessage)
-  //   const signature = Buffer.from(signatureBytes).toString('base64')
-
-  //   loginMutation.mutate({
-  //     publicKey: publicKey.toBase58(),
-  //     signature,
-  //     message
-  //   })
-  // }
+  // const [load, setLoad] = useState(false)
 
   const handleSignIn = () => {
     if (!publicKey || !signMessage) return
 
-    console.log('pub', publicKey)
-    console.log('messg:', signMessage)
+    // console.log('pub', publicKey)
+    // console.log('messg:', signMessage)
 
     loginMutation.mutate({
       publicKey: publicKey.toBase58(),
@@ -62,9 +49,27 @@ function App () {
     }
   }, [loginMutation.isSuccess, navigate])
 
+  // useEffect(() => {
+  //   setLoad(true)
+  //   setTimeout(() => {
+  //     setLoad(false)
+  //   }, 4000)
+  // }, [])
   return (
-    <div className='bg-primary'>
-      
+    <div className='bg-primary relative'>
+      {/* <div
+        className={` ${
+          load ? '' : 'hidden'
+        }  absolute top-0 left-0 bg-primary z-50 w-full h-full flex justify-center items-center`}
+      >
+        <div
+          className='w-24 h-24 border-r-[4px] bg-primary border-white fixed top-[50%] flex justify-center items-center rounded-full  animate-spin
+'
+        >
+          <span className="bg-[url('/images/logo.png')] bg-cover bg-center h-16 w-16  animate-spin-slow animate-spin-reverse  "></span>
+        </div>
+      </div> */}
+
       <ErrorBoundary>
         <Outlet />
       </ErrorBoundary>

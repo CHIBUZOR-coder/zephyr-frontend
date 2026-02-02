@@ -1,4 +1,6 @@
 import Layout from '../../shared/Layout/Layout'
+import TopTradersTable from './TopTradersTablee'
+// import TraderProfilePage from '../trader/TraderProfilePage'
 
 const HomePage = () => {
   return (
@@ -8,8 +10,9 @@ const HomePage = () => {
         <div className='Hero bg-gradient-to-tr from-black to-herolight py-5 w-full flex flex-col lg:flex-row justify-center items-center px-3 md:px-[120px] gap-10 md:gap-[100px] lg:gap-[60px] '>
           {/* child1 */}
           <div className='herochild flex flex-col gap-5'>
-            <div className='flex items-center gap-2'>
-              <div className='w-2 h-2 bg-emerald-500 rounded-full animate-pulse' />
+            <div className='flex items-center gap-2 animate-pulse
+'>
+              <div className='w-2 h-2 bg-emerald-500 rounded-full ' />
               <span className='text-xs uppercase font-mono tracking-tighter text-emerald-500'>
                 LIVE ON SOLANA MAINNET
               </span>
@@ -32,7 +35,7 @@ const HomePage = () => {
             </p>
             <div className='flex justify-between gap-4 mt-4 w-full flex-col md:flex-row'>
               <button className='bg-btnprimary text-btnsecondary px-6 py-3 rounded-lg  font-[600] hover:scale-105 transition-transform duration-200 w-full md:w-[40%]'>
-                Lunch App
+                Launch App
               </button>
               <button className='bg-btnprimary text-btnsecondary px-6 py-3 rounded-lg  font-[600] hover:scale-105 transition-transform duration-200 w-full md:w-[60%]'>
                 View Top Traders
@@ -146,6 +149,11 @@ const HomePage = () => {
           </div>
         </div>
         {/****CONTAINER2 DONE*****/}
+
+        {/* ******Table******** */}
+        <TopTradersTable />
+
+        {/* ******Table Done******** */}
       </div>
     </Layout>
   )

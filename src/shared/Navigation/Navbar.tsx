@@ -21,9 +21,9 @@ const Navbar = () => {
   }, [connected, publicKey, setWallet])
 
   return (
-    <nav className='flex items-center justify-between px-6 py-4 bg-navfoot border-b border-slate-800 text-white sticky top-0 z-50 w-full'>
+    <nav className='flex items-center justify-between px-6 py-4 bg-navfoot border-b border-slate-800 text-white sticky top-0 z-30 w-full'>
       <Link to={'/'} className='flex items-center gap-2'>
-        <div className="w-16 h-12 bg-[url('/images/logo.png')] bg-cover bg-center rounded-lg shadow-lg shadow-blue-500/20">
+        <div className="w-16 h-12 bg-[url('/images/logo.png')] bg-cover bg-center rounded-lg shadow-lg shadow-blue-500/20 ">
 
         </div>
         <span className='text-xl font-bold tracking-tight text-white'>
