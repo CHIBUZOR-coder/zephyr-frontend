@@ -27,7 +27,7 @@
 }
 
 .boximg {
-  @apply  bg-center bg-cover h-full w-full;
+  @apply bg-center bg-cover h-full w-full;
 }
 
 .boximgcon {
@@ -48,7 +48,6 @@
   @apply text-[#94A3B8] text-[15px] font-[400];
 }
 
-
 @keyframes spin-reverse {
   to {
     transform: rotate(-360deg);
@@ -57,4 +56,16 @@
 
 .animate-spin-reverse {
   animation: spin-reverse 1s linear infinite;
+}
+
+.imgcircle {
+  @apply bg-center bg-cover h-full w-full;
+}
+
+.imgcirclecon {
+  @apply bg-boximage p-[6px] w-[40px] h-[40px] rounded-full;
+}
+
+.trust {
+  @apply w-[80%];
 }

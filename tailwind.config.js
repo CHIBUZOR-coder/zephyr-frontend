@@ -6,6 +6,9 @@ export default {
         inter: ['Inter', 'sans-serif'],
         jetbrains: ['"JetBrains Mono"', 'monospace']
       },
+      boxShadow: {
+        'white-glow': '0 0 100px rgb(37, 99, 235, 0.2)'
+      },
       colors: {
         primary: 'black',
         navfoot: 'black',

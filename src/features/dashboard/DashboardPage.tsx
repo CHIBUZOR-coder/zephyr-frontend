@@ -19,7 +19,8 @@ import RequireWallet from '../../shared/components/RequireWallet'
 // Types
 import type { UserProfile } from '../users/user.types'
 
-const API_BASE = 'https://0e14cca7cfb4.ngrok-free.app'
+// const API_BASE = 'https://0e14cca7cfb4.ngrok-free.app'
+const API_BASE = 'https://zephyr-np09.onrender.com'
 
 export default function DashboardPage () {
   const authReady = useAuthReady()
@@ -139,7 +140,9 @@ export default function DashboardPage () {
   return (
     <Layout>
       <RequireWallet>
-        <div className='min-h-screen bg-slate-950 text-white p-6 space-y-10'>
+        <div className='min-h-screen bg-slate-950 text-white p-6 space-y-10 '>
+
+          
           {/* Header */}
           <div className='flex items-center gap-4'>
             {profile?.avatar && (

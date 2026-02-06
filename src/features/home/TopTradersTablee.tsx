@@ -8,7 +8,7 @@ const riskStyle = {
 
 export default function TopTradersTable () {
   return (
-    <section className='px-4 md:px-16 mt-16'>
+    <section className=' mt-16'>
       {/* Header */}
       <div className='flex items-center justify-between mb-6'>
         <h2 className='text-white text-lg font-semibold tracking-wide'>

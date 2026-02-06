@@ -73,6 +73,85 @@ src/
 └── main.tsx
 
 
+src/
+├── core/
+│   ├── store/
+│   │   ├── useAppStore.ts
+│   │   └── auth.store.ts              # accessToken, user, authenticated
+│   │
+│   ├── api/
+│   │   ├── http.ts                    # fetch wrapper (auth headers, JSON guard)
+│   │   └── auth.api.ts                # auth/verify, auth/me
+│   │
+│   ├── config/
+│   │   ├── solanaWallet.ts
+│   │   └── WalletProviders.tsx
+│   │
+│   └── hooks/
+│       ├── useRestoreAuth.ts          # restores auth on reload
+│       ├── useWalletAuthSync.ts       # wallet ↔ auth binding
+│       └── useWalletMismatch.ts
+│
+├── features/
+│   ├── auth/
+│   │   ├── auth.types.ts              # AuthUser, VerifyPayload, etc.
+│   │   ├── useAuthLogin.ts            # wallet → challenge → verify
+│   │   ├── useAuthSession.ts          # optional session helpers
+│   │   └── auth.guard.tsx
+│   │
+│   ├── users/
+│   │   └── user.types.ts              # UserProfile
+│   │
+│   ├── wallet/
+│   │   ├── WalletPage.tsx
+│   │   ├── WalletButton.tsx
+│   │   ├── wallet.store.ts
+│   │   └── wallet.types.ts
+│   │
+│   ├── dashboard/
+│   │   ├── DashboardPage.tsx          # 🔥 owns /auth/me fetch
+│   │   ├── dashboard.store.ts
+│   │   ├── dashboard.types.ts
+│   │   └── dashboardComponents/
+│   │       ├── PortfolioOverview/
+│   │       │   └── PortfolioOverview.tsx
+│   │       ├── Badges/
+│   │       │   └── Badges.tsx
+│   │       ├── Leaderboard/
+│   │       │   └── Leaderboard.tsx
+│   │       └── SocialFeed/
+│   │           └── SocialFeed.tsx
+│   │
+│   ├── trader/
+│   │   ├── TraderProfilePage.tsx
+│   │   ├── trader.store.ts
+│   │   └── trader.types.ts
+│   │
+│   └── vault/
+│       ├── VaultPage.tsx
+│       ├── vault.store.ts
+│       └── vault.types.ts
+│
+├── shared/
+│   ├── Layout/
+│   │   └── Layout.tsx
+│   │
+│   ├── components/
+│   │   ├── Navbar.tsx
+│   │   ├── RequireWallet.tsx
+│   │   ├── StateScreen.tsx
+│   │   ├── Loader.tsx
+│   │   └── ErrorBoundary.tsx
+│   │
+│   └── hooks/
+│       ├── useDebounce.ts
+│       └── usePagination.ts
+│
+├── utils/
+│   └── encoding.ts                   # uint8ArrayToBase64
+│
+├── App.tsx
+└── main.tsx
 
 
 how wallet is used and connected
@@ -1682,3 +1761,63 @@ User opens app
 6️⃣ Future API Requests
      - Include JWT in Authorization header
      - No signing needed unless session expires
+
+
+
+
+
+// useRestoreAuth.ts
+export function useRestoreAuth() {
+  const { connected, publicKey } = useWallet()
+  const { user, authenticated, hydrated, accessToken, setAuth } = useAuthStore()
+
+  useEffect(() => {
+    // ─────────────────────────────────────────────
+    // GUARD CLAUSES (early returns)
+    // ─────────────────────────────────────────────
+    
+    if (!hydrated) return
+    // Wait for Zustand to load from localStorage
+
+    if (!connected || !publicKey) return
+    // Wallet must be connected
+
+    if (authenticated) return
+    // Already authenticated, nothing to do
+
+    if (!user || !accessToken) return
+    // No stored session to restore
+
+    // ─────────────────────────────────────────────
+    // RESTORE SESSION
+    // ─────────────────────────────────────────────
+    
+    if (user.walletAddress === publicKey.toBase58()) {
+      console.log("Restoring auth session")
+      setAuth(user, accessToken)
+    }
+  }, [hydrated, connected, publicKey, authenticated, user, accessToken, setAuth])
+}
+```
+
+**Scenario: User refreshes page**
+```
+Page refreshes
+  ↓
+App.tsx renders
+  ↓
+useRestoreAuth() runs
+  ↓
+Check conditions:
+  ├─ hydrated? → YES (Zustand loaded localStorage)
+  ├─ connected? → YES (Solana wallet auto-reconnects)
+  ├─ authenticated? → NO (React state reset on refresh)
+  ├─ user exists? → YES (from localStorage)
+  ├─ accessToken exists? → YES (from localStorage)
+  └─ walletAddress matches? → YES
+  ↓
+Call setAuth(user, accessToken)
+  ↓
+authenticated = true
+  ↓
+User stays logged in ✓

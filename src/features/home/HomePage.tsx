@@ -1,5 +1,7 @@
 import Layout from '../../shared/Layout/Layout'
 import TopTradersTable from './TopTradersTablee'
+import { HiShieldCheck } from 'react-icons/hi2'
+
 // import TraderProfilePage from '../trader/TraderProfilePage'
 
 const HomePage = () => {
@@ -10,8 +12,10 @@ const HomePage = () => {
         <div className='Hero bg-gradient-to-tr from-black to-herolight py-5 w-full flex flex-col lg:flex-row justify-center items-center px-3 md:px-[120px] gap-10 md:gap-[100px] lg:gap-[60px] '>
           {/* child1 */}
           <div className='herochild flex flex-col gap-5'>
-            <div className='flex items-center gap-2 animate-pulse
-'>
+            <div
+              className='flex items-center gap-2 animate-pulse
+'
+            >
               <div className='w-2 h-2 bg-emerald-500 rounded-full ' />
               <span className='text-xs uppercase font-mono tracking-tighter text-emerald-500'>
                 LIVE ON SOLANA MAINNET
@@ -149,11 +153,148 @@ const HomePage = () => {
           </div>
         </div>
         {/****CONTAINER2 DONE*****/}
-
+        {/* ******* */}
         {/* ******Table******** */}
-        <TopTradersTable />
+        <div className='px-3 md:px-[120px]'>
+          <TopTradersTable />
+        </div>
+        {/* ******* */}
+        {/* ******Why Trade******** */};
+        <section className='relative px-3 md:px-[120px]  text-white py-24 '>
+          <div className='max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center'>
+            {/* LEFT CONTENT */}
+            <div>
+              <h2 className='text-4xl md:text-5xl font-bold leading-tight mb-6'>
+                Why traders trust <br /> Zephyr
+              </h2>
 
-        {/* ******Table Done******** */}
+              <p className='text-gray-400 max-w-xl mb-10'>
+                Built for security and transparency on the world’s fastest
+                blockchain. We prioritize your safety above all else.
+              </p>
+
+              <div className='space-y-8'>
+                {/* Item */}
+                <div className='flex gap-4 '>
+                  <div className='imgcirclecon'>
+                    <p className="imgcircle bg-[url('/images/key.svg')]"></p>
+                  </div>
+                  <div className='trust'>
+                    <h4 className='font-semibold mb-1'>Non-custodial Vaults</h4>
+                    <p className='text-gray-400 text-sm leading-relaxed'>
+                      Your funds never leave your control. Zephyr utilizes
+                      program-derived addresses that only follow your
+                      pre-authorized risk parameters.
+                    </p>
+                  </div>
+                </div>
+
+                <div className='flex gap-4'>
+                  <div className='imgcirclecon'>
+                    <p className="imgcircle bg-[url('/images/data.svg')]"></p>
+                  </div>
+                  <div className='trust'>
+                    <h4 className='font-semibold mb-1'>
+                      Immutable Performance History
+                    </h4>
+                    <p className='text-gray-400 text-sm leading-relaxed'>
+                      No fake stats. Every trade, profit, and loss is pulled
+                      directly from the Solana ledger, ensuring total
+                      transparency.
+                    </p>
+                  </div>
+                </div>
+
+                <div className='flex gap-4'>
+                  <div className='imgcirclecon'>
+                    <p className="imgcircle bg-[url('/images/padlock.svg')]"></p>
+                  </div>
+                  <div className='trust'>
+                    <h4 className='font-semibold mb-1'>
+                      Enforced Risk Controls
+                    </h4>
+                    <p className='text-gray-400 text-sm leading-relaxed'>
+                      Traders cannot bypass your safety limits. If a trade
+                      violates your max drawdown setting, the contract rejects
+                      the transaction.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT CARD */}
+            <div>
+              <div className='bg-gradient-to-br from-[#0c1a1a] to-[#071010] border border-white/10 rounded-2xl p-8 shadow-white-glow'>
+                <div className='flex items-center justify-between mb-8'>
+                  <h4 className='font-semibold'>Safety Dashboard</h4>
+                  <span className='text-xs font-medium bg-teal-500/10 text-teal-400 px-3 py-1 rounded-full'>
+                    ACTIVE GUARD
+                  </span>
+                </div>
+
+                <div className='space-y-6'>
+                  <div>
+                    <div className='flex justify-between  text-sm mb-2'>
+                      <span className='text-gray-400'>Daily Max Loss</span>
+                      <span>5.0%</span>
+                    </div>
+                    <div className='h-2 bg-white/10 rounded-full overflow-hidden'>
+                      <div className='h-full w-[65%] bg-teal-400 rounded-full' />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className='flex justify-between text-sm mb-2'>
+                      <span className='text-gray-400'>Account Drawdown</span>
+                      <span>12.4%</span>
+                    </div>
+                    <div className='h-2 bg-white/10 rounded-full overflow-hidden'>
+                      <div className='h-full w-[40%] bg-teal-400 rounded-full' />
+                    </div>
+                  </div>
+                </div>
+
+                <div className='mt-8 flex gap-3 bg-black/40 border border-white/10 rounded-xl p-4'>
+                  <HiShieldCheck className='h-5 w-5 text-teal-400' />
+                  <p className='text-xs text-gray-400 leading-relaxed'>
+                    All risk parameters are stored and verified on-chain via
+                    Zephyr Core contracts.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* ******* */};
+        <section className=' py-24  px-3 md:px-[120px]'>
+          <div className='max-w-6xl mx-auto'>
+            <div className='relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0e3d3a] via-[#147b6e] to-[#1aa38f] px-10 py-20 text-center shadow-2xl'>
+              {/* Heading */}
+              <h1 className='text-white text-4xl md:text-6xl font-extrabold leading-tight'>
+                Ready to trade with <br className='hidden md:block' />
+                the best?
+              </h1>
+
+              {/* Subtext */}
+              <p className='mt-6 max-w-2xl mx-auto text-white/80 text-base md:text-lg'>
+                Connect your wallet and start following expert strategies today
+                with professional-grade risk management.
+              </p>
+
+              {/* Buttons */}
+              <div className='mt-10 flex flex-col sm:flex-row gap-4 justify-center'>
+                <button className='bg-white text-emerald-700 font-semibold px-8 py-4 rounded-xl shadow-md hover:scale-105 transition-transform'>
+                  Launch Application
+                </button>
+
+                <button className='bg-emerald-900/60 text-white font-semibold px-8 py-4 rounded-xl border border-white/20 hover:bg-emerald-900 transition'>
+                  Read Docs
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </Layout>
   )
