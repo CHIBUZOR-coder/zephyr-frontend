@@ -69,3 +69,8 @@
 .trust {
   @apply w-[80%];
 }
+
+.side {
+  border-right: 1px solid #23483B;
+}
+

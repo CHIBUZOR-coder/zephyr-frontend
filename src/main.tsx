@@ -15,6 +15,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { WalletProviders } from './features/wallet/WalletProviders.tsx'
 import AuthGuard from './features/auth/auth.guard.tsx'
+import Dashboard from './features/dashboard/DemoDash.tsx'
 
 
 // import { SignInPage } from './features/auth/SignInPage.tsx'
@@ -22,8 +23,10 @@ import AuthGuard from './features/auth/auth.guard.tsx'
 
 
 // Lazy-loaded pages
-const HomePage = lazy(() => import('./features/home/HomePage.tsx'))
+// const HomePage = lazy(() => import('./features/home/HomePage.tsx'))
 const WalletPage = lazy(() => import('./features/wallet/WalletPage.tsx'))
+const VaultPage = lazy(() => import('./features/vault/VaultPage.tsx'))
+
 // const SignInPage = lazy(()=> import('./features/auth/SignInPage.tsx'))
 
 // const SignInPage= lazy(() => import('./features/auth/SignInPage.tsx'))
@@ -37,14 +40,15 @@ const router = createBrowserRouter([
     element: <App />,
     path: '/',
     children: [
-      { index: true, element: <HomePage /> },
+      // { index: true, element: <HomePage /> },
       { path: 'wallet', element: <WalletPage /> },
-      // { path: 'signup', element: <SignInPage /> },
+       { path: 'vaults/create', element: <VaultPage /> },
+      { path: 'demo', element: <Dashboard /> },
 
       // 🔐 PROTECTED ROUTES
       {
         element: <AuthGuard />,
-        children: [{ path: 'dashboard', element: <DashboardPage /> }]
+        children: [{ path: '/', element: <DashboardPage /> }]
       }
     ]
   }

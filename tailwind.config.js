@@ -24,9 +24,20 @@ export default {
         circle1: 'rgb(30, 41, 59)',
         circle2: 'rgb(51, 65, 85)',
         circle3: 'rgb(71, 85, 105)',
-        boximage: 'rgb(13, 24, 44)'
+        boximage: 'rgb(13, 24, 44)',
+        lead: 'rgba(16, 34, 33, 0.7)',
+        swipnav: 'rgba(15, 26, 24, 0.3)',
+        trr: 'rgba(254, 154, 0, 0.1)',
+        trb: 'rgba(194, 122, 255, 0.1)',
+        modaltext: '#B0E4DD',
+        verircom: 'rgba(34, 197, 94, 0.3)',
+        veriris: 'rgba(59, 130, 246, 0.3)',
+        modeboreder: 'rgba(0, 152, 131, 0.3)',
+        modeborder:'#574516',
+        socials:'rgba(0, 136, 204, 0.2)',
+        socialsb:'rgba(0, 136, 204, 0.8)',
       }
     }
   },
-  plugins: []
+  plugins: [require('tailwind-scrollbar-hide')]
 }
