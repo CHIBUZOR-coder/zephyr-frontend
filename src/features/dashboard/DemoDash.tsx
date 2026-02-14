@@ -3,17 +3,22 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { CustomWalletModal } from './CustomWalletModal'
 
 type TimeRange = 'ALL' | '24H' | '7D' | '30D'
 type SortDir = 'asc' | 'desc'
 
 const Dashboard: React.FC = () => {
+  const { wallets, select } = useWallet()
+  const [walletModal, setWalletModal] = useState(false)
+
   const navLinks = [
     { tittle: 'Dashboard', icon: '/images/dashh.svg' },
     { tittle: 'Live Trade', icon: '/images/livetrade.svg' },
@@ -306,13 +311,16 @@ const Dashboard: React.FC = () => {
         <div className='sticky top-0 w-full flex items-center justify-between bg-[#101B22] p-2 z-50 '>
           <input
             placeholder='Search traders, tokens, or addresses'
-            className='w-1/2 bg-[#102221] px-4 py-2 rounded-lg outline-none placeholder:text-xs'
+            className='w-1/2 lg:w-auto bg-[#102221] px-4 py-2 rounded-lg outline-none placeholder:text-xs'
           />
           <div className='flex items-center gap-3'>
             <p className='text-sm bg-[#0f1a18] px-3 py-1 rounded-lg border-[1px] border-[#0A3F46] inline-block'>
               15.42 SOL
             </p>
-            <button className='bg-teal-500 leading-[15.75px] px-[12px] py-1 rounded-lg text-[10px] font-[700] text-white'>
+            <button
+              className='bg-teal-500 leading-[15.75px] px-[12px] py-1 rounded-lg text-[10px] font-[700] text-white'
+              onClick={() => setWalletModal(true)}
+            >
               Wallet
             </button>
 
@@ -520,7 +528,7 @@ const Dashboard: React.FC = () => {
                 <h4 className='p-4 text-sm font-semibold mb-3'>Top X Trades</h4>
 
                 {firstCall.slice(0, 3).map((item, i) => (
-                  <div key={i}>
+                  <div className='cursor-pointer' onClick={() => toggleRow(i)} key={i}>
                     {/* MAIN ROW */}
                     <div className='flex justify-between border-[#23483B] border-t p-4'>
                       <div className='flex items-center gap-3'>
@@ -574,7 +582,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         {/* DROPDOWN */}
                         <div
-                          onClick={() => toggleRow(i)}
+                         
                           className={`h-5 w-5 bg-center bg-cover transition-transform duration-300 ${
                             openIndex === i ? 'rotate-180' : ''
                           }`}
@@ -897,7 +905,11 @@ const Dashboard: React.FC = () => {
           </div>
         </main>
       </div>
-
+      
+      <CustomWalletModal
+        open={walletModal}
+        onClose={() => setWalletModal(false)}
+      />
       <AnimatePresence>
         {showModal && (
           <>
@@ -1010,7 +1022,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   {filteredCalls.map((item, i) => (
-                    <div key={i} className=' overflow-x-auto'>
+                    <div  onClick={() => toggleRow(i)} key={i} className='cursor-pointer overflow-x-auto'>
                       {/* MAIN ROW */}
                       <div className='flex justify-between border-t border-[#23483B] p-4 min-w-[500px]    lg:min-w-[700px]  flex-nowrap'>
                         <div className='flex items-center gap-3 '>
@@ -1076,7 +1088,7 @@ const Dashboard: React.FC = () => {
                           </div>
                           {/* DROPDOWN */}
                           <button
-                            onClick={() => toggleRow(i)}
+                           
                             className={`h-5 w-5 bg-cover bg-center transition-transform ml-0 md:ml-8 ${
                               openIndex === i ? 'rotate-180' : ''
                             }`}
