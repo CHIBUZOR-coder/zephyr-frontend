@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+
 import { useEffect} from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useAuthLogin } from './features/auth/useAuthLogin'
@@ -6,6 +6,7 @@ import { useAuthStore } from './features/auth/auth.store'
 import { useWalletAuthSync } from './core/hooks/useWalletAuthSync'
 import { useRestoreAuth } from './core/hooks/useRestoreAuth'
 import ErrorBoundary from './shared/components/ErrorBoundary'
+import { Outlet } from 'react-router-dom'
 // import { useAuthSession } from './features/auth/useAuthSession'
 // import { useAuthSession } from './features/auth/useAuthSession'
 // import { useAuthSession } from './features/auth/useAuthSession'
@@ -15,7 +16,7 @@ function App () {
   useRestoreAuth()
   // useAuthSession()
 
-  const navigate = useNavigate()
+
   const { authenticated, hydrated } = useAuthStore()
   const { publicKey, connected, signMessage } = useWallet()
   const loginMutation = useAuthLogin()
@@ -43,11 +44,7 @@ function App () {
   }, [hydrated, connected, authenticated])
 
   // 🚀 redirect after successful login
-  useEffect(() => {
-    if (loginMutation.isSuccess) {
-      navigate('/dashboard', { replace: true })
-    }
-  }, [loginMutation.isSuccess, navigate])
+
 
 
   return (

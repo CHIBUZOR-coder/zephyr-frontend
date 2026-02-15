@@ -1,8 +1,8 @@
-
 import { Buffer } from 'buffer'
 window.Buffer = Buffer
 
-import { lazy, StrictMode } from 'react'
+import { lazy, StrictMode, Suspense } from 'react'
+
 import { createRoot } from 'react-dom/client'
 import './index.css'
 
@@ -15,12 +15,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { WalletProviders } from './features/wallet/WalletProviders.tsx'
 import AuthGuard from './features/auth/auth.guard.tsx'
-import Dashboard from './features/dashboard/DemoDash.tsx'
-
+import Loader from './shared/Loader.tsx'
 
 // import { SignInPage } from './features/auth/SignInPage.tsx'
-
-
 
 // Lazy-loaded pages
 // const HomePage = lazy(() => import('./features/home/HomePage.tsx'))
@@ -31,9 +28,7 @@ const VaultPage = lazy(() => import('./features/vault/VaultPage.tsx'))
 
 // const SignInPage= lazy(() => import('./features/auth/SignInPage.tsx'))
 // const SignInPage = lazy(()=> import('./features/auth/SignInPage.tsx'))
-const DashboardPage = lazy(
-  () => import('./features/dashboard/DashboardPage.tsx')
-)
+const Dashboard = lazy(() => import('./features/dashboard/Dash.tsx'))
 
 const router = createBrowserRouter([
   {
@@ -42,25 +37,26 @@ const router = createBrowserRouter([
     children: [
       // { index: true, element: <HomePage /> },
       { path: 'wallet', element: <WalletPage /> },
-       { path: 'vaults/create', element: <VaultPage /> },
-      { path: 'demo', element: <Dashboard /> },
+      { index: true, element: <Dashboard /> },
+      // { index: true, element: <Dashboard /> },
 
       // 🔐 PROTECTED ROUTES
       {
         element: <AuthGuard />,
-        children: [{ path: '/', element: <DashboardPage /> }]
+        children: [{ path: 'vaults/create', element: <VaultPage /> }]
       }
     ]
   }
 ])
 
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <WalletProviders>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <Suspense fallback={<Loader />}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </Suspense>
     </WalletProviders>
   </StrictMode>
 )
