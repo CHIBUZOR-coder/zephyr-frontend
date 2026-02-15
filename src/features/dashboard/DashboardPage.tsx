@@ -8,7 +8,7 @@ import SocialFeed from './dashboardComponents/SocialFeed/SocialFeed'
 import PortfolioOverview from './dashboardComponents/PortfolioOverview/PortfolioOverview'
 
 // Auth & Wallet
-import { useAuthReady, useAuthStore } from '../auth/auth.store'
+import {  useAuthStore } from '../auth/auth.store'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletMismatch } from '../../core/hooks/useWalletMismatch'
 
@@ -18,6 +18,7 @@ import RequireWallet from '../../shared/components/RequireWallet'
 
 // Types
 import type { UserProfile } from '../users/user.types'
+import { useAuthReady } from '../auth/useAuthReady'
 
 // const API_BASE = 'https://0e14cca7cfb4.ngrok-free.app'
 const API_BASE = 'https://zephyr-np09.onrender.com'
