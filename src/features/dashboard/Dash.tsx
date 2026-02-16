@@ -13,7 +13,7 @@ import { Navigation, Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { CustomWalletModal } from './CustomWalletModal'
 import { WalletMenu } from './WalletMenu'
-import {  useAuthStore } from '../auth/auth.store'
+import { useAuthStore } from '../auth/auth.store'
 import { useWalletMismatch } from '../../core/hooks/useWalletMismatch'
 import type { UserProfile } from '../users/user.types'
 import StateScreen from '../../shared/components/StateScreen'
@@ -748,9 +748,7 @@ const Dashboard: React.FC = () => {
           {/* Right panel */}
           <div className=' w-full lg:w-[40%] mt-10  lg:mt-0 rightt'>
             <div className='flex justify-between items-center'>
-              <p className='font-[700] text-[15px] text-white'>
-                First Caller – Top X Trades
-              </p>
+              <p className='font-[700] text-[15px] text-white'>First Caller</p>
               <p className='text-[6px] font-[900] uppercase text-[#B0E4DD4D] leading-[12px] tracking-[1.6px]'>
                 The Hall of On-Chain Alpha
               </p>
@@ -763,7 +761,10 @@ const Dashboard: React.FC = () => {
                 {firstCall.slice(0, 3).map((item, i) => (
                   <div className='' key={i}>
                     {/* MAIN ROW */}
-                    <div className='flex justify-between border-[#23483B] border-t p-4'>
+                    <div
+                      onClick={() => toggleRow(i)}
+                      className='main flex justify-between border-[#23483B] border-t p-4'
+                    >
                       <div className='flex items-center gap-3'>
                         <div
                           className='h-8 w-8 rounded-full bg-cover bg-center'
@@ -815,7 +816,10 @@ const Dashboard: React.FC = () => {
                         </div>
                         {/* DROPDOWN */}
                         <div
-                          onClick={() => toggleRow(i)}
+                          onClick={e => {
+                            e.stopPropagation()
+                            // your button logic here
+                          }}
                           className={`cursor-pointer h-5 w-5 bg-center bg-cover transition-transform duration-300 ${
                             openIndex === i ? 'rotate-180' : ''
                           }`}
@@ -1257,7 +1261,10 @@ const Dashboard: React.FC = () => {
                   {filteredCalls.map((item, i) => (
                     <div key={i} className=' overflow-x-auto'>
                       {/* MAIN ROW */}
-                      <div className='flex justify-between border-t border-[#23483B] p-4 min-w-[500px]    lg:min-w-[700px]  flex-nowrap'>
+                      <div
+                        onClick={() => toggleRow(i)}
+                        className='flex justify-between border-t border-[#23483B] p-4 min-w-[500px]    lg:min-w-[700px]  flex-nowrap'
+                      >
                         <div className='flex items-center gap-3 '>
                           <div
                             className=' h-8 w-8 rounded-full bg-cover bg-center'
@@ -1321,7 +1328,10 @@ const Dashboard: React.FC = () => {
                           </div>
                           {/* DROPDOWN */}
                           <button
-                            onClick={() => toggleRow(i)}
+                            onClick={e => {
+                              e.stopPropagation()
+                              // your button logic here
+                            }}
                             className={`h-5 w-5 bg-cover bg-center transition-transform ml-0 md:ml-8 ${
                               openIndex === i ? 'rotate-180' : ''
                             }`}
