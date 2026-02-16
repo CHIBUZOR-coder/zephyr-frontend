@@ -3,7 +3,7 @@ import Layout from '../../shared/Layout/Layout'
 
 // Components
 import Badges from './dashboardComponents/Badges/Badges'
-import Leaderboard from './dashboardComponents/Leaderboard/Leaderboard'
+
 import SocialFeed from './dashboardComponents/SocialFeed/SocialFeed'
 import PortfolioOverview from './dashboardComponents/PortfolioOverview/PortfolioOverview'
 
@@ -205,7 +205,7 @@ export default function DashboardPage () {
           {/* Feed */}
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
             <Badges />
-            <Leaderboard />
+    
             <SocialFeed />
           </div>
         </div>
