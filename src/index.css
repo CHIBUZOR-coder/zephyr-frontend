@@ -76,9 +76,28 @@
 
 
 
-/* @media (max-width:350px) {
-  .call{
-    left: 30%;
-  }
-  
-} */
+ /* WebKit Browsers */
+.side::-webkit-scrollbar {
+  width: 4px; /* thin scrollbar */
+}
+
+.side::-webkit-scrollbar-track {
+  background: #102221; /* match sidebar background */
+  border-radius: 10px;
+}
+
+.side::-webkit-scrollbar-thumb {
+  background-color: rgba(16, 185, 129, 0.2); /* bg-teal-500/20 */
+  border-radius: 10px;
+  border: 1px solid #102221; /* subtle border */
+}
+
+.side::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(16, 185, 129, 0.3); /* slightly stronger on hover */
+}
+
+/* Firefox */
+.side {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.2) #102221;
+}
