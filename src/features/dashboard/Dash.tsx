@@ -482,7 +482,7 @@ const Dashboard: React.FC = () => {
         <div className='sticky top-0 w-full flex items-center justify-between bg-[#101B22] p-2 z-50 '>
           <input
             placeholder='Search traders, tokens, or addresses'
-            className='w-1/2 lg:w-auto bg-[#102221] px-4 py-2 rounded-lg outline-none placeholder:text-xs'
+            className='w-1/2 lg:w-1/4 bg-[#102221] px-4 py-2 rounded-lg outline-none placeholder:text-xs'
           />
           <div className='flex items-center gap-3'>
             {connected && balance !== null && (
