@@ -4,7 +4,6 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { useEffect, useState } from 'react'
 
-
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 
 import 'swiper/css'
@@ -20,6 +19,7 @@ import type { UserProfile } from '../users/user.types'
 import StateScreen from '../../shared/components/StateScreen'
 import { useAuthReady } from '../auth/useAuthReady'
 import { useTradingModeStore } from './useTradingModeStore'
+import { useNavStore } from './useNavStore'
 
 type TimeRange = 'ALL' | '24H' | '7D' | '30D'
 type SortDir = 'asc' | 'desc'
@@ -37,7 +37,7 @@ const Dashboard: React.FC = () => {
   const API_BASE = 'https://zephyr-np09.onrender.com'
 
   const { masterMode, toggleMasterMode } = useTradingModeStore()
-
+  const { activeIndex, setActiveIndex } = useNavStore()
 
   useEffect(() => {
     if (!authReady) return
@@ -154,10 +154,8 @@ const Dashboard: React.FC = () => {
     { tittle: 'Dashboard', icon: '/images/dashh.svg' },
     { tittle: 'Live Trade', icon: '/images/livetrade.svg' },
     { tittle: 'Portfolio', icon: '/images/portfolio.svg' },
-    { tittle: 'Leaderboard', icon: '/images/leaderboard.svg' }
-  ]
-  const extra = [
-    { tittle: 'Support', icon: '/images/support.svg' },
+    { tittle: 'Leaderboard', icon: '/images/leaderboard.svg' },
+    { tittle: 'Support', icon: '/images/support.svg', mt: true },
     { tittle: 'Settings', icon: '/images/settings.svg' },
     { tittle: 'Docs', icon: '/images/docs.svg' }
   ]
@@ -410,7 +408,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className='min-h-screen bg-[#050A0A] text-gray-200 block md:flex '>
       {masterMode && (
-        <div className='call border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-8 z-50 left-[1.8rem] md:left-4  flex justify-center items-center py-2 px-3 gap-2'>
+        <div className='call border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-8 z-50 left-[1.8rem] md:left-[35%]  flex justify-center items-center py-2 px-3 gap-2'>
           <div
             className='
   bg-[#fe9a00]
@@ -430,6 +428,15 @@ const Dashboard: React.FC = () => {
           </p>
         </div>
       )}
+
+      <div className='px-3 py-2 rounded-md border bg-[#101B22] border-[#32674B] flex flex-col gap-2 fixed bottom-4 left-5 z-50 w-[130px] text-[9px] font-[400]'>
+        <div className='flex items-center gap-2'>
+          <span className='bg-[#a1ecbc] animate-pulse h-[6px] w-[6px] rounded-full'></span>
+          <p className='text-[#B0E4DD] '>Mainnet Beta</p>
+        </div>
+
+        <p className='text-[#FFFFFF99]'>TPS: 2, 451</p>
+      </div>
       {/* Sidebar */}
       <aside className='h-screen w-[14%] bg-[#102221] sticky top-0 left-0 hidden lg:block '>
         <div className=' side p-3 lg:flex flex-col gap-6 h-full w-full overflow-y-auto'>
@@ -448,30 +455,24 @@ const Dashboard: React.FC = () => {
               </p>
             </div>
           </div>
-          <nav className='flex flex-col gap-3 text-sm'>
-            <div>
-              {navLinks.map((item, i) => (
-                <button
-                  key={i}
-                  className='text-left p-2 rounded-lg hover:bg-teal-500/10 flex justify-start items-center gap-4'
-                >
-                  <img src={item.icon} alt={item.tittle} className='w-5 h-5' />
-                  <span>{item.tittle}</span>
-                </button>
-              ))}
-            </div>
-            <p className=' h-[0.5px] bg-[#23483b]'></p>
-            <div className='mt-5'>
-              {extra.map((item, i) => (
-                <button
-                  key={i}
-                  className='text-left p-2 rounded-lg hover:bg-teal-500/10 flex justify-start items-center gap-4'
-                >
-                  <img src={item.icon} alt={item.tittle} className='w-5 h-5' />
-                  <span>{item.tittle}</span>
-                </button>
-              ))}
-            </div>
+
+          <nav className='flex flex-col gap-3 text-sm relative justify-center items-center'>
+            <p className=' h-[0.5px] bg-[#23483b] absolute top-[56.5%] w-full'></p>
+
+            {navLinks.map((item, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`${
+                  item.mt ? 'mt-8' : ''
+                } text-left p-2 rounded-lg flex justify-start items-center gap-4 w-full
+            ${activeIndex === i ? 'bg-teal-500/20' : 'hover:bg-teal-500/10'}
+          `}
+              >
+                <img src={item.icon} alt={item.tittle} className='w-5 h-5' />
+                <span>{item.tittle}</span>
+              </button>
+            ))}
           </nav>
         </div>
       </aside>
