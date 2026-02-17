@@ -33,9 +33,11 @@ export default {
         verircom: 'rgba(34, 197, 94, 0.3)',
         veriris: 'rgba(59, 130, 246, 0.3)',
         modeboreder: 'rgba(0, 152, 131, 0.3)',
-        modeborder:'#574516',
-        socials:'rgba(0, 136, 204, 0.2)',
-        socialsb:'rgba(0, 136, 204, 0.8)',
+        modeborder: '#574516',
+        socials: 'rgba(0, 136, 204, 0.2)',
+        socialsb: 'rgba(0, 136, 204, 0.8)',
+        master: 'rgba(254, 154, 0, 0.1)',
+        masterb: 'rgba(254, 154, 0, 0.3)'
       }
     }
   },

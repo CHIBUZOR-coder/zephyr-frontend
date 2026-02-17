@@ -4,6 +4,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 import { useEffect, useState } from 'react'
 
+
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 
 import 'swiper/css'
@@ -18,6 +19,7 @@ import { useWalletMismatch } from '../../core/hooks/useWalletMismatch'
 import type { UserProfile } from '../users/user.types'
 import StateScreen from '../../shared/components/StateScreen'
 import { useAuthReady } from '../auth/useAuthReady'
+import { useTradingModeStore } from './useTradingModeStore'
 
 type TimeRange = 'ALL' | '24H' | '7D' | '30D'
 type SortDir = 'asc' | 'desc'
@@ -33,6 +35,9 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const API_BASE = 'https://zephyr-np09.onrender.com'
+
+  const { masterMode, toggleMasterMode } = useTradingModeStore()
+
 
   useEffect(() => {
     if (!authReady) return
@@ -404,25 +409,27 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className='min-h-screen bg-[#050A0A] text-gray-200 block md:flex '>
-      <div className='border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-8 z-50 left-4  flex justify-center items-center py-2 px-3 gap-2'>
-        <div
-          className='
+      {masterMode && (
+        <div className='border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-8 z-50 left-4  flex justify-center items-center py-2 px-3 gap-2'>
+          <div
+            className='
   bg-[#fe9a00]
   h-[29px] w-[29px]
   rounded-full
   flex justify-center items-center
   shadow-[0_0_12px_rgba(254,154,0,0.8)]
 '
-        >
-          <span
-            style={{ backgroundImage: `url('/images/mode2.svg')` }}
-            className='inline-block bg-center bg-cover h-[20px] w-[20px]'
-          ></span>
+          >
+            <span
+              style={{ backgroundImage: `url('/images/mode2.svg')` }}
+              className='inline-block bg-center bg-cover h-[20px] w-[20px]'
+            ></span>
+          </div>
+          <p className='text-[12px] font-[900] "tracking-[1.636px] uppercase'>
+            Call Trade
+          </p>
         </div>
-        <p className='text-[12px] font-[900] "tracking-[1.636px] uppercase'>
-          Call Trade
-        </p>
-      </div>
+      )}
       {/* Sidebar */}
       <aside className='h-screen w-[14%] bg-[#102221] sticky top-0 left-0 hidden lg:block '>
         <div className=' side p-3 lg:flex flex-col gap-6 h-full w-full overflow-y-auto'>
@@ -489,17 +496,32 @@ const Dashboard: React.FC = () => {
               </p>
             )}
 
-            <div className='rounded-md border border-modeboreder shadow-[#00A991] shadow-2xl p-2 flex justify-between items-center gap-2'>
-              <p className='h-[5px] w-[5px] rounded-full bg-[#00A991] animate-pulse'></p>
-              <p className='text-[9px] font-[900] leading-[9.875px] tracking-[0.988px]'>
-                COPIER Mode
-              </p>
-            </div>
+            {masterMode ? (
+              <div
+                onClick={toggleMasterMode}
+                className='rounded-md border-[1.5px] bg-master border-masterb shadow-[0_0_25px_0px_rgba(245,158,11,0.2)] p-2 flex justify-between items-center gap-2 cursor-pointer '
+              >
+                <p className='h-[5px] w-[5px] rounded-full bg-[#00A991] animate-pulse'></p>
+                <p className='text-[9px] font-[900] leading-[9.875px] tracking-[0.988px]'>
+                  Master Mode
+                </p>
+              </div>
+            ) : (
+              <div
+                onClick={toggleMasterMode}
+                className='rounded-md border-[1.5px] border-modeboreder shadow-[0_0_25px_0px_rgba(0,169,145,0.3)] p-2 flex justify-between items-center gap-2 cursor-pointer '
+              >
+                <p className='h-[5px] w-[5px] rounded-full bg-[#00A991] animate-pulse'></p>
+                <p className='text-[9px] font-[900] leading-[9.875px] tracking-[0.988px]'>
+                  COPIER Mode
+                </p>
+              </div>
+            )}
             {!connected ? (
               // NOT CONNECTED
               <button
                 onClick={() => setWalletModal(true)}
-                className='bg-teal-500 px-3 py-1 rounded-lg text-[10px] font-[700] text-white hover:bg-teal-600 transition'
+                className='bg-teal-500  shadow-[0_0_25px_0px_rgba(20,184,166,0.3)]  px-3 py-1 rounded-lg text-[10px] font-[700] text-white hover:bg-teal-600 transition'
               >
                 Connect Wallet
               </button>
@@ -749,7 +771,7 @@ const Dashboard: React.FC = () => {
           <div className=' w-full lg:w-[40%] mt-10  lg:mt-0 rightt'>
             <div className='flex justify-between items-center'>
               <p className='font-[700] text-[15px] text-white'>First Caller</p>
-              <p className='text-[6px] font-[900] uppercase text-[#B0E4DD4D] leading-[12px] tracking-[1.6px]'>
+              <p className='text-[6px] font-[900] uppercase text-white leading-[12px] tracking-[1.6px]'>
                 The Hall of On-Chain Alpha
               </p>
             </div>
@@ -763,7 +785,7 @@ const Dashboard: React.FC = () => {
                     {/* MAIN ROW */}
                     <div
                       onClick={() => toggleRow(i)}
-                      className='main flex justify-between border-[#23483B] border-t p-4'
+                      className='main flex justify-between border-[#23483B] border-t p-4 cursor-pointer'
                     >
                       <div className='flex items-center gap-3'>
                         <div
@@ -1263,7 +1285,7 @@ const Dashboard: React.FC = () => {
                       {/* MAIN ROW */}
                       <div
                         onClick={() => toggleRow(i)}
-                        className='flex justify-between border-t border-[#23483B] p-4 min-w-[500px]    lg:min-w-[700px]  flex-nowrap'
+                        className='flex justify-between border-t border-[#23483B] p-4 min-w-[500px]    lg:min-w-[700px]  flex-nowrap cursor-pointer'
                       >
                         <div className='flex items-center gap-3 '>
                           <div
