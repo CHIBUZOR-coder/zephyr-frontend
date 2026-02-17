@@ -410,7 +410,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className='min-h-screen bg-[#050A0A] text-gray-200 block md:flex '>
       {masterMode && (
-        <div className='call border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-8 z-50 left-6 md:left-4  flex justify-center items-center py-2 px-3 gap-2'>
+        <div className='call border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-8 z-50 left-[1.8rem]md:left-4  flex justify-center items-center py-2 px-3 gap-2'>
           <div
             className='
   bg-[#fe9a00]
