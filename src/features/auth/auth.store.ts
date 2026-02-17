@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AuthUser } from "./auth.types";
-import { useEffect } from "react";
 
 type AuthState = {
   authenticated: boolean;
@@ -43,6 +42,12 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage",
+      // ✅ Only persist user, NOT the token
+      partialize: (state) => ({
+        user: state.user,
+        authenticated: state.authenticated,
+        // accessToken intentionally excluded
+      }),
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.hydrated = true;
@@ -51,24 +56,3 @@ export const useAuthStore = create<AuthState>()(
     },
   ),
 );
-
-// helpers
-
-
-
-export function useRestoreAuth() {
-  const { accessToken, authResolved } = useAuthStore();
-
-  useEffect(() => {
-    if (authResolved) return;
-
-    if (!accessToken) {
-      // ❗ VERY IMPORTANT
-      useAuthStore.setState({ authResolved: true });
-      return;
-    }
-
-    // if token exists, backend will validate via /auth/me
-    useAuthStore.setState({ authResolved: true });
-  }, [accessToken, authResolved]);
-}
