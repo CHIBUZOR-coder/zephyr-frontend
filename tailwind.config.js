@@ -36,8 +36,8 @@ export default {
         modeborder: '#574516',
         socials: 'rgba(0, 136, 204, 0.2)',
         socialsb: 'rgba(0, 136, 204, 0.8)',
-        master: 'rgba(254, 154, 0, 0.2)',
-        masterb: 'rgba(254, 154, 0, 0.4)'
+        master: 'rgba(254, 154, 0, 0.1)',
+        masterb: 'rgba(254, 154, 0, 0.8)'
       }
     }
   },

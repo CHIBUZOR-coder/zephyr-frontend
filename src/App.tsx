@@ -7,6 +7,7 @@ import { useRestoreAuth } from './core/hooks/useRestoreAuth'
 import ErrorBoundary from './shared/components/ErrorBoundary'
 import { Outlet } from 'react-router-dom'
 import { useWalletPersistSync } from './features/wallet/useWalletPersistSync'
+import { useAuthSession } from './features/auth/useAuthSession'
 // import { useAuthSession } from './features/auth/useAuthSession'
 // import { useAuthSession } from './features/auth/useAuthSession'
 // import { useAuthSession } from './features/auth/useAuthSession'
@@ -14,7 +15,7 @@ import { useWalletPersistSync } from './features/wallet/useWalletPersistSync'
 function App () {
   useWalletAuthSync()
   useRestoreAuth()
-  // useAuthSession()
+  useAuthSession()
   useWalletPersistSync()
 
   const { authenticated, hydrated } = useAuthStore()
