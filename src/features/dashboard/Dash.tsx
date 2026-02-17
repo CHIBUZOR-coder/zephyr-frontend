@@ -408,7 +408,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className='min-h-screen bg-[#050A0A] text-gray-200 block md:flex '>
       {masterMode && (
-        <div className='call border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-8 z-50 left-[1.8rem] md:left-[35%]  flex justify-center items-center py-2 px-3 gap-2'>
+        <div className='call border-b-[4px] border-t-[1.5px] border-l-[1.5px] border-r-[1.5px] shadow-2xl shadow-[#574516] border-[#574516] rounded-3xl fixed bottom-[5.5rem] z-50 left-[1.8rem] lg:left-4  flex justify-center items-center py-2 px-3 gap-2'>
           <div
             className='
   bg-[#fe9a00]
@@ -429,7 +429,7 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      <div className='px-3 py-2 rounded-md border bg-[#101B22] border-[#32674B] flex flex-col gap-2 fixed bottom-4 left-5 z-50 w-[130px] text-[9px] font-[400]'>
+      <div className='px-3 py-2 rounded-lg border bg-[#101B22] border-[#32674B] flex flex-col gap-2 fixed bottom-4 left-5 z-50 w-[130px] text-[9px] font-[400]'>
         <div className='flex items-center gap-2'>
           <span className='bg-[#a1ecbc] animate-pulse h-[6px] w-[6px] rounded-full'></span>
           <p className='text-[#B0E4DD] '>Mainnet Beta</p>
@@ -439,7 +439,7 @@ const Dashboard: React.FC = () => {
       </div>
       {/* Sidebar */}
       <aside className='h-screen w-[14%] bg-[#102221] sticky top-0 left-0 hidden lg:block '>
-        <div className=' side p-3 lg:flex flex-col gap-6 h-full w-full overflow-y-auto'>
+        <div className='h-[70%] side p-3 lg:flex flex-col gap-6  w-full overflow-y-auto '>
           <div className='flex items-center gap-4'>
             <span
               className='inline-block bg-center bg-cover w-[40px] h-[40px]'
