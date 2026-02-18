@@ -35,6 +35,7 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const API_BASE = 'https://zephyr-np09.onrender.com'
+  // const API_BASE = 'https://e621-102-90-98-17.ngrok-free.app'
 
   const { masterMode, toggleMasterMode } = useTradingModeStore()
   const { activeIndex, setActiveIndex } = useNavStore()
