@@ -27,7 +27,7 @@ export function useAuthRefresh() {
       credentials: "include", // ← sends httpOnly cookie
       headers: {
         "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "true",
+        // "ngrok-skip-browser-warning": "true",
       },
     })
       .then((res) => {
