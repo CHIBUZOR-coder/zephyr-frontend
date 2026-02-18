@@ -61,6 +61,7 @@ export async function authFetch<T>(
   console.log("tok:", accessToken);
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       "ngrok-skip-browser-warning": "true",
