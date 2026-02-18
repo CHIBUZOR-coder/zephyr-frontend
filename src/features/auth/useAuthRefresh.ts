@@ -24,11 +24,11 @@ export function useAuthRefresh() {
 
     fetch(`${API_BASE}/api/auth/refresh`, {
       method: "POST",
-      credentials: "include", // ← sends httpOnly cookie
       headers: {
         "Content-Type": "application/json",
         "ngrok-skip-browser-warning": "true",
       },
+      credentials: "include", // ← sends httpOnly cookie
     })
       .then((res) => {
         if (!res.ok) {
