@@ -214,7 +214,7 @@ const DashboardView = () => {
 
   return (
     <div className=' w-full flex flex-col lg:flex-row  justify-center p-5 gap-5  '>
-      <div className=' w-[60%] '>
+      <div className=' w-full  lg:w-[60%] '>
         {/* Market overview */}
         <section className='w-full'>
           <div className='flex justify-between items-center'>
