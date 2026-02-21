@@ -27,7 +27,7 @@ export default function NavContent () {
   const { activeIndex } = useNavStore()
 
   return (
-    <div className=' w-full lg:w-[60%] flex flex-col  cent'>
+    <div className=' w-full  flex flex-col  cent'>
       {NAV_VIEWS[activeIndex] ?? <Dashboard />}
     </div>
   )
