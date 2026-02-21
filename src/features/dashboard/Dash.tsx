@@ -288,34 +288,43 @@ const Dashboard: React.FC = () => {
               </p>
             )}
 
-            {masterMode ? (
-              <div
-                onClick={toggleMasterMode}
-                className='rounded-md border-[1.5px] bg-master border-masterb shadow-[0_0_25px_0px_rgba(245,158,11,0.2)] p-2 flex justify-between items-center gap-2 cursor-pointer '
-              >
-                <p className='h-[5px] w-[5px] rounded-full bg-[#00A991] animate-pulse'></p>
-                <p className='text-[9px] font-[900] leading-[9.875px] tracking-[0.988px]'>
-                  Master Mode
-                </p>
-              </div>
-            ) : (
-              <div
-                onClick={toggleMasterMode}
-                className='rounded-md border-[1.5px] border-modeboreder shadow-[0_0_25px_0px_rgba(0,169,145,0.3)] p-2 flex justify-between items-center gap-2 cursor-pointer '
-              >
-                <p className='h-[5px] w-[5px] rounded-full bg-[#00A991] animate-pulse'></p>
-                <p className='text-[9px] font-[900] leading-[9.875px] tracking-[0.988px]'>
-                  COPIER Mode
-                </p>
-              </div>
+            {connected && (
+              <>
+                {masterMode ? (
+                  <div
+                    onClick={toggleMasterMode}
+                    className='rounded-md border-[1.5px] bg-master border-masterb shadow-[0_0_25px_0px_rgba(245,158,11,0.2)] p-2 flex justify-between items-center gap-2 cursor-pointer '
+                  >
+                    <p className='h-[5px] w-[5px] rounded-full bg-[#00A991] animate-pulse'></p>
+                    <p className='text-[9px] font-[900] leading-[9.875px] tracking-[0.988px]'>
+                      Master Mode
+                    </p>
+                  </div>
+                ) : (
+                  <div
+                    onClick={toggleMasterMode}
+                    className='rounded-md border-[1.5px] border-modeboreder shadow-[0_0_25px_0px_rgba(0,169,145,0.3)] p-2 flex justify-between items-center gap-2 cursor-pointer '
+                  >
+                    <p className='h-[5px] w-[5px] rounded-full bg-[#00A991] animate-pulse'></p>
+                    <p className='text-[9px] font-[900] leading-[9.875px] tracking-[0.988px]'>
+                      COPIER Mode
+                    </p>
+                  </div>
+                )}
+              </>
             )}
+
             {!connected ? (
               // NOT CONNECTED
               <button
                 onClick={() => setWalletModal(true)}
-                className='bg-teal-500  shadow-[0_0_25px_0px_rgba(20,184,166,0.3)]  px-3 py-1 rounded-lg text-[10px] font-[700] text-white hover:bg-teal-600 transition'
+                className='bg-teal-500  shadow-[0_0_25px_0px_rgba(20,184,166,0.3)]  px-3 py-1 rounded-lg text-[10px] font-[700] text-white hover:bg-teal-600 transition flex justify-between gap-2'
               >
-                Connect Wallet
+                <span> Connect Wallet</span>
+                <span
+                  className='h-[12px] w-[12px]'
+                  style={{ backgroundImage: `url("/images/connect.svg")` }}
+                ></span>
               </button>
             ) : (
               // CONNECTED
@@ -370,22 +379,31 @@ const Dashboard: React.FC = () => {
               </div>
             )}
 
-            <span
-              style={{
-                backgroundImage: `url("/images/bell.svg")`
-              }}
-              className='inline-block relative bg-center bg-cover w-[20px] h-[20px]'
-            >
-              <span className='absolute right-[1.3px] top-1 bg-[#FB2C36] h-[6px] w-[6px] rounded-full'></span>
-            </span>
-            <div className='h-[36px] w-[36px] rounded-full p-[1px]  border-[1.5px] border-[#f5e2d9] flex justify-center items-center'>
-              <span
-                style={{
-                  backgroundImage: `url("/images/mode.png")`
-                }}
-                className='inline-block bg-center bg-cover h-[30px] w-[30px] rounded-full '
-              ></span>
-            </div>
+            {connected && (
+              <>
+                <div className='h-[36px] w-[36px] rounded-full p-[1px]  border-[1.5px] border-[#f5e2d9] flex justify-center items-center'>
+                  <span
+                    style={{
+                      backgroundImage: `url("/images/mode.png")`
+                    }}
+                    className='inline-block bg-center bg-cover h-[30px] w-[30px] rounded-full '
+                  ></span>
+                </div>
+              </>
+            )}
+
+            {connected && (
+              <>
+                <span
+                  style={{
+                    backgroundImage: `url("/images/bell.svg")`
+                  }}
+                  className='inline-block relative bg-center bg-cover w-[20px] h-[20px]'
+                >
+                  <span className='absolute right-[1.3px] top-1 bg-[#FB2C36] h-[6px] w-[6px] rounded-full'></span>
+                </span>
+              </>
+            )}
           </div>
         </div>
 
