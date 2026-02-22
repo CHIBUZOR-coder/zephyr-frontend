@@ -507,7 +507,7 @@ const LiveTrade: React.FC = () => {
               backgroundImage: `url("/images/blackshild.svg")`
             }}
           ></span>
-          <p className='text-[#B0E4DD4D] text-[10px] text-center font-[700] leading-[15px] uppercase tracking-[2px]'>
+          <p className='text-[#B0E4DD4D] text-[8px] lg:text-[10px] text-center font-[700] leading-[15px] uppercase tracking-[2px]'>
             Verified Real-time Stream • Institutional Transparency •
             Non-Custodial Execution
           </p>
