@@ -1,4 +1,10 @@
 import React, { useState } from 'react'
+type Stat = {
+  label: string
+  value: string
+  sub: string
+  green?: boolean
+}
 
 type Trader = {
   name: string
@@ -9,9 +15,95 @@ type Trader = {
   action: 'BUY' | 'SELL'
   time: string
 }
+type Position = {
+  pair: string
+  type: 'BUY' | 'SELL'
+  mirror: string
+  entry: string
+  current: string
+  allocation: string
+  pnl: string
+  pnlPercent: string
+  drawdown: string
+  tp: string
+  sl: string
+
+  // ✅ NEW (added)
+  opened: string
+  protectionActive: boolean
+}
+
+const positions: Position[] = [
+  {
+    pair: 'SOL / USDC',
+    type: 'BUY',
+    mirror: '@sol_whale',
+    entry: '$142.20',
+    current: '$148.50',
+    allocation: '2.50 SOL',
+    pnl: '+$15.75',
+    pnlPercent: '+4.4%',
+    drawdown: '0.0%',
+    tp: '160.00',
+    sl: '135.00',
+    opened: 'Opened 14m ago',
+    protectionActive: true
+  },
+  {
+    pair: 'JUP / USDC',
+    type: 'BUY',
+    mirror: '@alpha_seeker',
+    entry: '$1.12',
+    current: '$1.09',
+    allocation: '500.00 JUP',
+    pnl: '-$15.00',
+    pnlPercent: '-2.6%',
+    drawdown: '3.2%',
+    tp: '1.45',
+    sl: '1.05',
+    opened: 'Opened 14m ago',
+    protectionActive: true
+  }
+]
+
+// const totalAllocation = positions.length
+
+// const totalPNL = positions.reduce((acc, pos) => {
+//   const number = parseFloat(pos.pnl.replace('$', ''))
+//   return acc + number
+// }, 0)
+
+// const totalDrawdown = Math.max(
+//   ...positions.map(pos => parseFloat(pos.drawdown))
+// )
+const stats: Stat[] = [
+  {
+    label: 'ACTIVE ALLOCATION',
+    value: '4.25 SOL',
+    sub: '~$612.50 USD'
+  },
+  {
+    label: 'UNREALIZED PNL',
+    value: '+$32.40',
+    sub: '+1.2% Total',
+    green: true
+  },
+  {
+    label: 'MAX DRAWDOWN',
+    value: '3.2%',
+    sub: 'Current Session'
+  },
+  {
+    label: 'ACTIVE POSITIONS',
+    value: '2',
+    sub: '0 Pending Exits'
+  }
+]
 
 const LiveTrade: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'positions'>('all')
+  const [allTrades, setAllTrades] = useState<'allTrades' | 'positions'>(
+    'allTrades'
+  )
 
   const liveTraders: Trader[] = [
     {
@@ -102,10 +194,10 @@ const LiveTrade: React.FC = () => {
   }
 
   // 🔥 Filter based on active tab
-  const filteredTrades =
-    activeTab === 'all'
-      ? liveTraders
-      : liveTraders.filter(trader => trader.name === '@sol_whale') // simulate "my positions"
+  // const filteredTrades =
+  //   activeTab === 'all'
+  //     ? liveTraders
+  //     : liveTraders.filter(trader => trader.name === '@sol_whale') // simulate "my positions"
 
   return (
     <div className='min-h-screen text-white  '>
@@ -121,9 +213,9 @@ const LiveTrade: React.FC = () => {
         {/* 🔥 Toggle Switch */}
         <div className='flex bg-[#0B2025] p-1 rounded-xl border border-teal-900/40'>
           <button
-            onClick={() => setActiveTab('all')}
+            onClick={() => setAllTrades('allTrades')}
             className={`flex justify-between items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
-              activeTab === 'all'
+              allTrades === 'allTrades'
                 ? 'bg-teal-500 text-white shadow-[0_0_20px_rgba(20,184,166,0.4)]'
                 : 'text-gray-400 hover:text-white'
             }`}
@@ -136,9 +228,9 @@ const LiveTrade: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setActiveTab('positions')}
+            onClick={() => setAllTrades('positions')}
             className={`flex justify-between items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
-              activeTab === 'positions'
+              allTrades === 'positions'
                 ? 'bg-teal-500 text-white shadow-[0_0_20px_rgba(20,184,166,0.4)]'
                 : 'text-gray-400 hover:text-white'
             }`}
@@ -152,117 +244,261 @@ const LiveTrade: React.FC = () => {
         </div>
       </div>
 
-      <div className='w-full px-4 md:px-8 '>
-        {/* Scroll Wrapper */}
-        <div className='overflow-x-auto'>
-          <div className='min-w-[900px]'>
-            {/* Table Head */}
-            <div className='grid grid-cols-4 text-xs text-[#B0E4DD4D] font-[900] px-4 mb-3'>
-              <span>TRADER</span>
-              <span>TRADE DETAILS</span>
-              <span>EXECUTION</span>
-              <span className='text-right'>VERIFICATION</span>
-            </div>
+      {allTrades === 'allTrades' && (
+        <div className='w-full px-4 md:px-8 '>
+          {/* Scroll Wrapper */}
+          <div className='overflow-x-auto'>
+            <div className='min-w-[900px]'>
+              {/* Table Head */}
+              <div className='grid grid-cols-4 text-xs text-[#B0E4DD4D] font-[900] px-4 mb-3'>
+                <span>TRADER</span>
+                <span>TRADE DETAILS</span>
+                <span>EXECUTION</span>
+                <span className='text-right'>VERIFICATION</span>
+              </div>
 
-            {/* Trades */}
-            <div className='space-y-4'>
-              {filteredTrades.map((trader, index) => (
-                <div
-                  key={index}
-                  className='grid grid-cols-4 items-center px-4 py-4 rounded-xl 
+              {/* Trades */}
+              <div className='space-y-4'>
+                {liveTraders.map((trader, index) => (
+                  <div
+                    key={index}
+                    className='grid grid-cols-4 items-center px-4 py-4 rounded-xl 
             bg-[#102221] border border-teal-900/40 
             hover:border-teal-500/40 transition'
-                >
-                  {/* Trader */}
-                  <div className='flex items-center gap-2'>
-                    <div className='rounded-lg bg-[#00000066] py-2 px-3'>
-                      
-                      <span
-                        className='bg-center bg-cover h-[20px] w-[20px] inline-block'
-                        style={{
-                          backgroundImage: `url("/images/liveperson.svg")`
-                        }}
-                      ></span>
-                    </div>
-
-                    <div>
-                      <p className='font-semibold text-sm md:text-base'>
-                        {trader.name}
-                      </p>
-                      <span
-                        className={`text-[10px] px-2 py-1 rounded-full ${badgeColor(
-                          trader.tyter
-                        )}`}
-                      >
-                        {trader.tyter}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Trade Details */}
-                  <div>
+                  >
+                    {/* Trader */}
                     <div className='flex items-center gap-2'>
-                      <span className='font-semibold text-sm'>
-                        {trader.trade}
-                      </span>
-                      <span
-                        className={`text-[10px] px-2 py-1 rounded ${
-                          trader.action === 'BUY'
-                            ? 'bg-green-600/20 text-green-400'
-                            : 'bg-red-600/20 text-red-400'
-                        }`}
-                      >
-                        {trader.action}
-                      </span>
+                      <div className='rounded-lg bg-[#00000066] py-2 px-3'>
+                        <span
+                          className='bg-center bg-cover h-[20px] w-[20px] inline-block'
+                          style={{
+                            backgroundImage: `url("/images/liveperson.svg")`
+                          }}
+                        ></span>
+                      </div>
+
+                      <div>
+                        <p className='font-semibold text-sm md:text-base'>
+                          {trader.name}
+                        </p>
+                        <span
+                          className={`text-[10px] px-2 py-1 rounded-full ${badgeColor(
+                            trader.tyter
+                          )}`}
+                        >
+                          {trader.tyter}
+                        </span>
+                      </div>
                     </div>
-                    <p className='text-sm text-gray-400'>{trader.amout}</p>
+
+                    {/* Trade Details */}
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <span className='font-semibold text-sm'>
+                          {trader.trade}
+                        </span>
+                        <span
+                          className={`text-[10px] px-2 py-1 rounded ${
+                            trader.action === 'BUY'
+                              ? 'bg-green-600/20 text-green-400'
+                              : 'bg-red-600/20 text-red-400'
+                          }`}
+                        >
+                          {trader.action}
+                        </span>
+                      </div>
+                      <p className='text-sm text-gray-400'>{trader.amout}</p>
+                    </div>
+
+                    {/* Execution */}
+                    <div>
+                      <div className='text-green-400 font-semibold text-sm flex items-center gap-2'>
+                        <span
+                          className='bg-center bg-cover h-[16px] w-[16px]'
+                          style={{
+                            backgroundImage: `url("/images/greencheck.svg")`
+                          }}
+                        ></span>
+                        <span>EXECUTED</span>
+                      </div>
+
+                      <div className='text-xs text-gray-400 flex items-center gap-2'>
+                        <span
+                          className='bg-center bg-cover h-[12px] w-[12px]'
+                          style={{
+                            backgroundImage: `url("/images/time.svg")`
+                          }}
+                        ></span>
+                        <span>{trader.time}</span>
+                      </div>
+                    </div>
+
+                    {/* Wallet */}
+                    <div className='flex justify-end'>
+                      <div
+                        className='flex items-center gap-3 px-3 py-1 
+              bg-[#00000066] rounded-lg text-xs text-gray-300 
+              border border-teal-800 whitespace-nowrap'
+                      >
+                        <p>{trader.wallet}</p>
+                        <span
+                          className='bg-center bg-cover h-[12px] w-[12px] cursor-pointer'
+                          style={{
+                            backgroundImage: `url("/images/redirectlive.svg")`
+                          }}
+                        ></span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {allTrades === 'positions' && (
+        <div className='px-4 md:px-8 space-y-6'>
+          {/* Top Stats */}
+
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className='bg-[#102221] border border-teal-900/40 rounded-xl p-4 flex flex-col  gap-3'
+              >
+                <div className=' text-[#B0E4DD66] font-semibold flex gap-2'>
+                  <span
+                    className='bg-center bg-cover h-[16px] w-[16px] '
+                    style={{
+                      backgroundImage: `url("/images/trend.svg")`
+                    }}
+                  ></span>
+                  <p className='text-[10px] lg:text-xs'>{stat.label}</p>
+                </div>
+
+                <h3
+                  className={`text-lg font-bold ${
+                    stat.green ? 'text-green-400' : 'text-white'
+                  }`}
+                >
+                  {stat.value}
+                </h3>
+
+                <p className='text-xs text-[#B0E4DD80]'>{stat.sub}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Position Cards */}
+          <div className='space-y-6'>
+            {positions.map((pos, index) => (
+              <div
+                key={index}
+                className=' bg-[#102221]
+          border border-teal-900/40 rounded-2xl p-6 space-y-6'
+              >
+                {/* Header */}
+                <div className='flex flex-col md:flex-row md:justify-between gap-4'>
+                  <div className='flex gap-3 bg-'>
+                    <span className='bg-center bg-cover inline-block h-[56px] w-[56px] rounded-lg bg-[#0a1414]'></span>
+                    <div className=''>
+                      <div className='flex items-center gap-2'>
+                        <h3 className='font-bold text-lg'>{pos.pair} </h3>
+                        <span className='text-[10px] px-2 py-1 rounded bg-green-600/20 text-green-400'>
+                          {pos.type}
+                        </span>
+                      </div>
+                      <p className='text-sm text-[#B0E4DD66]'>
+                        Mirroring
+                        <span className='text-teal-400'>{pos.mirror}</span>
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Execution */}
-                  <div>
-                    <div className='text-green-400 font-semibold text-sm flex items-center gap-2'>
-                      <span
-                        className='bg-center bg-cover h-[16px] w-[16px]'
-                        style={{
-                          backgroundImage: `url("/images/greencheck.svg")`
-                        }}
-                      ></span>
-                      <span>EXECUTED</span>
+                  <div className='flex gap-10 text-sm'>
+                    <div>
+                      <p className='text-[#B0E4DD66] text-xs'>ENTRY PRICE</p>
+                      <p className='font-semibold'>{pos.entry}</p>
                     </div>
+                    <div>
+                      <p className='text-[#B0E4DD66] text-xs'>CURRENT PRICE</p>
+                      <p className='font-semibold'>{pos.current}</p>
+                    </div>
+                  </div>
+                </div>
 
-                    <div className='text-xs text-gray-400 flex items-center gap-2'>
+                <p className=' h-[0.5px] bg-[#23483b] w-full'></p>
+                {/* Stats Row */}
+                <div className='grid md:grid-cols-4 gap-4'>
+                  <div className='row p-4 rounded-xl'>
+                    <p className='text-xs text-[#B0E4DD66]'>ALLOCATION</p>
+                    <p className='font-semibold'>{pos.allocation}</p>
+                  </div>
+
+                  <div className='row p-4 rounded-xl'>
+                    <p className='text-xs text-[#B0E4DD66]'>UNREALIZED PNL</p>
+                    <p
+                      className={`font-semibold ${
+                        pos.pnl.startsWith('+')
+                          ? 'text-green-400'
+                          : 'text-red-400'
+                      }`}
+                    >
+                      {pos.pnl}
+                    </p>
+                    <p className='text-xs text-[#B0E4DD4D]'>{pos.pnlPercent}</p>
+                  </div>
+
+                  <div className=' row p-4 rounded-xl'>
+                    <p className='text-xs text-[#B0E4DD66]'>DRAWDOWN</p>
+                    <p className='font-semibold'>{pos.drawdown}</p>
+                  </div>
+
+                  <div className='row p-4 rounded-xl'>
+                    <p className='text-xs text-[#B0E4DD66]'>SAFETY NET</p>
+                    <p className='font-semibold'>TP: {pos.tp}</p>
+                    <p className='text-xs text-[#B0E4DD4D]'>SL: {pos.sl}</p>
+                  </div>
+                </div>
+                {/* Footer */}
+                <div className='flex flex-col md:flex-row justify-between items-center gap-6 lg:gap-0'>
+                  <div className='flex gap-6 items-center'>
+                    <div className='flex gap-2 items-center'>
                       <span
-                        className='bg-center bg-cover h-[12px] w-[12px]'
+                        className='bg-center bg-cover h-[16px] w-[16px] inline-block '
                         style={{
                           backgroundImage: `url("/images/time.svg")`
                         }}
                       ></span>
-                      <span>{trader.time}</span>
+                      <p className='text-[8px] lg:text-[11px] font-[700] leading-[16.5px] tracking-[1.1px] uppercase text-[#B0E4DD33]'>
+                        {pos.opened}
+                      </p>
                     </div>
-                  </div>
-
-                  {/* Wallet */}
-                  <div className='flex justify-end'>
-                    <div
-                      className='flex items-center gap-3 px-3 py-1 
-              bg-[#00000066] rounded-lg text-xs text-gray-300 
-              border border-teal-800 whitespace-nowrap'
-                    >
-                      <p>{trader.wallet}</p>
+                    <div className='flex gap-2 items-center'>
                       <span
-                        className='bg-center bg-cover h-[12px] w-[12px] cursor-pointer'
+                        className='bg-center bg-cover h-[16px] w-[16px] inline-block '
                         style={{
-                          backgroundImage: `url("/images/redirectlive.svg")`
+                          backgroundImage: `url("/images/cheksheild.svg")`
                         }}
                       ></span>
+                      <p className='text-[11px] font-[700] leading-[16.5px] tracking-[1.1px] uppercase text-[#B0E4DD33]'>
+                        {pos.protectionActive
+                          ? 'PROTECTION ACTIVE'
+                          : 'NO PROTECTION'}
+                      </p>
                     </div>
                   </div>
+                  <button className='w-full lg:w-auto px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition'>
+                    SELL ↗
+                  </button>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      )}
+
       <div className='px-8 py-4'>
         <div className='flex justify-center items-center gap-4 '>
           <span

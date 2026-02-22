@@ -71,12 +71,10 @@
 }
 
 .side {
-  border-right: 1px solid #23483B;
+  border-right: 1px solid #23483b;
 }
 
-
-
- /* WebKit Browsers */
+/* WebKit Browsers */
 .side::-webkit-scrollbar {
   width: 4px; /* thin scrollbar */
 }
@@ -100,4 +98,8 @@
 .side {
   scrollbar-width: thin;
   scrollbar-color: rgba(16, 185, 129, 0.2) #102221;
+}
+
+.row {
+  @apply bg-[#00000033];
 }
