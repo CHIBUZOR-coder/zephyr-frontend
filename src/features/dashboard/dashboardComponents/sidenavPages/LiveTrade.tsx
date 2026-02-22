@@ -250,7 +250,7 @@ const LiveTrade: React.FC = () => {
                     >
                       <p>{trader.wallet}</p>
                       <span
-                        className='bg-center bg-cover h-[12px] w-[12px]'
+                        className='bg-center bg-cover h-[12px] w-[12px] cursor-pointer'
                         style={{
                           backgroundImage: `url("/images/redirectlive.svg")`
                         }}
