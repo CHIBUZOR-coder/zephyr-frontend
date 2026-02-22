@@ -108,7 +108,7 @@ const LiveTrade: React.FC = () => {
       : liveTraders.filter(trader => trader.name === '@sol_whale') // simulate "my positions"
 
   return (
-    <div className='min-h-screen text-white '>
+    <div className='min-h-screen text-white  '>
       {/* Header */}
       <div className='flex justify-between items-center mb-8 bg-[#091114] p-8 flex-col lg:flex-row gap-5'>
         <div>
@@ -151,8 +151,8 @@ const LiveTrade: React.FC = () => {
           </button>
         </div>
       </div>
-      
-      <div className='w-full p-4 md:p-8'>
+
+      <div className='w-full px-4 md:px-8 '>
         {/* Scroll Wrapper */}
         <div className='overflow-x-auto'>
           <div className='min-w-[900px]'>
@@ -174,17 +174,29 @@ const LiveTrade: React.FC = () => {
             hover:border-teal-500/40 transition'
                 >
                   {/* Trader */}
-                  <div>
-                    <p className='font-semibold text-sm md:text-base'>
-                      {trader.name}
-                    </p>
-                    <span
-                      className={`text-[10px] px-2 py-1 rounded-full ${badgeColor(
-                        trader.tyter
-                      )}`}
-                    >
-                      {trader.tyter}
-                    </span>
+                  <div className='flex items-center gap-2'>
+                    <div className='rounded-lg bg-[#00000066] py-2 px-3'>
+                      
+                      <span
+                        className='bg-center bg-cover h-[20px] w-[20px] inline-block'
+                        style={{
+                          backgroundImage: `url("/images/liveperson.svg")`
+                        }}
+                      ></span>
+                    </div>
+
+                    <div>
+                      <p className='font-semibold text-sm md:text-base'>
+                        {trader.name}
+                      </p>
+                      <span
+                        className={`text-[10px] px-2 py-1 rounded-full ${badgeColor(
+                          trader.tyter
+                        )}`}
+                      >
+                        {trader.tyter}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Trade Details */}
@@ -249,6 +261,20 @@ const LiveTrade: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+      <div className='px-8 py-4'>
+        <div className='flex justify-center items-center gap-4 '>
+          <span
+            className='bg-center bg-cover h-[14px] w-[14px] '
+            style={{
+              backgroundImage: `url("/images/blackshild.svg")`
+            }}
+          ></span>
+          <p className='text-[#B0E4DD4D] text-[10px] text-center font-[700] leading-[15px] uppercase tracking-[2px]'>
+            Verified Real-time Stream • Institutional Transparency •
+            Non-Custodial Execution
+          </p>
         </div>
       </div>
     </div>
