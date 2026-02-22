@@ -18,6 +18,7 @@ import { useAuthReady } from '../auth/useAuthReady'
 import { useTradingModeStore } from './useTradingModeStore'
 import { useNavStore } from './useNavStore'
 import NavContent from './dashboardComponents/sidenavPages/NavContent'
+import Loader from '../../shared/Loader'
 
 const Dashboard: React.FC = () => {
   const { connection } = useConnection()
@@ -189,7 +190,7 @@ const Dashboard: React.FC = () => {
   }
 
   if (loading) {
-    return <StateScreen title='Loading profile…' />
+    return <StateScreen title='Loading profile…' action={<Loader />} />
   }
 
   if (error) {

@@ -110,7 +110,7 @@ const LiveTrade: React.FC = () => {
   return (
     <div className='min-h-screen text-white '>
       {/* Header */}
-      <div className='flex justify-between items-center mb-8 bg-[#091114] p-8'>
+      <div className='flex justify-between items-center mb-8 bg-[#091114] p-8 flex-col lg:flex-row gap-5'>
         <div>
           <h1 className='text-2xl font-bold'>LIVE TRADES</h1>
           <p className='text-sm text-[#B0E4DD80] text-[13px] font-[500]'>
@@ -151,66 +151,104 @@ const LiveTrade: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className='w-full p-8'>
-        {/* Table Head */}
-        <div className='grid grid-cols-4 text-xs text-[#B0E4DD4D] font-[900] px-4 mb-3 '>
-          <span>TRADER</span>
-          <span>TRADE DETAILS</span>
-          <span>EXECUTION</span>
-          <span className='text-right'>VERIFICATION</span>
-        </div>
-        {/* Trades */}
-        <div className='space-y-4'>
-          {filteredTrades.map((trader, index) => (
-            <div
-              key={index}
-              className='grid grid-cols-4 items-center px-4 py-4 rounded-xl bg-[#102221] border border-teal-900/40 hover:border-teal-500/40 transition'
-            >
-              {/* Trader */}
-              <div>
-                <p className='font-semibold'>{trader.name}</p>
-                <span
-                  className={`text-[10px] px-2 py-1 rounded-full ${badgeColor(
-                    trader.tyter
-                  )}`}
-                >
-                  {trader.tyter}
-                </span>
-              </div>
-
-              {/* Trade Details */}
-              <div>
-                <div className='flex items-center gap-2'>
-                  <span className='font-semibold'>{trader.trade}</span>
-                  <span
-                    className={`text-[10px] px-2 py-1 rounded ${
-                      trader.action === 'BUY'
-                        ? 'bg-green-600/20 text-green-400'
-                        : 'bg-red-600/20 text-red-400'
-                    }`}
-                  >
-                    {trader.action}
-                  </span>
-                </div>
-                <p className='text-sm text-gray-400'>{trader.amout}</p>
-              </div>
-
-              {/* Execution */}
-              <div>
-                <p className='text-green-400 font-semibold text-sm'>
-                  ● EXECUTED
-                </p>
-                <p className='text-xs text-gray-400'>{trader.time}</p>
-              </div>
-
-              {/* Wallet */}
-              <div className='flex justify-end '>
-                <div className='px-3 py-1 bg-[#00000066] rounded-lg text-xs text-gray-300 border border-teal-800'>
-                  {trader.wallet}
-                </div>
-              </div>
+      
+      <div className='w-full p-4 md:p-8'>
+        {/* Scroll Wrapper */}
+        <div className='overflow-x-auto'>
+          <div className='min-w-[900px]'>
+            {/* Table Head */}
+            <div className='grid grid-cols-4 text-xs text-[#B0E4DD4D] font-[900] px-4 mb-3'>
+              <span>TRADER</span>
+              <span>TRADE DETAILS</span>
+              <span>EXECUTION</span>
+              <span className='text-right'>VERIFICATION</span>
             </div>
-          ))}
+
+            {/* Trades */}
+            <div className='space-y-4'>
+              {filteredTrades.map((trader, index) => (
+                <div
+                  key={index}
+                  className='grid grid-cols-4 items-center px-4 py-4 rounded-xl 
+            bg-[#102221] border border-teal-900/40 
+            hover:border-teal-500/40 transition'
+                >
+                  {/* Trader */}
+                  <div>
+                    <p className='font-semibold text-sm md:text-base'>
+                      {trader.name}
+                    </p>
+                    <span
+                      className={`text-[10px] px-2 py-1 rounded-full ${badgeColor(
+                        trader.tyter
+                      )}`}
+                    >
+                      {trader.tyter}
+                    </span>
+                  </div>
+
+                  {/* Trade Details */}
+                  <div>
+                    <div className='flex items-center gap-2'>
+                      <span className='font-semibold text-sm'>
+                        {trader.trade}
+                      </span>
+                      <span
+                        className={`text-[10px] px-2 py-1 rounded ${
+                          trader.action === 'BUY'
+                            ? 'bg-green-600/20 text-green-400'
+                            : 'bg-red-600/20 text-red-400'
+                        }`}
+                      >
+                        {trader.action}
+                      </span>
+                    </div>
+                    <p className='text-sm text-gray-400'>{trader.amout}</p>
+                  </div>
+
+                  {/* Execution */}
+                  <div>
+                    <div className='text-green-400 font-semibold text-sm flex items-center gap-2'>
+                      <span
+                        className='bg-center bg-cover h-[16px] w-[16px]'
+                        style={{
+                          backgroundImage: `url("/images/greencheck.svg")`
+                        }}
+                      ></span>
+                      <span>EXECUTED</span>
+                    </div>
+
+                    <div className='text-xs text-gray-400 flex items-center gap-2'>
+                      <span
+                        className='bg-center bg-cover h-[12px] w-[12px]'
+                        style={{
+                          backgroundImage: `url("/images/time.svg")`
+                        }}
+                      ></span>
+                      <span>{trader.time}</span>
+                    </div>
+                  </div>
+
+                  {/* Wallet */}
+                  <div className='flex justify-end'>
+                    <div
+                      className='flex items-center gap-3 px-3 py-1 
+              bg-[#00000066] rounded-lg text-xs text-gray-300 
+              border border-teal-800 whitespace-nowrap'
+                    >
+                      <p>{trader.wallet}</p>
+                      <span
+                        className='bg-center bg-cover h-[12px] w-[12px]'
+                        style={{
+                          backgroundImage: `url("/images/redirectlive.svg")`
+                        }}
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
