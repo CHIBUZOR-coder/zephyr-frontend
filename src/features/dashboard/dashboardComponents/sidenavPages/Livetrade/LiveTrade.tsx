@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import { useLiveTradeStore } from './useLiveTradeStore'
+// import { useTradingModeStore } from './useTradingModeStore'
+
 type Stat = {
   label: string
   value: string
@@ -101,9 +103,7 @@ const stats: Stat[] = [
 ]
 
 const LiveTrade: React.FC = () => {
-  const [allTrades, setAllTrades] = useState<'allTrades' | 'positions'>(
-    'allTrades'
-  )
+  const { activeTab, setActiveTab } = useLiveTradeStore()
 
   const liveTraders: Trader[] = [
     {
@@ -198,7 +198,7 @@ const LiveTrade: React.FC = () => {
   //   activeTab === 'all'
   //     ? liveTraders
   //     : liveTraders.filter(trader => trader.name === '@sol_whale') // simulate "my positions"
-
+  // const { masterMode, callTrade } = useTradingModeStore()
   return (
     <div className='min-h-screen text-white  '>
       {/* Header */}
@@ -213,9 +213,9 @@ const LiveTrade: React.FC = () => {
         {/* 🔥 Toggle Switch */}
         <div className='flex bg-[#0B2025] p-1 rounded-xl border border-teal-900/40'>
           <button
-            onClick={() => setAllTrades('allTrades')}
+            onClick={() => setActiveTab('allTrades')}
             className={`flex justify-between items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
-              allTrades === 'allTrades'
+              activeTab === 'allTrades'
                 ? 'bg-teal-500 text-white shadow-[0_0_20px_rgba(20,184,166,0.4)]'
                 : 'text-gray-400 hover:text-white'
             }`}
@@ -228,9 +228,9 @@ const LiveTrade: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setAllTrades('positions')}
+            onClick={() => setActiveTab('positions')}
             className={`flex justify-between items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
-              allTrades === 'positions'
+              activeTab === 'positions'
                 ? 'bg-teal-500 text-white shadow-[0_0_20px_rgba(20,184,166,0.4)]'
                 : 'text-gray-400 hover:text-white'
             }`}
@@ -244,7 +244,7 @@ const LiveTrade: React.FC = () => {
         </div>
       </div>
 
-      {allTrades === 'allTrades' && (
+      {activeTab === 'allTrades' && (
         <div className='w-full px-4 md:px-8 '>
           {/* Scroll Wrapper */}
           <div className='overflow-x-auto'>
@@ -357,7 +357,7 @@ const LiveTrade: React.FC = () => {
         </div>
       )}
 
-      {allTrades === 'positions' && (
+      {activeTab === 'positions' && (
         <div className='px-4 md:px-8 space-y-6'>
           {/* Top Stats */}
 

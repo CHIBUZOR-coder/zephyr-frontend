@@ -1,7 +1,7 @@
 // src/features/dashboard/dashboardComponents/sidenavPages/NavContent.tsx
 
 // / your existing main dash UI
-import LiveTrade from './LiveTrade'
+import LiveTrade from './Livetrade/LiveTrade'
 import Portfolio from './Portfolio'
 
 import Support from './Support'
