@@ -37,7 +37,8 @@ export default {
         socials: 'rgba(0, 136, 204, 0.2)',
         socialsb: 'rgba(0, 136, 204, 0.8)',
         master: 'rgba(254, 154, 0, 0.1)',
-        masterb: 'rgba(254, 154, 0, 0.8)'
+        masterb: 'rgba(254, 154, 0, 0.8)',
+        mainetsm: 'rgba(16, 27, 34, 0.3)',
       }
     }
   },

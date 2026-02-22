@@ -221,7 +221,7 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      <div className='px-3 py-2 rounded-lg border bg-[#101B22] border-[#32674B] flex flex-col gap-2 fixed bottom-4 left-5 z-50 w-[130px] text-[9px] font-[400]'>
+      <div className='px-3 py-2 rounded-lg border bg-mainetsm lg:bg-[#101B22] border-[#32674B] flex flex-col gap-2 fixed bottom-4 left-5 z-50 w-[130px] text-[9px] font-[400]'>
         <div className='flex items-center gap-2'>
           <span className='bg-[#a1ecbc] animate-pulse h-[6px] w-[6px] rounded-full'></span>
           <p className='text-[#B0E4DD] '>Mainnet Beta</p>
