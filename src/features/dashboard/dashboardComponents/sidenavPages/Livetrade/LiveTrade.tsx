@@ -17,6 +17,14 @@ type Trader = {
   action: 'BUY' | 'SELL'
   time: string
 }
+
+type CallTradeMeta = {
+  active: boolean
+  openedAt: string
+  masterTrader?: string
+  protectionActive: boolean
+}
+
 type Position = {
   pair: string
   type: 'BUY' | 'SELL'
@@ -29,44 +37,10 @@ type Position = {
   drawdown: string
   tp: string
   sl: string
-
-  // ✅ NEW (added)
   opened: string
-  protectionActive: boolean
+  mode: 'copier' | 'master'
+  callTrade: CallTradeMeta
 }
-
-const positions: Position[] = [
-  {
-    pair: 'SOL / USDC',
-    type: 'BUY',
-    mirror: '@sol_whale',
-    entry: '$142.20',
-    current: '$148.50',
-    allocation: '2.50 SOL',
-    pnl: '+$15.75',
-    pnlPercent: '+4.4%',
-    drawdown: '0.0%',
-    tp: '160.00',
-    sl: '135.00',
-    opened: 'Opened 14m ago',
-    protectionActive: true
-  },
-  {
-    pair: 'JUP / USDC',
-    type: 'BUY',
-    mirror: '@alpha_seeker',
-    entry: '$1.12',
-    current: '$1.09',
-    allocation: '500.00 JUP',
-    pnl: '-$15.00',
-    pnlPercent: '-2.6%',
-    drawdown: '3.2%',
-    tp: '1.45',
-    sl: '1.05',
-    opened: 'Opened 14m ago',
-    protectionActive: true
-  }
-]
 
 // const totalAllocation = positions.length
 
@@ -78,32 +52,99 @@ const positions: Position[] = [
 // const totalDrawdown = Math.max(
 //   ...positions.map(pos => parseFloat(pos.drawdown))
 // )
-const stats: Stat[] = [
-  {
-    label: 'ACTIVE ALLOCATION',
-    value: '4.25 SOL',
-    sub: '~$612.50 USD'
-  },
-  {
-    label: 'UNREALIZED PNL',
-    value: '+$32.40',
-    sub: '+1.2% Total',
-    green: true
-  },
-  {
-    label: 'MAX DRAWDOWN',
-    value: '3.2%',
-    sub: 'Current Session'
-  },
-  {
-    label: 'ACTIVE POSITIONS',
-    value: '2',
-    sub: '0 Pending Exits'
-  }
-]
 
 const LiveTrade: React.FC = () => {
   const { activeTab, setActiveTab } = useLiveTradeStore()
+
+  const stats: Stat[] = [
+    {
+      label: 'ACTIVE ALLOCATION',
+      value: '4.25 SOL',
+      sub: '~$612.50 USD'
+    },
+    {
+      label: 'UNREALIZED PNL',
+      value: '+$32.40',
+      sub: '+1.2% Total',
+      green: true
+    },
+    {
+      label: 'MAX DRAWDOWN',
+      value: '3.2%',
+      sub: 'Current Session'
+    },
+    {
+      label: 'ACTIVE POSITIONS',
+      value: '2',
+      sub: '0 Pending Exits'
+    }
+  ]
+
+  const positions: Position[] = [
+    {
+      pair: 'SOL / USDC',
+      type: 'BUY',
+      mirror: '@sol_whale',
+      entry: '$142.20',
+      current: '$148.50',
+      allocation: '2.50 SOL',
+      pnl: '+$15.75',
+      pnlPercent: '+4.4%',
+      drawdown: '0.0%',
+      tp: '160.00',
+      sl: '135.00',
+      opened: '14m ago',
+      mode: 'copier',
+      callTrade: {
+        active: false,
+        openedAt: '14m ago',
+        masterTrader: '@sol_whale',
+        protectionActive: true
+      }
+    },
+    {
+      pair: 'JUP / USDC',
+      type: 'BUY',
+      mirror: ' @alpha_seeker',
+      entry: '$1.12',
+      current: '$1.09',
+      allocation: '500.00 JUP',
+      pnl: '-$15.00',
+      pnlPercent: '-2.6%',
+      drawdown: '3.2%',
+      tp: '1.45',
+      sl: '1.05',
+      opened: '6m ago',
+      mode: 'master',
+      callTrade: {
+        active: false,
+        openedAt: '6m ago',
+        masterTrader: '@you',
+        protectionActive: false
+      }
+    },
+    {
+      pair: 'JUP / USDC',
+      type: 'BUY',
+      mirror: '@ 212k Market Cap',
+      entry: '$1.12',
+      current: '$1.09',
+      allocation: '500.00 JUP',
+      pnl: '-$15.00',
+      pnlPercent: '-2.6%',
+      drawdown: '3.2%',
+      tp: '1.45',
+      sl: '1.05',
+      opened: '6m ago',
+      mode: 'master',
+      callTrade: {
+        active: true,
+        openedAt: '6m ago',
+        masterTrader: '@you',
+        protectionActive: false
+      }
+    }
+  ]
 
   const liveTraders: Trader[] = [
     {
@@ -206,7 +247,8 @@ const LiveTrade: React.FC = () => {
         <div>
           <h1 className='text-2xl font-bold'>LIVE TRADES</h1>
           <p className='text-sm text-[#B0E4DD80] text-[13px] font-[500]'>
-            Real-time execution layer across the Zephyr protocol.
+            Real-time execution layer across the Zephyr protocol.{' '}
+            {positions.length}
           </p>
         </div>
 
@@ -236,10 +278,10 @@ const LiveTrade: React.FC = () => {
             }`}
           >
             <span
-              style={{ backgroundImage: `url("/images/position.svg")` }}
+              style={{ backgroundImage: `url("/images/trendd.svg")` }}
               className='bg-center bg-cover h-[12px] w-[12px]'
             ></span>
-            <span className='text-[#B0E4DD66]'> My Positions </span>
+            <span className='text-white'> My Positions </span>
           </button>
         </div>
       </div>
@@ -319,7 +361,7 @@ const LiveTrade: React.FC = () => {
                             backgroundImage: `url("/images/greencheck.svg")`
                           }}
                         ></span>
-                        <span>EXECUTED</span>
+                        <span className='italic'>EXECUTED</span>
                       </div>
 
                       <div className='text-xs text-gray-400 flex items-center gap-2'>
@@ -410,8 +452,13 @@ const LiveTrade: React.FC = () => {
                         </span>
                       </div>
                       <p className='text-sm text-[#B0E4DD66]'>
-                        Mirroring
-                        <span className='text-teal-400'>{pos.mirror}</span>
+                        {pos.callTrade.active
+                          ? `Called `
+                          : 'Mirroring'}
+
+                  
+                          <span className='text-[#B0E4DD]'>{pos.mirror}</span>
+                      
                       </p>
                     </div>
                   </div>
@@ -483,7 +530,7 @@ const LiveTrade: React.FC = () => {
                         }}
                       ></span>
                       <p className='text-[11px] font-[700] leading-[16.5px] tracking-[1.1px] uppercase text-[#B0E4DD33]'>
-                        {pos.protectionActive
+                        {pos.callTrade.protectionActive
                           ? 'PROTECTION ACTIVE'
                           : 'NO PROTECTION'}
                       </p>
