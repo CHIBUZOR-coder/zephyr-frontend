@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { useLiveTradeStore } from './useLiveTradeStore'
+import { ExitPositionModal } from './ExitPositionModal'
 // import { useTradingModeStore } from './useTradingModeStore'
 
 type Stat = {
@@ -55,6 +57,9 @@ type Position = {
 
 const LiveTrade: React.FC = () => {
   const { activeTab, setActiveTab } = useLiveTradeStore()
+  const [selectedPosition, setSelectedPosition] = useState<Position | null>(
+    null
+  )
 
   const stats: Stat[] = [
     {
@@ -402,7 +407,6 @@ const LiveTrade: React.FC = () => {
       {activeTab === 'positions' && (
         <div className='px-4 md:px-8 space-y-6'>
           {/* Top Stats */}
-
           <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
             {stats.map((stat, index) => (
               <div
@@ -431,7 +435,6 @@ const LiveTrade: React.FC = () => {
               </div>
             ))}
           </div>
-
           {/* Position Cards */}
           <div className='space-y-6'>
             {positions.map((pos, index) => (
@@ -452,13 +455,9 @@ const LiveTrade: React.FC = () => {
                         </span>
                       </div>
                       <p className='text-sm text-[#B0E4DD66]'>
-                        {pos.callTrade.active
-                          ? `Called `
-                          : 'Mirroring'}
+                        {pos.callTrade.active ? `Called ` : 'Mirroring'}
 
-                  
-                          <span className='text-[#B0E4DD]'>{pos.mirror}</span>
-                      
+                        <span className='text-[#B0E4DD]'>{pos.mirror}</span>
                       </p>
                     </div>
                   </div>
@@ -536,13 +535,22 @@ const LiveTrade: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <button className='w-full lg:w-auto px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition'>
+                  <button
+                    onClick={() => setSelectedPosition(pos)}
+                    className='w-full lg:w-auto px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition'
+                  >
                     SELL ↗
                   </button>
                 </div>
               </div>
             ))}
           </div>
+          
+          <ExitPositionModal
+            isOpen={!!selectedPosition}
+            onClose={() => setSelectedPosition(null)}
+            position={selectedPosition}
+          />
         </div>
       )}
 
