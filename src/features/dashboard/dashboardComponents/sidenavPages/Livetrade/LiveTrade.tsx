@@ -4,6 +4,9 @@ import { ExitPositionModal } from './ExitPositionModal'
 import { useWallet } from '@solana/wallet-adapter-react'
 // import { p } from 'framer-motion/client'
 // import { useTradingModeStore } from './useTradingModeStore'
+type LiveTradeProps = {
+  setWalletModal: (open: boolean) => void
+}
 
 type Stat = {
   label: string
@@ -57,7 +60,7 @@ type Position = {
 //   ...positions.map(pos => parseFloat(pos.drawdown))
 // )
 
-const LiveTrade: React.FC = () => {
+const LiveTrade: React.FC<LiveTradeProps> = ({ setWalletModal }) => {
   const { connected } = useWallet()
   const { activeTab, setActiveTab } = useLiveTradeStore()
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
@@ -81,6 +84,7 @@ const LiveTrade: React.FC = () => {
       value: '3.2%',
       sub: 'Current Session'
     },
+
     {
       label: 'ACTIVE POSITIONS',
       value: '2',
@@ -425,7 +429,15 @@ const LiveTrade: React.FC = () => {
                       <p className='text-[10px] lg:text-xs'>{stat.label}</p>
                     </div>
 
-                    <h3 className='text-lg font-bold text-white'>0.00 SOL</h3>
+                    <h3 className='text-lg font-bold text-white'>
+                      {stat.label === 'ACTIVE ALLOCATION'
+                        ? '0.00 SOL'
+                        : stat.label === 'MAX DRAWDOWN'
+                        ? '0.0%'
+                        : stat.label === 'UNREALIZED PNL'
+                        ? '$0.00'
+                        : '0'}
+                    </h3>
 
                     <p className='text-xs text-[#B0E4DD80]'>{stat.sub}</p>
                   </div>
@@ -456,7 +468,10 @@ const LiveTrade: React.FC = () => {
                 </p>
 
                 {/* Button */}
-                <button className='px-8 py-3 bg-teal-500 hover:bg-teal-600 rounded-xl font-semibold text-sm transition shadow-[0_0_25px_rgba(20,184,166,0.35)]'>
+                <button
+                  onClick={() => setWalletModal(true)}
+                  className='px-8 py-3 bg-teal-500 hover:bg-teal-600 rounded-xl font-semibold text-sm transition shadow-[0_0_25px_rgba(20,184,166,0.35)]'
+                >
                   CONNECT WALLET
                 </button>
               </div>
@@ -684,7 +699,7 @@ const LiveTrade: React.FC = () => {
           </p>
         </div>
       </div>
-      
+
       <ExitPositionModal
         isOpen={!!selectedPosition}
         onClose={() => setSelectedPosition(null)}

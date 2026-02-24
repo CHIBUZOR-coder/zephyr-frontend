@@ -410,7 +410,7 @@ const Dashboard: React.FC = () => {
 
         {/*Main left panael */}
         <div className='w-full '>
-          <NavContent />
+          <NavContent setWalletModal={setWalletModal} />
         </div>
       </div>
 
