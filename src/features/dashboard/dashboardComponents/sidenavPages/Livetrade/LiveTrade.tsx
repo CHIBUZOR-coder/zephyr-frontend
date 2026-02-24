@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useLiveTradeStore } from './useLiveTradeStore'
 import { ExitPositionModal } from './ExitPositionModal'
+import { useWallet } from '@solana/wallet-adapter-react'
+// import { p } from 'framer-motion/client'
 // import { useTradingModeStore } from './useTradingModeStore'
 
 type Stat = {
@@ -56,6 +58,7 @@ type Position = {
 // )
 
 const LiveTrade: React.FC = () => {
+  const { connected } = useWallet()
   const { activeTab, setActiveTab } = useLiveTradeStore()
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
     null
@@ -289,7 +292,6 @@ const LiveTrade: React.FC = () => {
           </button>
         </div>
       </div>
-
       {activeTab === 'allTrades' && (
         <div className='w-full px-4 md:px-8 '>
           {/* Scroll Wrapper */}
@@ -402,10 +404,64 @@ const LiveTrade: React.FC = () => {
           </div>
         </div>
       )}
-
       {activeTab === 'positions' && (
         <>
-          {positions.length > 0 ? (
+          {!connected ? (
+            <div className='px-4 md:px-8 space-y-6'>
+              {/* Top Stats (still show even if empty) */}
+              <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                {stats.map((stat, index) => (
+                  <div
+                    key={index}
+                    className='bg-[#102221] border border-teal-900/40 rounded-xl p-4 flex flex-col gap-3'
+                  >
+                    <div className='text-[#B0E4DD66] font-semibold flex gap-2 items-center'>
+                      <span
+                        className='bg-center bg-cover h-[16px] w-[16px]'
+                        style={{
+                          backgroundImage: `url("/images/trend.svg")`
+                        }}
+                      ></span>
+                      <p className='text-[10px] lg:text-xs'>{stat.label}</p>
+                    </div>
+
+                    <h3 className='text-lg font-bold text-white'>0.00 SOL</h3>
+
+                    <p className='text-xs text-[#B0E4DD80]'>{stat.sub}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Empty Wallet Card */}
+              <div className='w-full rounded-2xl p-10 md:p-16 bg-[#102221]  border border-teal-900/40 flex flex-col items-center justify-center text-center space-y-6'>
+                {/* Icon Circle */}
+                <div className='h-[72px] w-[72px] rounded-full bg-teal-500/10 flex items-center justify-center'>
+                  <span
+                    className='h-[32px] w-[32px] bg-center bg-cover'
+                    style={{
+                      backgroundImage: `url("/images/wallet.svg")`
+                    }}
+                  ></span>
+                </div>
+
+                {/* Title */}
+                <h2 className='text-lg md:text-xl font-bold text-white tracking-wide'>
+                  WALLET NOT CONNECTED
+                </h2>
+
+                {/* Description */}
+                <p className='text-sm text-[#B0E4DD80] max-w-md leading-relaxed'>
+                  Connect your wallet to view your active copy trading positions
+                  and real-time performance metrics.
+                </p>
+
+                {/* Button */}
+                <button className='px-8 py-3 bg-teal-500 hover:bg-teal-600 rounded-xl font-semibold text-sm transition shadow-[0_0_25px_rgba(20,184,166,0.35)]'>
+                  CONNECT WALLET
+                </button>
+              </div>
+            </div>
+          ) : positions.length > 0 ? (
             <div className='px-4 md:px-8 space-y-6'>
               {/* Top Stats */}
               <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
@@ -551,19 +607,15 @@ const LiveTrade: React.FC = () => {
                         <p>SELL</p>
                         <span
                           className='h-[16px] w-[16px] bg-center bg-cover inline-block'
-                          style={{ backgroundImage: `url("/images/sell.svg")` }}
+                          style={{
+                            backgroundImage: `url("/images/sell.svg")`
+                          }}
                         ></span>
                       </button>
                     </div>
                   </div>
                 ))}
               </div>
-
-              <ExitPositionModal
-                isOpen={!!selectedPosition}
-                onClose={() => setSelectedPosition(null)}
-                position={selectedPosition}
-              />
             </div>
           ) : (
             <div className='px-4 md:px-8 space-y-6'>
@@ -605,25 +657,19 @@ const LiveTrade: React.FC = () => {
 
                 {/* Title */}
                 <h2 className='text-lg md:text-xl font-bold text-white tracking-wide'>
-                  WALLET NOT CONNECTED
+                  NO ACTIVE POSITIONS
                 </h2>
-
-                {/* Description */}
-                <p className='text-sm text-[#B0E4DD80] max-w-md leading-relaxed'>
-                  Connect your wallet to view your active copy trading positions
-                  and real-time performance metrics.
+                <p
+                  className='text-[#B0E4DD
+] text-[14px] font-[400]'
+                >
+                  You have no active copy trading positions.
                 </p>
-
-                {/* Button */}
-                <button className='px-8 py-3 bg-teal-500 hover:bg-teal-600 rounded-xl font-semibold text-sm transition shadow-[0_0_25px_rgba(20,184,166,0.35)]'>
-                  CONNECT WALLET
-                </button>
               </div>
             </div>
           )}
         </>
       )}
-
       <div className='px-8 py-4'>
         <div className='flex justify-center items-center gap-4 '>
           <span
@@ -638,6 +684,12 @@ const LiveTrade: React.FC = () => {
           </p>
         </div>
       </div>
+      
+      <ExitPositionModal
+        isOpen={!!selectedPosition}
+        onClose={() => setSelectedPosition(null)}
+        position={selectedPosition}
+      />
     </div>
   )
 }

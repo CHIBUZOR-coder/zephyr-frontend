@@ -7,6 +7,10 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body {
+  margin: 0;
+}
 .herochild {
   @apply w-full  lg:w-1/2;
 }
