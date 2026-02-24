@@ -86,69 +86,69 @@ const LiveTrade: React.FC = () => {
   ]
 
   const positions: Position[] = [
-    {
-      pair: 'SOL / USDC',
-      type: 'BUY',
-      mirror: '@sol_whale',
-      entry: '$142.20',
-      current: '$148.50',
-      allocation: '2.50 SOL',
-      pnl: '+$15.75',
-      pnlPercent: '+4.4%',
-      drawdown: '0.0%',
-      tp: '160.00',
-      sl: '135.00',
-      opened: '14m ago',
-      mode: 'copier',
-      callTrade: {
-        active: false,
-        openedAt: '14m ago',
-        masterTrader: '@sol_whale',
-        protectionActive: true
-      }
-    },
-    {
-      pair: 'JUP / USDC',
-      type: 'BUY',
-      mirror: ' @alpha_seeker',
-      entry: '$1.12',
-      current: '$1.09',
-      allocation: '500.00 JUP',
-      pnl: '-$15.00',
-      pnlPercent: '-2.6%',
-      drawdown: '3.2%',
-      tp: '1.45',
-      sl: '1.05',
-      opened: '6m ago',
-      mode: 'master',
-      callTrade: {
-        active: false,
-        openedAt: '6m ago',
-        masterTrader: '@you',
-        protectionActive: false
-      }
-    },
-    {
-      pair: 'JUP / USDC',
-      type: 'BUY',
-      mirror: '@ 212k Market Cap',
-      entry: '$1.12',
-      current: '$1.09',
-      allocation: '500.00 JUP',
-      pnl: '-$15.00',
-      pnlPercent: '-2.6%',
-      drawdown: '3.2%',
-      tp: '1.45',
-      sl: '1.05',
-      opened: '6m ago',
-      mode: 'master',
-      callTrade: {
-        active: true,
-        openedAt: '6m ago',
-        masterTrader: '@you',
-        protectionActive: false
-      }
-    }
+    // {
+    //   pair: 'SOL / USDC',
+    //   type: 'BUY',
+    //   mirror: '@sol_whale',
+    //   entry: '$142.20',
+    //   current: '$148.50',
+    //   allocation: '2.50 SOL',
+    //   pnl: '+$15.75',
+    //   pnlPercent: '+4.4%',
+    //   drawdown: '0.0%',
+    //   tp: '160.00',
+    //   sl: '135.00',
+    //   opened: '14m ago',
+    //   mode: 'copier',
+    //   callTrade: {
+    //     active: false,
+    //     openedAt: '14m ago',
+    //     masterTrader: '@sol_whale',
+    //     protectionActive: true
+    //   }
+    // },
+    // {
+    //   pair: 'JUP / USDC',
+    //   type: 'BUY',
+    //   mirror: ' @alpha_seeker',
+    //   entry: '$1.12',
+    //   current: '$1.09',
+    //   allocation: '500.00 JUP',
+    //   pnl: '-$15.00',
+    //   pnlPercent: '-2.6%',
+    //   drawdown: '3.2%',
+    //   tp: '1.45',
+    //   sl: '1.05',
+    //   opened: '6m ago',
+    //   mode: 'master',
+    //   callTrade: {
+    //     active: false,
+    //     openedAt: '6m ago',
+    //     masterTrader: '@you',
+    //     protectionActive: false
+    //   }
+    // },
+    // {
+    //   pair: 'JUP / USDC',
+    //   type: 'BUY',
+    //   mirror: '@ 212k Market Cap',
+    //   entry: '$1.12',
+    //   current: '$1.09',
+    //   allocation: '500.00 JUP',
+    //   pnl: '-$15.00',
+    //   pnlPercent: '-2.6%',
+    //   drawdown: '3.2%',
+    //   tp: '1.45',
+    //   sl: '1.05',
+    //   opened: '6m ago',
+    //   mode: 'master',
+    //   callTrade: {
+    //     active: true,
+    //     openedAt: '6m ago',
+    //     masterTrader: '@you',
+    //     protectionActive: false
+    //   }
+    // }
   ]
 
   const liveTraders: Trader[] = [
@@ -405,153 +405,220 @@ const LiveTrade: React.FC = () => {
       )}
 
       {activeTab === 'positions' && (
-        <div className='px-4 md:px-8 space-y-6'>
-          {/* Top Stats */}
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className='bg-[#102221] border border-teal-900/40 rounded-xl p-4 flex flex-col  gap-3'
-              >
-                <div className=' text-[#B0E4DD66] font-semibold flex gap-2'>
-                  <span
-                    className='bg-center bg-cover h-[16px] w-[16px] '
-                    style={{
-                      backgroundImage: `url("/images/trend.svg")`
-                    }}
-                  ></span>
-                  <p className='text-[10px] lg:text-xs'>{stat.label}</p>
-                </div>
-
-                <h3
-                  className={`text-lg font-bold ${
-                    stat.green ? 'text-green-400' : 'text-white'
-                  }`}
-                >
-                  {stat.value}
-                </h3>
-
-                <p className='text-xs text-[#B0E4DD80]'>{stat.sub}</p>
-              </div>
-            ))}
-          </div>
-          {/* Position Cards */}
-          <div className='space-y-6'>
-            {positions.map((pos, index) => (
-              <div
-                key={index}
-                className=' bg-[#102221]
-          border border-teal-900/40 rounded-2xl p-6 space-y-6'
-              >
-                {/* Header */}
-                <div className='flex flex-col md:flex-row md:justify-between gap-4'>
-                  <div className='flex gap-3 bg-'>
-                    <span className='bg-center bg-cover inline-block h-[56px] w-[56px] rounded-lg bg-[#0a1414]'></span>
-                    <div className=''>
-                      <div className='flex items-center gap-2'>
-                        <h3 className='font-bold text-lg'>{pos.pair} </h3>
-                        <span className='text-[10px] px-2 py-1 rounded bg-green-600/20 text-green-400'>
-                          {pos.type}
-                        </span>
-                      </div>
-                      <p className='text-sm text-[#B0E4DD66]'>
-                        {pos.callTrade.active ? `Called ` : 'Mirroring'}
-
-                        <span className='text-[#B0E4DD]'>{pos.mirror}</span>
-                      </p>
+        <>
+          {positions.length > 0 ? (
+            <div className='px-4 md:px-8 space-y-6'>
+              {/* Top Stats */}
+              <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                {stats.map((stat, index) => (
+                  <div
+                    key={index}
+                    className='bg-[#102221] border border-teal-900/40 rounded-xl p-4 flex flex-col  gap-3'
+                  >
+                    <div className=' text-[#B0E4DD66] font-semibold flex gap-2'>
+                      <span
+                        className='bg-center bg-cover h-[16px] w-[16px] '
+                        style={{
+                          backgroundImage: `url("/images/trend.svg")`
+                        }}
+                      ></span>
+                      <p className='text-[10px] lg:text-xs'>{stat.label}</p>
                     </div>
-                  </div>
 
-                  <div className='flex gap-10 text-sm'>
-                    <div>
-                      <p className='text-[#B0E4DD66] text-xs'>ENTRY PRICE</p>
-                      <p className='font-semibold'>{pos.entry}</p>
-                    </div>
-                    <div>
-                      <p className='text-[#B0E4DD66] text-xs'>CURRENT PRICE</p>
-                      <p className='font-semibold'>{pos.current}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <p className=' h-[0.5px] bg-[#23483b] w-full'></p>
-                {/* Stats Row */}
-                <div className='grid md:grid-cols-4 gap-4'>
-                  <div className='row p-4 rounded-xl'>
-                    <p className='text-xs text-[#B0E4DD66]'>ALLOCATION</p>
-                    <p className='font-semibold'>{pos.allocation}</p>
-                  </div>
-
-                  <div className='row p-4 rounded-xl'>
-                    <p className='text-xs text-[#B0E4DD66]'>UNREALIZED PNL</p>
-                    <p
-                      className={`font-semibold ${
-                        pos.pnl.startsWith('+')
-                          ? 'text-green-400'
-                          : 'text-red-400'
+                    <h3
+                      className={`text-lg font-bold ${
+                        stat.green ? 'text-green-400' : 'text-white'
                       }`}
                     >
-                      {pos.pnl}
-                    </p>
-                    <p className='text-xs text-[#B0E4DD4D]'>{pos.pnlPercent}</p>
-                  </div>
+                      {stat.value}
+                    </h3>
 
-                  <div className=' row p-4 rounded-xl'>
-                    <p className='text-xs text-[#B0E4DD66]'>DRAWDOWN</p>
-                    <p className='font-semibold'>{pos.drawdown}</p>
+                    <p className='text-xs text-[#B0E4DD80]'>{stat.sub}</p>
                   </div>
-
-                  <div className='row p-4 rounded-xl'>
-                    <p className='text-xs text-[#B0E4DD66]'>SAFETY NET</p>
-                    <p className='font-semibold'>TP: {pos.tp}</p>
-                    <p className='text-xs text-[#B0E4DD4D]'>SL: {pos.sl}</p>
-                  </div>
-                </div>
-                {/* Footer */}
-                <div className='flex flex-col md:flex-row justify-between items-center gap-6 lg:gap-0'>
-                  <div className='flex gap-6 items-center'>
-                    <div className='flex gap-2 items-center'>
-                      <span
-                        className='bg-center bg-cover h-[16px] w-[16px] inline-block '
-                        style={{
-                          backgroundImage: `url("/images/time.svg")`
-                        }}
-                      ></span>
-                      <p className='text-[8px] lg:text-[11px] font-[700] leading-[16.5px] tracking-[1.1px] uppercase text-[#B0E4DD33]'>
-                        {pos.opened}
-                      </p>
-                    </div>
-                    <div className='flex gap-2 items-center'>
-                      <span
-                        className='bg-center bg-cover h-[16px] w-[16px] inline-block '
-                        style={{
-                          backgroundImage: `url("/images/cheksheild.svg")`
-                        }}
-                      ></span>
-                      <p className='text-[11px] font-[700] leading-[16.5px] tracking-[1.1px] uppercase text-[#B0E4DD33]'>
-                        {pos.callTrade.protectionActive
-                          ? 'PROTECTION ACTIVE'
-                          : 'NO PROTECTION'}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSelectedPosition(pos)}
-                    className='w-full lg:w-auto px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition'
-                  >
-                    SELL ↗
-                  </button>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-          
-          <ExitPositionModal
-            isOpen={!!selectedPosition}
-            onClose={() => setSelectedPosition(null)}
-            position={selectedPosition}
-          />
-        </div>
+              {/* Position Cards */}
+              <div className='space-y-6'>
+                {positions.map((pos, index) => (
+                  <div
+                    key={index}
+                    className=' bg-[#102221]
+          border border-teal-900/40 rounded-2xl p-6 space-y-6'
+                  >
+                    {/* Header */}
+                    <div className='flex flex-col md:flex-row md:justify-between gap-4'>
+                      <div className='flex gap-3 bg-'>
+                        <span className='bg-center bg-cover inline-block h-[56px] w-[56px] rounded-lg bg-[#0a1414]'></span>
+                        <div className=''>
+                          <div className='flex items-center gap-2'>
+                            <h3 className='font-bold text-lg'>{pos.pair} </h3>
+                            <span className='text-[10px] px-2 py-1 rounded bg-green-600/20 text-green-400'>
+                              {pos.type}
+                            </span>
+                          </div>
+                          <p className='text-sm text-[#B0E4DD66]'>
+                            {pos.callTrade.active ? `Called ` : 'Mirroring'}
+
+                            <span className='text-[#B0E4DD]'>{pos.mirror}</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className='flex gap-10 text-sm'>
+                        <div>
+                          <p className='text-[#B0E4DD66] text-xs'>
+                            ENTRY PRICE
+                          </p>
+                          <p className='font-semibold'>{pos.entry}</p>
+                        </div>
+                        <div>
+                          <p className='text-[#B0E4DD66] text-xs'>
+                            CURRENT PRICE
+                          </p>
+                          <p className='font-semibold'>{pos.current}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className=' h-[0.5px] bg-[#23483b] w-full'></p>
+                    {/* Stats Row */}
+                    <div className='grid md:grid-cols-4 gap-4'>
+                      <div className='row p-4 rounded-xl'>
+                        <p className='text-xs text-[#B0E4DD66]'>ALLOCATION</p>
+                        <p className='font-semibold'>{pos.allocation}</p>
+                      </div>
+
+                      <div className='row p-4 rounded-xl'>
+                        <p className='text-xs text-[#B0E4DD66]'>
+                          UNREALIZED PNL
+                        </p>
+                        <p
+                          className={`font-semibold ${
+                            pos.pnl.startsWith('+')
+                              ? 'text-green-400'
+                              : 'text-red-400'
+                          }`}
+                        >
+                          {pos.pnl}
+                        </p>
+                        <p className='text-xs text-[#B0E4DD4D]'>
+                          {pos.pnlPercent}
+                        </p>
+                      </div>
+
+                      <div className=' row p-4 rounded-xl'>
+                        <p className='text-xs text-[#B0E4DD66]'>DRAWDOWN</p>
+                        <p className='font-semibold'>{pos.drawdown}</p>
+                      </div>
+
+                      <div className='row p-4 rounded-xl'>
+                        <p className='text-xs text-[#B0E4DD66]'>SAFETY NET</p>
+                        <p className='font-semibold'>TP: {pos.tp}</p>
+                        <p className='text-xs text-[#B0E4DD4D]'>SL: {pos.sl}</p>
+                      </div>
+                    </div>
+                    {/* Footer */}
+                    <div className='flex flex-col md:flex-row justify-between items-center gap-6 lg:gap-0'>
+                      <div className='flex gap-6 items-center'>
+                        <div className='flex gap-2 items-center'>
+                          <span
+                            className='bg-center bg-cover h-[16px] w-[16px] inline-block '
+                            style={{
+                              backgroundImage: `url("/images/time.svg")`
+                            }}
+                          ></span>
+                          <p className='text-[8px] lg:text-[11px] font-[700] leading-[16.5px] tracking-[1.1px] uppercase text-[#B0E4DD33]'>
+                            {pos.opened}
+                          </p>
+                        </div>
+                        <div className='flex gap-2 items-center'>
+                          <span
+                            className='bg-center bg-cover h-[16px] w-[16px] inline-block '
+                            style={{
+                              backgroundImage: `url("/images/cheksheild.svg")`
+                            }}
+                          ></span>
+                          <p className='text-[11px] font-[700] leading-[16.5px] tracking-[1.1px] uppercase text-[#B0E4DD33]'>
+                            {pos.callTrade.protectionActive
+                              ? 'PROTECTION ACTIVE'
+                              : 'NO PROTECTION'}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedPosition(pos)}
+                        className='w-full lg:w-auto px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition'
+                      >
+                        SELL ↗
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <ExitPositionModal
+                isOpen={!!selectedPosition}
+                onClose={() => setSelectedPosition(null)}
+                position={selectedPosition}
+              />
+            </div>
+          ) : (
+            <div className='px-4 md:px-8 space-y-6'>
+              {/* Top Stats (still show even if empty) */}
+              <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                {stats.map((stat, index) => (
+                  <div
+                    key={index}
+                    className='bg-[#102221] border border-teal-900/40 rounded-xl p-4 flex flex-col gap-3'
+                  >
+                    <div className='text-[#B0E4DD66] font-semibold flex gap-2 items-center'>
+                      <span
+                        className='bg-center bg-cover h-[16px] w-[16px]'
+                        style={{
+                          backgroundImage: `url("/images/trend.svg")`
+                        }}
+                      ></span>
+                      <p className='text-[10px] lg:text-xs'>{stat.label}</p>
+                    </div>
+
+                    <h3 className='text-lg font-bold text-white'>0.00 SOL</h3>
+
+                    <p className='text-xs text-[#B0E4DD80]'>{stat.sub}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Empty Wallet Card */}
+              <div className='w-full rounded-2xl p-10 md:p-16 bg-[#102221]  border border-teal-900/40 flex flex-col items-center justify-center text-center space-y-6'>
+                {/* Icon Circle */}
+                <div className='h-[72px] w-[72px] rounded-full bg-teal-500/10 flex items-center justify-center'>
+                  <span
+                    className='h-[32px] w-[32px] bg-center bg-cover'
+                    style={{
+                      backgroundImage: `url("/images/wallet.svg")`
+                    }}
+                  ></span>
+                </div>
+
+                {/* Title */}
+                <h2 className='text-lg md:text-xl font-bold text-white tracking-wide'>
+                  WALLET NOT CONNECTED
+                </h2>
+
+                {/* Description */}
+                <p className='text-sm text-[#B0E4DD80] max-w-md leading-relaxed'>
+                  Connect your wallet to view your active copy trading positions
+                  and real-time performance metrics.
+                </p>
+
+                {/* Button */}
+                <button className='px-8 py-3 bg-teal-500 hover:bg-teal-600 rounded-xl font-semibold text-sm transition shadow-[0_0_25px_rgba(20,184,166,0.35)]'>
+                  CONNECT WALLET
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       <div className='px-8 py-4'>
