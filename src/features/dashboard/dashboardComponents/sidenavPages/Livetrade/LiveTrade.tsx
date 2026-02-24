@@ -86,69 +86,69 @@ const LiveTrade: React.FC = () => {
   ]
 
   const positions: Position[] = [
-    // {
-    //   pair: 'SOL / USDC',
-    //   type: 'BUY',
-    //   mirror: '@sol_whale',
-    //   entry: '$142.20',
-    //   current: '$148.50',
-    //   allocation: '2.50 SOL',
-    //   pnl: '+$15.75',
-    //   pnlPercent: '+4.4%',
-    //   drawdown: '0.0%',
-    //   tp: '160.00',
-    //   sl: '135.00',
-    //   opened: '14m ago',
-    //   mode: 'copier',
-    //   callTrade: {
-    //     active: false,
-    //     openedAt: '14m ago',
-    //     masterTrader: '@sol_whale',
-    //     protectionActive: true
-    //   }
-    // },
-    // {
-    //   pair: 'JUP / USDC',
-    //   type: 'BUY',
-    //   mirror: ' @alpha_seeker',
-    //   entry: '$1.12',
-    //   current: '$1.09',
-    //   allocation: '500.00 JUP',
-    //   pnl: '-$15.00',
-    //   pnlPercent: '-2.6%',
-    //   drawdown: '3.2%',
-    //   tp: '1.45',
-    //   sl: '1.05',
-    //   opened: '6m ago',
-    //   mode: 'master',
-    //   callTrade: {
-    //     active: false,
-    //     openedAt: '6m ago',
-    //     masterTrader: '@you',
-    //     protectionActive: false
-    //   }
-    // },
-    // {
-    //   pair: 'JUP / USDC',
-    //   type: 'BUY',
-    //   mirror: '@ 212k Market Cap',
-    //   entry: '$1.12',
-    //   current: '$1.09',
-    //   allocation: '500.00 JUP',
-    //   pnl: '-$15.00',
-    //   pnlPercent: '-2.6%',
-    //   drawdown: '3.2%',
-    //   tp: '1.45',
-    //   sl: '1.05',
-    //   opened: '6m ago',
-    //   mode: 'master',
-    //   callTrade: {
-    //     active: true,
-    //     openedAt: '6m ago',
-    //     masterTrader: '@you',
-    //     protectionActive: false
-    //   }
-    // }
+    {
+      pair: 'SOL / USDC',
+      type: 'BUY',
+      mirror: '@sol_whale',
+      entry: '$142.20',
+      current: '$148.50',
+      allocation: '2.50 SOL',
+      pnl: '+$15.75',
+      pnlPercent: '+4.4%',
+      drawdown: '0.0%',
+      tp: '160.00',
+      sl: '135.00',
+      opened: '14m ago',
+      mode: 'copier',
+      callTrade: {
+        active: false,
+        openedAt: '14m ago',
+        masterTrader: '@sol_whale',
+        protectionActive: true
+      }
+    },
+    {
+      pair: 'JUP / USDC',
+      type: 'BUY',
+      mirror: ' @alpha_seeker',
+      entry: '$1.12',
+      current: '$1.09',
+      allocation: '500.00 JUP',
+      pnl: '-$15.00',
+      pnlPercent: '-2.6%',
+      drawdown: '3.2%',
+      tp: '1.45',
+      sl: '1.05',
+      opened: '6m ago',
+      mode: 'master',
+      callTrade: {
+        active: false,
+        openedAt: '6m ago',
+        masterTrader: '@you',
+        protectionActive: false
+      }
+    },
+    {
+      pair: 'JUP / USDC',
+      type: 'BUY',
+      mirror: '@ 212k Market Cap',
+      entry: '$1.12',
+      current: '$1.09',
+      allocation: '500.00 JUP',
+      pnl: '-$15.00',
+      pnlPercent: '-2.6%',
+      drawdown: '3.2%',
+      tp: '1.45',
+      sl: '1.05',
+      opened: '6m ago',
+      mode: 'master',
+      callTrade: {
+        active: true,
+        openedAt: '6m ago',
+        masterTrader: '@you',
+        protectionActive: false
+      }
+    }
   ]
 
   const liveTraders: Trader[] = [
@@ -252,8 +252,7 @@ const LiveTrade: React.FC = () => {
         <div>
           <h1 className='text-2xl font-bold'>LIVE TRADES</h1>
           <p className='text-sm text-[#B0E4DD80] text-[13px] font-[500]'>
-            Real-time execution layer across the Zephyr protocol.{' '}
-            {positions.length}
+            Real-time execution layer across the Zephyr protocol.
           </p>
         </div>
 
@@ -457,7 +456,7 @@ const LiveTrade: React.FC = () => {
                             </span>
                           </div>
                           <p className='text-sm text-[#B0E4DD66]'>
-                            {pos.callTrade.active ? `Called ` : 'Mirroring'}
+                            {pos.callTrade.active ? `Called ` : 'Mirroring '}
 
                             <span className='text-[#B0E4DD]'>{pos.mirror}</span>
                           </p>
@@ -547,9 +546,13 @@ const LiveTrade: React.FC = () => {
                       </div>
                       <button
                         onClick={() => setSelectedPosition(pos)}
-                        className='w-full lg:w-auto px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition'
+                        className='w-full lg:w-auto px-6 py-2 bg-orange-500 hover:bg-orange-600 rounded-xl font-semibold transition flex items-center gap-2 justify-center'
                       >
-                        SELL ↗
+                        <p>SELL</p>
+                        <span
+                          className='h-[16px] w-[16px] bg-center bg-cover inline-block'
+                          style={{ backgroundImage: `url("/images/sell.svg")` }}
+                        ></span>
                       </button>
                     </div>
                   </div>
