@@ -64,7 +64,7 @@ export const ExitPositionModal = ({ isOpen, onClose, position }: Props) => {
               <div className='flex justify-between'>
                 <span className='text-[#99A1AF]'>Exit Amount</span>
                 <span
-                  className='font-[900] text-[12px] text-[#B0E4DD] border border-[#B0E4DD] rounded-full px-3 py-1 cursor-pointer hover:bg-[#B0E4DD]/20 transition'
+                  className='font-[900] text-[12px] text-[#B0E4DD] border border-[#23483B] rounded-lg px-3 py-1 cursor-pointer hover:bg-[#B0E4DD]/20 transition'
                 >
                   Max
                 </span>
