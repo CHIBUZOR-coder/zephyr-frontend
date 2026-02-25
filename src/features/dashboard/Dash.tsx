@@ -221,14 +221,14 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      <div className='px-3 py-2 rounded-lg border bg-mainetsm lg:bg-[#101B22] border-[#32674B] flex flex-col gap-2 fixed bottom-4 left-5 z-50 w-[130px] text-[9px] font-[400]'>
+      {/* <div className='px-3 py-2 rounded-lg border bg-mainetsm lg:bg-[#101B22] border-[#32674B] flex flex-col gap-2 fixed bottom-4 left-5 z-50 w-[130px] text-[9px] font-[400]'>
         <div className='flex items-center gap-2'>
           <span className='bg-[#a1ecbc] animate-pulse h-[6px] w-[6px] rounded-full'></span>
           <p className='text-[#B0E4DD] '>Mainnet Beta</p>
         </div>
 
         <p className='text-[#FFFFFF99]'>TPS: 2, 451</p>
-      </div>
+      </div> */}
       {/* Sidebar */}
       <aside className='h-screen w-[14%] bg-[#102221] sticky top-0 left-0 hidden lg:block '>
         <div className='h-[70%] side p-3 lg:flex flex-col gap-6  w-full overflow-y-auto '>

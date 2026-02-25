@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { useAuthStore } from '../auth/auth.store'
 
 type Props = {
   open: boolean
@@ -8,7 +9,7 @@ type Props = {
 
 export const WalletMenu = ({ open, onClose }: Props) => {
   const { disconnect } = useWallet()
-
+const { logout } = useAuthStore()
   return (
     <AnimatePresence>
       {open && (
@@ -30,6 +31,7 @@ export const WalletMenu = ({ open, onClose }: Props) => {
               onClick={async () => {
                 await disconnect()
                 onClose()
+                logout() // Clear auth state on disconnect
               }}
             >
               <div className='h-[40px] w-[40px] flex justify-center items-center bg-[#102221] border rounded-2xl border-[#23483B]'>

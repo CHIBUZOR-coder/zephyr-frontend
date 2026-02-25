@@ -12,6 +12,7 @@ type AuthState = {
 
   setAuth: (user: AuthUser, token: string) => void;
   logout: () => void;
+  
 };
 
 export const useAuthStore = create<AuthState>()(
