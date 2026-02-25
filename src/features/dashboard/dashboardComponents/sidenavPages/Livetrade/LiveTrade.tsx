@@ -97,69 +97,69 @@ const LiveTrade: React.FC<LiveTradeProps> = ({ setWalletModal }) => {
   ]
 
   const positions: Position[] = [
-    // {
-    //   pair: 'SOL / USDC',
-    //   type: 'BUY',
-    //   mirror: '@sol_whale',
-    //   entry: '$142.20',
-    //   current: '$148.50',
-    //   allocation: '2.50 SOL',
-    //   pnl: '+$15.75',
-    //   pnlPercent: '+4.4%',
-    //   drawdown: '0.0%',
-    //   tp: '160.00',
-    //   sl: '135.00',
-    //   opened: '14m ago',
-    //   mode: 'copier',
-    //   callTrade: {
-    //     active: false,
-    //     openedAt: '14m ago',
-    //     masterTrader: '@sol_whale',
-    //     protectionActive: true
-    //   }
-    // },
-    // {
-    //   pair: 'JUP / USDC',
-    //   type: 'BUY',
-    //   mirror: ' @alpha_seeker',
-    //   entry: '$1.12',
-    //   current: '$1.09',
-    //   allocation: '500.00 JUP',
-    //   pnl: '-$15.00',
-    //   pnlPercent: '-2.6%',
-    //   drawdown: '3.2%',
-    //   tp: '1.45',
-    //   sl: '1.05',
-    //   opened: '6m ago',
-    //   mode: 'master',
-    //   callTrade: {
-    //     active: false,
-    //     openedAt: '6m ago',
-    //     masterTrader: '@you',
-    //     protectionActive: false
-    //   }
-    // },
-    // {
-    //   pair: 'JUP / USDC',
-    //   type: 'BUY',
-    //   mirror: '@ 212k Market Cap',
-    //   entry: '$1.12',
-    //   current: '$1.09',
-    //   allocation: '500.00 JUP',
-    //   pnl: '-$15.00',
-    //   pnlPercent: '-2.6%',
-    //   drawdown: '3.2%',
-    //   tp: '1.45',
-    //   sl: '1.05',
-    //   opened: '6m ago',
-    //   mode: 'master',
-    //   callTrade: {
-    //     active: true,
-    //     openedAt: '6m ago',
-    //     masterTrader: '@you',
-    //     protectionActive: false
-    //   }
-    // }
+    {
+      pair: 'SOL / USDC',
+      type: 'BUY',
+      mirror: '@sol_whale',
+      entry: '$142.20',
+      current: '$148.50',
+      allocation: '2.50 SOL',
+      pnl: '+$15.75',
+      pnlPercent: '+4.4%',
+      drawdown: '0.0%',
+      tp: '160.00',
+      sl: '135.00',
+      opened: '14m ago',
+      mode: 'copier',
+      callTrade: {
+        active: false,
+        openedAt: '14m ago',
+        masterTrader: '@sol_whale',
+        protectionActive: true
+      }
+    },
+    {
+      pair: 'JUP / USDC',
+      type: 'BUY',
+      mirror: ' @alpha_seeker',
+      entry: '$1.12',
+      current: '$1.09',
+      allocation: '500.00 JUP',
+      pnl: '-$15.00',
+      pnlPercent: '-2.6%',
+      drawdown: '3.2%',
+      tp: '1.45',
+      sl: '1.05',
+      opened: '6m ago',
+      mode: 'master',
+      callTrade: {
+        active: false,
+        openedAt: '6m ago',
+        masterTrader: '@you',
+        protectionActive: false
+      }
+    },
+    {
+      pair: 'JUP / USDC',
+      type: 'BUY',
+      mirror: '@ 212k Market Cap',
+      entry: '$1.12',
+      current: '$1.09',
+      allocation: '500.00 JUP',
+      pnl: '-$15.00',
+      pnlPercent: '-2.6%',
+      drawdown: '3.2%',
+      tp: '1.45',
+      sl: '1.05',
+      opened: '6m ago',
+      mode: 'master',
+      callTrade: {
+        active: true,
+        openedAt: '6m ago',
+        masterTrader: '@you',
+        protectionActive: false
+      }
+    }
   ]
 
   const liveTraders: Trader[] = [
