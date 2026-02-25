@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useLiveTradeStore } from './useLiveTradeStore'
 import { ExitPositionModal } from './ExitPositionModal'
-import { useWallet } from '@solana/wallet-adapter-react'
+// import { useWallet } from '@solana/wallet-adapter-react'
+import { useAuthStore } from '../../../../auth/auth.store'
 // import { p } from 'framer-motion/client'
 // import { useTradingModeStore } from './useTradingModeStore'
 type LiveTradeProps = {
@@ -61,7 +62,9 @@ type Position = {
 // )
 
 const LiveTrade: React.FC<LiveTradeProps> = ({ setWalletModal }) => {
-  const { connected } = useWallet()
+  // const { connected } = useWallet()
+  const authenticated = useAuthStore(state => state.authenticated)
+
   const { activeTab, setActiveTab } = useLiveTradeStore()
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
     null
@@ -410,7 +413,7 @@ const LiveTrade: React.FC<LiveTradeProps> = ({ setWalletModal }) => {
       )}
       {activeTab === 'positions' && (
         <>
-          {!connected ? (
+          {!authenticated ? (
             <div className='px-4 md:px-8 space-y-6'>
               {/* Top Stats (still show even if empty) */}
               <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
