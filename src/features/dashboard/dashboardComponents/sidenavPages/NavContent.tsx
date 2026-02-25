@@ -38,7 +38,7 @@
 // src/features/dashboard/dashboardComponents/sidenavPages/NavContent.tsx
 
 import LiveTrade from './Livetrade/LiveTrade'
-import Portfolio from './Portfolio'
+import Portfolio from './Portfolio/Portfolio'
 import Support from './Support'
 import Settings from './Settings'
 import Docs from './Docs'
