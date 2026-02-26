@@ -19,6 +19,7 @@ export const useTradingModeStore = create<TradingModeState>()(
     (set) => ({
       callTrade: false,
       masterMode: false,
+      // TODO: Return this to false after testing
 
       hydrated: false,
 

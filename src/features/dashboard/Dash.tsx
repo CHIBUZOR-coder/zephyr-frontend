@@ -271,7 +271,7 @@ const Dashboard: React.FC = () => {
       {/* Main */}
       <div className='w-full lg:w-[86%]'>
         {/* Top bar */}
-        <div className='sticky top-0 w-full flex items-center justify-between bg-[#101B22] p-2 z-50 '>
+        <div className='sticky top-0 w-full flex items-center justify-between bg-[#101B22] p-2 z-40 '>
           <input
             placeholder='Search traders, tokens, or addresses'
             className='w-1/2 lg:w-1/4 bg-[#102221] px-4 py-2 rounded-lg outline-none placeholder:text-xs'

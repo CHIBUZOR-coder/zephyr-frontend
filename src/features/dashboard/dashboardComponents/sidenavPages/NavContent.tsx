@@ -33,8 +33,6 @@
 //   )
 // }
 
-
-
 // src/features/dashboard/dashboardComponents/sidenavPages/NavContent.tsx
 
 import LiveTrade from './Livetrade/LiveTrade'
@@ -66,13 +64,16 @@ const NAV_VIEWS: React.ElementType[] = [
 export default function NavContent ({ setWalletModal }: NavContentProps) {
   const { activeIndex } = useNavStore()
 
-  const ActiveComponent = NAV_VIEWS[activeIndex] ?? Dashboard
+  const ActiveComponent = NAV_VIEWS[activeIndex]
 
   return (
     <div className='w-full flex flex-col'>
       {activeIndex === 1 ? (
         // Only LiveTrade receives wallet modal
         <LiveTrade setWalletModal={setWalletModal} />
+      ) : activeIndex === 2 ? (
+        // Only Portfolio receives wallet modal
+        <Portfolio setWalletModal={setWalletModal} />
       ) : (
         <ActiveComponent />
       )}

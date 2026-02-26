@@ -39,6 +39,13 @@ export default {
         master: 'rgba(254, 154, 0, 0.1)',
         masterb: 'rgba(254, 154, 0, 0.8)',
         mainetsm: 'rgba(16, 27, 34, 0.3)',
+        earn: 'rgb(254, 154, 0, .1)',
+        earnparent: 'rgb(254, 154, 0, .3)',
+        titer: 'rgb(192, 132, 252, 0.2)',
+        pad: 'rgba(250, 105, 56, 0.2)',
+        pad2: 'rgba(250, 105, 56, 0.3)',
+        padborder: 'rgba(250, 105, 56, 0.5)',
+        padborde2: 'rgba(250, 105, 56, 0.6)'
       }
     }
   },
