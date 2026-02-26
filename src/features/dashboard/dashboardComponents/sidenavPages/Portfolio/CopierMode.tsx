@@ -1,187 +1,36 @@
 import { fmt, fmtSol } from '../../../../../utils/currencyHelpers'
-import type { PinnedVault, Strategy } from './portfolio.types'
+import type {  Strategy } from './portfolio.types'
 interface MasterModeProps {
-  pinnedVaults: PinnedVault[]
+
   activeTab: string
   strategies: Strategy[]
   removeStrategy: (id: string) => void
   setShowModal: (show: boolean) => void
 }
 
-const MasterMode = ({
-  pinnedVaults,
+const CopierMode = ({
+
   strategies,
   removeStrategy,
   setShowModal
 }: MasterModeProps) => {
   return (
     <div>
-      <div className='flex items-center justify-between gap-3 mt-8 mb-3'>
+      {/* <div className='flex items-center justify-between gap-3 mt-8 mb-3'>
         <div className='flex items-center gap-3'>
           <span
             className='bg-center bg-cover w-[20px] h-[20px] inline-block '
             style={{ backgroundImage: `url("/images/badgechek.svg")` }}
           ></span>
           <span className='text-[14px] text-white font-[900] leading-[20px] tracking-[4.2px]'>
-           Master Vault
+            Pinned Master Vault
           </span>
         </div>
         <span className='text-[9px] font-[900] text-[#009883] uppercase'>
           Locked Index
         </span>
       </div>
-      {pinnedVaults.map(vault => (
-        <div className='flex flex-col gap-8'>
-          {/* Connected Copiers */}
-          <div
-            key={vault.id}
-            className='bg-[#102221] border-2 border-[#009883] rounded-2xl p-6 '
-          >
-            {/* <span className='text-[10px] bg-[#0e1c28] border border-[#162030] px-2 py-0.5 rounded text-[#7a9ab0]'>
-  {vault.walletSnippet}
-</span> */}
-            <div className='flex gap-4'>
-              <div>
-                <div className=' p-3 bg-[#0a1414] rounded-2xl flex justify-center items-center'>
-                  <span
-                    className='bg-center bg-cover w-[32px] h-[32px] inline-block '
-                    style={{
-                      backgroundImage: `url("/images/badgechek.svg")`
-                    }}
-                  ></span>
-                </div>
-              </div>
-
-              <div>
-                {/* Top Stats Row */}
-                <div className='flex justify-between items-center gap-8 mb-6'>
-                  {/* Left info */}
-                  <div className='flex items-center gap-8'>
-                    <div className='flex flex-col gap-4'>
-                      <div className='bg-[#0a1414] justify-center rounded-lg flex items-center gap-2 w-[6.5rem] px-2 py-1 '>
-                        <span className='text-[#3c5250] text-[9px] font-[700]'>
-                          3vK1...9pX4
-                        </span>
-                        <span
-                          className='h-[10px] w-[10px] bg-center bg-cover'
-                          style={{
-                            backgroundImage: `url("/images/copy.svg")`
-                          }}
-                        ></span>
-                      </div>
-                      <div className='flex items-center gap-3'>
-                        <span
-                          className='h-[12px] w-[12px] bg-center bg-cover'
-                          style={{
-                            backgroundImage: `url("/images/totalAum.svg")`
-                          }}
-                        ></span>
-                        <p className='text-[10px] font-[900] text-[#009883] uppercase '>
-                          {vault.connectedCopiers}{' '}
-                          <span>Connected Copiers</span>
-                        </p>
-                      </div>
-                      <div className='flex items-center justify-start gap-3  '>
-                        <span
-                          className='h-[12px] w-[12px] bg-center bg-cover'
-                          style={{
-                            backgroundImage: `url("/images/time.svg")`
-                          }}
-                        ></span>
-
-                        <p className='text-[10px] text-[#304947] font-[900]'>
-                          Last execution: {vault.lastExecution}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className='flex flex-col gap-2'>
-                      <p className='text-[10px] text-[#546462] uppercase font-bold'>
-                        Total Balance
-                      </p>
-                      <p className='text-white font-bold text-lg'>
-                        {fmtSol(vault.totalBalanceSol)} SOL
-                      </p>
-                      <p className='text-[#546462] text-[11px] font-[700]'>
-                        {fmt(vault.totalBalanceUsd)}
-                      </p>
-                    </div>
-
-                    <div className='flex flex-col gap-2'>
-                      <p className='text-[10px] text-[#546462] uppercase font-bold'>
-                        Active Positions
-                      </p>
-                      <p className='text-white text-[16px] font-[900]'>
-                        {vault.activePositions}
-                      </p>
-                      <p className='text-[#546462]  text-[11px] font-[700]'>
-                        Master Executing
-                      </p>
-                    </div>
-
-                    <div className='flex flex-col gap-2'>
-                      <p className='text-[9px] text-[#546462] uppercase font-[900]'>
-                        Risk Protection
-                      </p>
-                      <p className='text-white font-bold text-sm'>
-                        SL: {vault.stopLoss ?? 'N/A'}
-                      </p>
-                      <p className='text-[#546462] text-[11px] font-[700]'>
-                        TP: {vault.takeProfit ?? 'N/A'}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Buttons */}
-                  <div className='flex gap-3'>
-                    <button className='border border-[#0a4e45] text-[#009883] rounded-lg px-5 py-2 text-[11px] font-bold tracking-[0.1em] hover:bg-[#00ffa3]/10 transition'>
-                      + DEPOSIT
-                    </button>
-                    <button className='border border-[#0a4e45] text-[#fff] rounded-lg px-5 py-2 text-[11px] font-bold tracking-[0.1em] hover:border-[#2e4050] hover:bg-[#00ffa3]/10 transition'>
-                      − WITHDRAW
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Earnings Section */}
-          <div className='flex justify-between items-center bg-[#102221] border-[1.2px] border-[#18312b] rounded-xl p-5'>
-            <div className='flex items-center gap-5'>
-              <div className='border-[1.5px] bg-earn border-earnparent p-3 rounded-2xl'>
-                <span
-                  style={{ backgroundImage: `url("/images/dollar.svg")` }}
-                  className='bg-cover bg-center w-[40px] h-[40px] inline-block'
-                ></span>
-              </div>
-              <div>
-                <p className='text-[10px] text-[#FE9A00] tracking-[0.15em] uppercase font-bold'>
-                  Earning Performance Fees
-                </p>
-                <p className='text-white text-[24px] font-[900]'>
-                  {vault.availableFeesSol} SOL Available
-                </p>
-                <div className='flex items-center gap-2'>
-                  <p className='text-[10px] text-[#546462] font-[900]'>
-                    Historical Claimed: {vault.historicalClaimedSol} SOL
-                  </p>
-                  <span className='text-[8px] bg-[#2a1140] text-[#c084fc] border border-titer px-2 py-0.5 rounded font-[900] italic'>
-                    {vault.tier}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <button className='bg-[#FE9A00]     shadow-[0_6px_12px_rgba(254,154,0,0.6)] px-8 py-3 rounded-xl hover:brightness-110 transition flex items-center gap-2'>
-              <span className='text-black font-[900]  tracking-[0.15em] ' >CLAIM EARNING FEES</span>
-              <span
-                style={{ backgroundImage: `url("/images/claim.svg")` }}
-                className='bg-cover bg-center w-[20px] h-[20px] inline-block'
-              ></span>
-            </button>
-          </div>
-        </div>
-      ))}
+     */}
 
       <div className='mt-10'>
         {/*
@@ -388,4 +237,4 @@ const MasterMode = ({
   )
 }
 
-export default MasterMode
+export default CopierMode

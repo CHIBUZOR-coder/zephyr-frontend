@@ -5,6 +5,7 @@ import { fmt, fmtCompactCurrency } from '../../../../../utils/currencyHelpers'
 import MasterMode from './MasterMode'
 import { useTradingModeStore } from '../../../useTradingModeStore'
 import { useWallet } from '@solana/wallet-adapter-react'
+import CopierMode from './CopierMode'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -320,7 +321,14 @@ export default function Portfolio ({
                     />
                   </>
                 ) : (
-                  <p>Copier mode</p>
+                  <>
+                    <CopierMode
+                      activeTab={activeTab}
+                      strategies={strategies}
+                      removeStrategy={removeStrategy}
+                      setShowModal={setShowModal}
+                    />
+                  </>
                 )}
               </>
             ) : (
