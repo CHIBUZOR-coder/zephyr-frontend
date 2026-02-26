@@ -249,7 +249,15 @@ export default function Portfolio ({
         <div className='flex items-center gap-10'>
           {stats &&
             stats.map((item, i) => (
-              <div key={i} className='flex flex-col gap-1'>
+              <div
+                key={i}
+                className={`flex flex-col gap-1 ${
+                  (!masterMode && item.tittle === 'Total AUM') ||
+                  (!masterMode && item.tittle === 'Claimable Fees')
+                    ? 'hidden'
+                    : ''
+                }`}
+              >
                 <div className='flex items-center gap-1'>
                   <span
                     className='bg-center bg-cover h-[12px] w-[12px]'

@@ -22,7 +22,7 @@ const MasterMode = ({
             className='bg-center bg-cover w-[20px] h-[20px] inline-block '
             style={{ backgroundImage: `url("/images/badgechek.svg")` }}
           ></span>
-          <span className='text-[14px] text-white font-[900] leading-[20px] tracking-[4.2px]'>
+          <span className='text-[14px] text-white font-[900] leading-[20px] tracking-[4.2px] uppercase'>
            Master Vault
           </span>
         </div>
