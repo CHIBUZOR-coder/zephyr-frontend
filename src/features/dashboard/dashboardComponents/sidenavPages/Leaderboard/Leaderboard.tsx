@@ -9,8 +9,10 @@ import {
   AreaChart
 } from 'recharts'
 import React, { useState } from 'react'
+import { useGeneralContext } from '../../../../../Context/GeneralContext'
 
 const Leaderboard: React.FC = () => {
+  const { openVaultFlow } = useGeneralContext()
   const performanceData = [
     { date: 'Day 1', roi: 0 },
     { date: 'Day 3', roi: 8 },
@@ -30,6 +32,7 @@ const Leaderboard: React.FC = () => {
       rank: 1,
       name: 'Stableking',
       tag: 'Verified Alpha',
+      image: '',
       tiers: 'Verified Alpha',
       type: 'PRO',
       pnl: '+18.2%',
@@ -37,13 +40,17 @@ const Leaderboard: React.FC = () => {
       winRate: '88.5%',
       drawdown: '-4.2%',
       trades: 155,
-      copiers: 315
+      copiers: 315,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 2,
       rank: 2,
       name: 'AlphaPrime',
       tag: 'Institutional',
+      image: '',
       type: 'PRO',
       tiers: 'PRO',
       pnl: '+142.9%',
@@ -51,13 +58,17 @@ const Leaderboard: React.FC = () => {
       winRate: '70.4%',
       drawdown: '-12.2%',
       trades: 128,
-      copiers: 840
+      copiers: 840,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 3,
       rank: 3,
       name: 'SolWhale',
       tag: 'Elite',
+      image: '',
       tiers: 'Legendary',
       type: 'PRO',
       pnl: '+98.2%',
@@ -65,13 +76,17 @@ const Leaderboard: React.FC = () => {
       winRate: '72.1%',
       drawdown: '-19.9%',
       trades: 612,
-      copiers: 412
+      copiers: 412,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 4,
       rank: 4,
       name: 'RiskManaged',
       tag: 'Elite',
+      image: '',
       tiers: 'Legendary',
       type: 'PRO',
       pnl: '+34.3%',
@@ -79,13 +94,17 @@ const Leaderboard: React.FC = () => {
       winRate: '71.8%',
       drawdown: '-14.2%',
       trades: 189,
-      copiers: 128
+      copiers: 128,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 5,
       rank: 5,
       name: 'CryptoFlow',
       tag: 'Community',
+      image: '',
       tiers: 'Community',
       type: 'PRO',
       pnl: '+28.5%',
@@ -93,13 +112,17 @@ const Leaderboard: React.FC = () => {
       winRate: '74.2%',
       drawdown: '-8.6%',
       trades: 97,
-      copiers: 80
+      copiers: 80,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 6,
       rank: 6,
       name: 'ZenTrade',
       tag: 'Verified Alpha',
+      image: '',
       tiers: 'Verified Alpha',
       type: 'PRO',
       pnl: '+66.4%',
@@ -107,13 +130,17 @@ const Leaderboard: React.FC = () => {
       winRate: '68.9%',
       drawdown: '-18.2%',
       trades: 425,
-      copiers: 238
+      copiers: 238,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 7,
       rank: 7,
       name: 'DefiSage',
       tag: 'Verified Alpha',
+      image: '',
       tiers: 'Proven Caller',
       type: 'PRO',
       pnl: '+42.1%',
@@ -121,13 +148,17 @@ const Leaderboard: React.FC = () => {
       winRate: '64.2%',
       drawdown: '-22.1%',
       trades: 275,
-      copiers: 162
+      copiers: 162,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 8,
       rank: 8,
       name: 'TrendFollower',
       tag: 'Rising',
+      image: '',
       tiers: 'Rising',
       type: 'PRO',
       pnl: '+55.2%',
@@ -135,13 +166,17 @@ const Leaderboard: React.FC = () => {
       winRate: '62.1%',
       drawdown: '-25.4%',
       trades: 142,
-      copiers: 34
+      copiers: 34,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 9,
       rank: 9,
       name: 'MoonShot',
       tag: 'Rising',
+      image: '',
       tiers: 'Alpha Caller',
       type: 'PRO',
       pnl: '+112.8%',
@@ -149,13 +184,17 @@ const Leaderboard: React.FC = () => {
       winRate: '58.7%',
       drawdown: '-35.4%',
       trades: 94,
-      copiers: 89
+      copiers: 89,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     },
     {
       id: 10,
       rank: 10,
       name: 'ApeMaster',
       tag: 'Community',
+      image: '',
       tiers: 'Elite Alpha',
       type: 'PRO',
       pnl: '+84.2%',
@@ -163,7 +202,10 @@ const Leaderboard: React.FC = () => {
       winRate: '52.4%',
       drawdown: '-42.1%',
       trades: 32,
-      copiers: 42
+      copiers: 42,
+      rio: 112.4,
+      follows: 840,
+      sol: '2,810'
     }
   ]
 
@@ -368,7 +410,10 @@ const Leaderboard: React.FC = () => {
                   <td className='pdd'>{trader.trades}</td>
                   <td className='pdd'>{trader.copiers}</td>
                   <td className='pdd'>
-                    <button className='bg-[#19d3c5] text-white hover:opacity-90 transition text-[10px] font-[900] px-3 py-1 rounded-lg'>
+                    <button
+                      onClick={() => openVaultFlow(1, trader)}
+                      className='bg-[#19d3c5] text-white hover:opacity-90 transition text-[10px] font-[900] px-3 py-1 rounded-lg'
+                    >
                       Copy
                     </button>
                   </td>

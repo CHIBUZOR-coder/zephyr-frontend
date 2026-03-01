@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { Trader } from '../shared/components/Modals/modal.types'
+import type { Trader } from '../features/dashboard/dashboardComponents/sidenavPages/Leaderboard/leaderboar.types'
+
 
 /* ------------------------------------------------ */
 /* TYPES */

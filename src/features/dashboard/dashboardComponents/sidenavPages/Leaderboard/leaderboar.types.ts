@@ -1,14 +1,33 @@
-export interface Trader {
+// export interface Trader {
+//   id: number;
+//   rank: number;
+//   name: string;
+//   tag: string;
+//   tiers: string;
+//   type: string;
+//   pnl: string;
+//   aum: string;
+//   winRate: string;
+//   drawdown: string;
+//   trades: number;
+//   copiers: number;
+// }
+
+export type Trader = {
   id: number;
   rank: number;
   name: string;
+  image: string;
   tag: string;
   tiers: string;
-  type: string;
+  type: "PRO" | "STANDARD" | "ELITE";
   pnl: string;
   aum: string;
   winRate: string;
   drawdown: string;
   trades: number;
   copiers: number;
-}
+  rio: number; // ← added
+  follows: number; // ← added
+  sol: string; // ← added
+};

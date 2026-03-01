@@ -9,50 +9,142 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { useState } from 'react'
 import { useGeneralContext } from '../../../../../Context/GeneralContext'
+import type { Trader } from '../Leaderboard/leaderboar.types'
 
 type TimeRange = 'ALL' | '24H' | '7D' | '30D'
 type SortDir = 'asc' | 'desc'
 
 const DashboardView = () => {
   const { openVaultFlow } = useGeneralContext()
-
-  const leaders = [
-    {
-      name: 'AlphaSeeker',
-      imag: '/images/img2.png',
-      rio: 112.4,
-      follows: 840,
-      sol: '2,810'
-    },
-    {
-      name: 'Degenerate',
-      imag: '/images/img3.png',
-      rio: 89.2,
-      follows: 3.1,
-      sol: '3,010'
-    },
-    {
-      name: 'SolWhale',
-      imag: '/images/img1.png',
-      rio: 245.8,
-      follows: 1.2,
-      sol: '1,120'
-    },
-    {
-      name: 'AlphaSeeker',
-      imag: '/images/img2.png',
-      rio: 112.4,
-      follows: 840,
-      sol: '1,750'
-    },
-    {
-      name: 'Degenerate',
-      imag: '/images/img3.png',
-      rio: 89.2,
-      follows: 3.1,
-      sol: '2,450'
-    }
-  ]
+  // FIXME: Make the leaderboard types use the types from leaderboad.types.ts
+const leaders: Trader[] = [
+  {
+    id: 1,
+    rank: 1,
+    name: 'AlphaSeeker',
+    image: '/images/img2.png', // ← was imag
+    tag: 'Verified Alpha',
+    tiers: 'Verified Alpha',
+    type: 'PRO',
+    rio: 112.4,
+    pnl: '+12.4%',
+    winRate: '78%',
+    drawdown: '5%',
+    trades: 120,
+    follows: 840,
+    sol: '2,810',
+    aum: '$2.81M',
+    copiers: 840
+  },
+  {
+    id: 2,
+    rank: 2,
+    name: 'Degenerate',
+    image: '/images/img3.png',
+    tag: 'Community',
+    tiers: 'Community',
+    type: 'PRO',
+    rio: 89.2,
+    pnl: '+8.9%',
+    winRate: '64%',
+    drawdown: '10%',
+    trades: 95,
+    follows: 3100,
+    sol: '3,010',
+    aum: '$3.01M',
+    copiers: 310
+  },
+  {
+    id: 3,
+    rank: 3,
+    name: 'SolWhale',
+    image: '/images/img1.png',
+    tag: 'Elite',
+    tiers: 'Legendary',
+    type: 'PRO',
+    rio: 245.8,
+    pnl: '+24.5%',
+    winRate: '82%',
+    drawdown: '3%',
+    trades: 180,
+    follows: 1200,
+    sol: '1,120',
+    aum: '$1.12M',
+    copiers: 412
+  },
+  {
+    id: 4,
+    rank: 4,
+    name: 'AlphaSeeker',
+    image: '/images/img2.png',
+    tag: 'Verified Alpha',
+    tiers: 'Verified Alpha',
+    type: 'PRO',
+    rio: 112.4,
+    pnl: '+11.0%',
+    winRate: '75%',
+    drawdown: '6%',
+    trades: 110,
+    follows: 840,
+    sol: '1,750',
+    aum: '$1.75M',
+    copiers: 840
+  },
+  {
+    id: 5,
+    rank: 5,
+    name: 'Degenerate',
+    image: '/images/img3.png',
+    tag: 'Community',
+    tiers: 'Community',
+    type: 'PRO',
+    rio: 89.2,
+    pnl: '+7.5%',
+    winRate: '60%',
+    drawdown: '12%',
+    trades: 88,
+    follows: 3100,
+    sol: '2,450',
+    aum: '$2.45M',
+    copiers: 310
+  },
+  {
+    id: 6,
+    rank: 6,
+    name: 'CryptoNinja',
+    image: '/images/img4.png',
+    tag: 'Verified Alpha',
+    tiers: 'Verified Alpha',
+    type: 'PRO',
+    rio: 132.7,
+    pnl: '+13.2%',
+    winRate: '79%',
+    drawdown: '4%',
+    trades: 150,
+    follows: 980,
+    sol: '2,320',
+    aum: '$2.32M',
+    copiers: 980
+  },
+  {
+    id: 7,
+    rank: 7,
+    name: 'MoonRider',
+    image: '/images/img5.png',
+    tag: 'Rising',
+    tiers: 'Rising',
+    type: 'PRO',
+    rio: 54.3,
+    pnl: '+5.4%',
+    winRate: '50%',
+    drawdown: '15%',
+    trades: 40,
+    follows: 560,
+    sol: '1,850',
+    aum: '$1.85M',
+    copiers: 560
+  }
+]
 
   const [search, setSearch] = useState('')
   const [range, setRange] = useState<TimeRange>('ALL')
@@ -279,7 +371,7 @@ const DashboardView = () => {
                   >
                     <div
                       className='h-80 lg:h-44 w-full flex flex-col justify-end p-4 bg-center bg-cover relative'
-                      style={{ backgroundImage: `url(${item.imag})` }}
+                      style={{ backgroundImage: `url(${item.image})` }}
                     >
                       <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-lead to-transparent'></div>
                       <div className='relative z-10'>
@@ -333,7 +425,7 @@ const DashboardView = () => {
                       <div className='flex justify-between gap-4'>
                         <div
                           className='bg-center bg-cover h-10 w-10 rounded-md'
-                          style={{ backgroundImage: `url(${item.imag})` }}
+                          style={{ backgroundImage: `url(${item.image})` }}
                         ></div>
                         <div>
                           <span className='text-[10.5px] font-[700] text-white'>
