@@ -1,7 +1,6 @@
 import { fmt, fmtSol } from '../../../../../utils/currencyHelpers'
-import type {  Strategy } from './portfolio.types'
+import type { Strategy } from './portfolio.types'
 interface MasterModeProps {
-
   activeTab: string
   strategies: Strategy[]
   removeStrategy: (id: string) => void
@@ -9,7 +8,6 @@ interface MasterModeProps {
 }
 
 const CopierMode = ({
-
   strategies,
   removeStrategy,
   setShowModal
@@ -39,7 +37,6 @@ const CopierMode = ({
               To add a strategy: fill in the modal → onAdd appends to the array.
               To remove one: "STOP COPY" calls removeStrategy which filters it out.
             */}
-
         <div className='flex items-center gap-4'>
           <span
             className='h-[20px] w-[20px]'
@@ -49,6 +46,7 @@ const CopierMode = ({
             Strategy Mirroring Vaults
           </p>
         </div>
+        
         <div className='flex flex-col gap-4 mt-5'>
           {strategies.map(strategy => {
             const pnlPos = strategy.unrealizedPnlUsd >= 0
@@ -61,7 +59,7 @@ const CopierMode = ({
                 {/* Card body */}
                 <div className='flex items-center justify-between  py-5  w-full'>
                   {/* ── Left: icon + name + meta ── */}
-                  <div className='flex items-center gap-4 min-w-[230px]'>
+                  <div className='flex items-center gap-2 min-w-[230px] '>
                     {/* Icon box */}
                     <div className='rounded-lg bg-[#0a1414] p-2 flex justify-center items-center'>
                       <span
@@ -110,7 +108,7 @@ const CopierMode = ({
                   </div>
 
                   {/* ── Middle: stats ── */}
-                  <div className='flex items-start gap-10'>
+                  <div className='flex items-start gap-10  w-[35%]'>
                     {/* Balance */}
                     <div className='flex flex-col gap-0.5'>
                       <span className='text-[9px] text-[#546462] tracking-[0.18em] uppercase font-[900] mb-0.5'>
@@ -161,7 +159,7 @@ const CopierMode = ({
 
                   {/* ── Right: action buttons ── */}
                   <div className='flex items-center gap-2'>
-                    <button className='border border-[#1f4d47]  rounded-lg px-4 py-[5px]    cursor-pointer hover:bg-[#1f4d47]/10 hover:border-[#1f4d47]/70 transition-colors bg-transparent flex items-center gap-1.5 text-[#009883] text-[10px] font-bold tracking-[0.1em]'>
+                    <button className='border border-[#1f4d47]  rounded-lg px-2 py-[5px]    cursor-pointer hover:bg-[#1f4d47]/10 hover:border-[#1f4d47]/70 transition-colors bg-transparent flex items-center gap-1.5 text-[#009883] text-[10px] font-bold tracking-[0.1em]'>
                       <span
                         className='h-[10px] w-[10px] inline-block bg-center bg-cover'
                         style={{
@@ -172,7 +170,7 @@ const CopierMode = ({
                         DEPOSIT
                       </span>
                     </button>
-                    <button className='border border-[#1f4d47]  rounded-lg px-4 py-[5px]    cursor-pointer hover:bg-[#1f4d47]/10 hover:border-[#1f4d47]/70 transition-colors bg-transparent flex items-center gap-1.5 text-[#009883] text-[10px] font-bold tracking-[0.1em]'>
+                    <button className='border border-[#1f4d47]  rounded-lg px-2 py-[5px]    cursor-pointer hover:bg-[#1f4d47]/10 hover:border-[#1f4d47]/70 transition-colors bg-transparent flex items-center gap-1.5 text-[#009883] text-[10px] font-bold tracking-[0.1em]'>
                       <span
                         className='h-[10px] w-[10px] inline-block bg-center bg-cover'
                         style={{
@@ -185,7 +183,7 @@ const CopierMode = ({
                     </button>
                     <button
                       onClick={() => removeStrategy(strategy.id)}
-                      className='border bg-pad border-padborder  rounded-lg px-4 py-[5px]  cursor-pointer hover:bg-pad2 hover:border-padborde2 transition-colors flex items-center gap-1.5   tracking-[0.1em]'
+                      className='border bg-pad border-padborder  rounded-lg px-2 py-[5px]  cursor-pointer hover:bg-pad2 hover:border-padborde2 transition-colors flex items-center gap-1.5   tracking-[0.1em]'
                     >
                       <span
                         className='h-[10px] w-[10px] inline-block bg-center bg-cover'
@@ -219,7 +217,7 @@ const CopierMode = ({
           </span>
         </button>
       </div>
-
+      {/* 
       <div className='flex justify-center items-center gap-3 mt-10'>
         <span
           className='h-[14px] w-[14px] inline-block bg-center bg-cover'
@@ -232,7 +230,7 @@ const CopierMode = ({
           All assets remain in your control via Vault PDAs • No counterparty
           risk • Verify on Solscan
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }

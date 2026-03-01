@@ -7,7 +7,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   margin: 0;
 }
@@ -106,4 +105,12 @@ body {
 
 .row {
   @apply bg-[#00000033];
+}
+
+.thh {
+  @apply px-4 py-2 text-left;
+}
+
+.pdd {
+  @apply px-4 py-2;
 }

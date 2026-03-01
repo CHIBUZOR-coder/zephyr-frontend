@@ -109,7 +109,7 @@ export const CustomWalletModal = ({ open, onClose }: Props) => {
                       />
 
                       <div className='flex flex-col items-start'>
-                        <span className='text-[11px] font-semibold'>
+                        <span className='text-[11px] font-semibold text-white'>
                           {wallet.adapter.name}
                         </span>
 

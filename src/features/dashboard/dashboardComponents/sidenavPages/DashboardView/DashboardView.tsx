@@ -8,11 +8,14 @@ import 'swiper/css/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import { useState } from 'react'
+import { useGeneralContext } from '../../../../../Context/GeneralContext'
 
 type TimeRange = 'ALL' | '24H' | '7D' | '30D'
 type SortDir = 'asc' | 'desc'
 
 const DashboardView = () => {
+  const { openVaultFlow } = useGeneralContext()
+
   const leaders = [
     {
       name: 'AlphaSeeker',
@@ -227,13 +230,15 @@ const DashboardView = () => {
                 key={i}
                 className='bg-[#0f1a18] border-[1px] border-[#23483B] rounded-md p-4 flex flex-col gap-2'
               >
-                <span className='text-xs text-gray-400'>{title}</span>
-                <span className='text-xl font-semibold'>
+                <span className='text-xs text-[#B0E4DD]'>{title}</span>
+                <span className='text-xl font-semibold text-white'>
                   {i === 0 && '$142.50'}
                   {i === 1 && '$4.21B'}
                   {i === 2 && '$BONK'}
                 </span>
-                <span className='text-xs text-green-400'>+12.4% 24h</span>
+                <span className='text-xs text-green-400'>
+                  +12.4% <span className='text-white'>24h</span>
+                </span>
               </div>
             ))}
           </div>
@@ -242,7 +247,9 @@ const DashboardView = () => {
         {/* Content grid */}
         <section className='w-full mt-10'>
           <div className='w-full'>
-            <h3 className='font-semibold'>Top Traders Leaderboard</h3>
+            <h3 className='font-semibold text-white'>
+              Top Traders Leaderboard
+            </h3>
             <div className='flex flex-col gap-8 mt-4'>
               <Swiper
                 modules={[Navigation, Autoplay]}
@@ -259,10 +266,10 @@ const DashboardView = () => {
                 className='w-full relative px-3'
               >
                 <button className='flex justify-center items-center swiper-prev bg-swipnav border-[1.5px] border-[#23483B] z-30 rounded-full absolute top-1/2 left-5'>
-                  <MdKeyboardArrowLeft className='h-6 w-6' />
+                  <MdKeyboardArrowLeft className='h-6 w-6 text-white' />
                 </button>
                 <button className='flex justify-center items-center swiper-next bg-swipnav border-[1.5px] border-[#23483B] z-30 rounded-full absolute top-1/2 right-5'>
-                  <MdKeyboardArrowRight className='h-6 w-6' />
+                  <MdKeyboardArrowRight className='h-6 w-6 text-white' />
                 </button>
 
                 {leaders.map((item, i) => (
@@ -276,7 +283,7 @@ const DashboardView = () => {
                     >
                       <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-lead to-transparent'></div>
                       <div className='relative z-10'>
-                        <span className='text-sm font-medium text-[12px]'>
+                        <span className='text-sm font-medium text-[12px] text-white'>
                           @{item.name}
                         </span>
                         <p className='text-[10px] font-[900] text-[#22C55E]'>
@@ -290,7 +297,10 @@ const DashboardView = () => {
                           <p className='text-[#B0E4DD] text-[9px] font-[400]'>
                             Win Rate: 78%
                           </p>
-                          <button className='bg-teal-500 px-3 py-2 rounded text-xs text-white border border-transparent hover:border-teal-500 hover:text-teal-500 hover:bg-transparent transition ease-in-out duration-500 cursor-pointer'>
+                          <button
+                            onClick={() => openVaultFlow(1, item)}
+                            className='bg-teal-500 px-3 py-2 rounded text-xs text-white border border-transparent hover:border-teal-500 hover:text-teal-500 hover:bg-transparent transition ease-in-out duration-500 cursor-pointer'
+                          >
                             Copy
                           </button>
                         </div>
@@ -311,7 +321,9 @@ const DashboardView = () => {
 
               {/* Hot Performers */}
               <div className='bg-[#0f1a18] rounded-xl w-full py-4 mt-6 md:mt-auto'>
-                <h4 className='text-[15px] font-[700] px-4'>Hot Performers</h4>
+                <h4 className='text-[15px] font-[700] px-4 text-white'>
+                  Hot Performers
+                </h4>
                 <div className='mt-4 h-[295px] overflow-y-auto scrollbar-hide'>
                   {leaders.map((item, i) => (
                     <div
@@ -324,7 +336,7 @@ const DashboardView = () => {
                           style={{ backgroundImage: `url(${item.imag})` }}
                         ></div>
                         <div>
-                          <span className='text-[10.5px] font-[700]'>
+                          <span className='text-[10.5px] font-[700] text-white'>
                             @{item.name}
                           </span>
                           <p className='text-[#B0E4DD] text-[9px] font-[400]'>
@@ -364,7 +376,9 @@ const DashboardView = () => {
 
         <div className='flex flex-col gap-4 mt-4'>
           <div className='bg-[#0f1a18] border-[1px] border-[#23483B]  rounded-xl'>
-            <h4 className='p-4 text-sm font-semibold mb-3'>Top X Trades</h4>
+            <h4 className='p-4 text-sm font-semibold mb-3 text-white'>
+              Top X Trades
+            </h4>
 
             {firstCall.slice(0, 3).map((item, i) => (
               <div className='' key={i}>
@@ -380,7 +394,9 @@ const DashboardView = () => {
                     ></div>
 
                     <div>
-                      <p className='text-[11px] font-bold'>{item.name}</p>
+                      <p className='text-[11px] font-bold text-white'>
+                        {item.name}
+                      </p>
                       <p className='text-[9px] text-[#B0E4DD]'>{item.text}x</p>
                     </div>
                   </div>
@@ -396,7 +412,9 @@ const DashboardView = () => {
                     </div>
 
                     <div className='flex  gap-2 justify-between items-center'>
-                      <p className='text-[9px] font-bold'>{item.person}</p>
+                      <p className='text-[9px] font-bold text-white'>
+                        {item.person}
+                      </p>
                       <div
                         className={`${
                           item.titer === 'community'
@@ -444,7 +462,7 @@ const DashboardView = () => {
                         <p className='text-[#6f9f97] text-[8px]'>
                           Market Cap at Call
                         </p>
-                        <p className='font-bold'>${item.cap}k</p>
+                        <p className='font-bold text-white'>${item.cap}k</p>
                       </div>
 
                       <div>
@@ -487,7 +505,9 @@ const DashboardView = () => {
           {/* Social Feeds */}
           <div className='mt-10'>
             <div className='flex gap-2 items-center px-4'>
-              <h4 className='text-[15px] font-[700]  '>Social Feed</h4>
+              <h4 className='text-[15px] font-[700] text-white '>
+                Social Feed
+              </h4>
               <p className='w-[6px] h-[6px] rounded-full bg-[#22C55E] animate-pulse'></p>
             </div>
             <div className=' bg-[#0f1a18] rounded-xl'>
@@ -563,7 +583,7 @@ const DashboardView = () => {
                                 className='bg-center bg-cover h-[12px] w-[15px] cursor-pointer'
                               ></span>
 
-                              <span className='text-[8.5px] font-[400]'>
+                              <span className='text-[8.5px] font-[400] text-white'>
                                 {item.likes}
                               </span>
                             </div>
@@ -575,7 +595,7 @@ const DashboardView = () => {
                                 className='bg-center bg-cover h-[12px] w-[15px] cursor-pointer'
                               ></span>
 
-                              <span className='text-[8.5px] font-[400]'>
+                              <span className='text-[8.5px] font-[400] text-white'>
                                 {item.comment}
                               </span>
                             </div>
@@ -625,7 +645,7 @@ const DashboardView = () => {
                                 className='bg-center bg-cover h-[12px] w-[15px] cursor-pointer'
                               ></span>
 
-                              <span className='text-[8.5px] font-[400]'>
+                              <span className='text-[8.5px] font-[400] text-white'>
                                 {item.likes}
                               </span>
                             </div>
@@ -637,7 +657,7 @@ const DashboardView = () => {
                                 className='bg-center bg-cover h-[12px] w-[15px] cursor-pointer'
                               ></span>
 
-                              <span className='text-[8.5px] font-[400]'>
+                              <span className='text-[8.5px] font-[400] text-white'>
                                 {item.comment}
                               </span>
                             </div>
@@ -697,7 +717,7 @@ const DashboardView = () => {
                                 className='bg-center bg-cover h-[12px] w-[15px] cursor-pointer'
                               ></span>
 
-                              <span className='text-[8.5px] font-[400]'>
+                              <span className='text-[8.5px] font-[400] text-white'>
                                 {item.likes}
                               </span>
                             </div>
@@ -709,7 +729,7 @@ const DashboardView = () => {
                                 className='bg-center bg-cover h-[12px] w-[15px] cursor-pointer'
                               ></span>
 
-                              <span className='text-[8.5px] font-[400]'>
+                              <span className='text-[8.5px] font-[400] text-white'>
                                 {item.comment}
                               </span>
                             </div>
@@ -772,7 +792,7 @@ const DashboardView = () => {
                 {/* HEADER */}
                 <div className='flex items-start justify-between border-b border-[#23483B] p-6'>
                   <div>
-                    <h3 className='text-lg font-bold'>
+                    <h3 className='text-lg font-bold text-white'>
                       Full Performance Leaderboard
                     </h3>
                     <p className='text-xs text-[#6f9f97]'>
@@ -870,7 +890,9 @@ const DashboardView = () => {
                           ></div>
 
                           <div>
-                            <p className='text-[11px] font-bold'>{item.name}</p>
+                            <p className='text-[11px] font-bold text-white'>
+                              {item.name}
+                            </p>
                             <p className='text-[9px] text-[#B0E4DD]'>
                               {item.text}
                             </p>
@@ -887,9 +909,11 @@ const DashboardView = () => {
                             </p>
                           </div>
 
-                          <p className='font-[700] text-[9px]'>{item.time}</p>
+                          <p className='font-[700] text-[9px] text-white'>
+                            {item.time}
+                          </p>
                           <div className='flex  gap-2 justify-between items-center'>
-                            <p className='text-[9px] font-bold'>
+                            <p className='text-[9px] font-bold text-white'>
                               {item.person}
                             </p>
                             <div
@@ -920,7 +944,7 @@ const DashboardView = () => {
                             <p className='text-[9px] font-[500] text-[#B0E4DD80]'>
                               DATE
                             </p>
-                            <p className='text-[11px] font-[700]'>
+                            <p className='text-[11px] font-[700] text-white'>
                               {item.date}
                             </p>
                           </div>
@@ -958,7 +982,7 @@ const DashboardView = () => {
                                       <p className='text-[#6f9f97] text-[8px]  uppercase'>
                                         Market Cap at Call
                                       </p>
-                                      <p className='font-[700] text-[10px] '>
+                                      <p className='font-[700] text-[10px] text-white '>
                                         ${item.cap}k
                                       </p>
                                     </div>

@@ -2,12 +2,10 @@ import { useState } from 'react'
 import { useLiveTradeStore } from './useLiveTradeStore'
 import { ExitPositionModal } from './ExitPositionModal'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { useGeneralContext } from '../../../../../Context/GeneralContext'
 // import { useAuthStore } from '../../../../auth/auth.store'
 // import { p } from 'framer-motion/client'
 // import { useTradingModeStore } from './useTradingModeStore'
-type LiveTradeProps = {
-  setWalletModal: (open: boolean) => void
-}
 
 type Stat = {
   label: string
@@ -61,9 +59,9 @@ type Position = {
 //   ...positions.map(pos => parseFloat(pos.drawdown))
 // )
 
-const LiveTrade: React.FC<LiveTradeProps> = ({ setWalletModal }) => {
+const LiveTrade = () => {
   const { connected } = useWallet()
-
+  const { setWalletModal } = useGeneralContext()
   // const authenticated = useAuthStore(state => state.authenticated)
 
   const { activeTab, setActiveTab } = useLiveTradeStore()

@@ -37,11 +37,11 @@
 
 import LiveTrade from './Livetrade/LiveTrade'
 import Portfolio from './Portfolio/Portfolio'
-import Support from './Support'
-import Settings from './Settings'
-import Docs from './Docs'
-import Leaderboard from './Leaderboard'
-import Dashboard from './DashboardView'
+import Support from './Support/Support'
+import Settings from './Settings/Settings'
+import Docs from './Docs/Docs'
+import Leaderboard from './Leaderboard/Leaderboard'
+import Dashboard from './DashboardView/DashboardView'
 
 import { useNavStore } from '../../useNavStore'
 import React from 'react'
@@ -67,7 +67,7 @@ export default function NavContent ({ setWalletModal }: NavContentProps) {
   const ActiveComponent = NAV_VIEWS[activeIndex]
 
   return (
-    <div className='w-full flex flex-col'>
+    <div className='w-full flex flex-col '>
       {activeIndex === 1 ? (
         // Only LiveTrade receives wallet modal
         <LiveTrade setWalletModal={setWalletModal} />

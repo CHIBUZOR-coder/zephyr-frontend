@@ -6,6 +6,7 @@ import MasterMode from './MasterMode'
 import { useTradingModeStore } from '../../../useTradingModeStore'
 import { useWallet } from '@solana/wallet-adapter-react'
 import CopierMode from './CopierMode'
+import { useGeneralContext } from '../../../../../Context/GeneralContext'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -179,12 +180,9 @@ function AddStrategyModal ({ onClose, onAdd }: AddModalProps) {
 
 // ─── Portfolio ────────────────────────────────────────────────────────────────
 
-export default function Portfolio ({
-  setWalletModal
-}: {
-  setWalletModal: (open: boolean) => void
-}) {
+export default function Portfolio () {
   const { connected } = useWallet()
+  const { setWalletModal } = useGeneralContext()
 
   const [strategies, setStrategies] = useState<Strategy[]>(INITIAL_STRATEGIES)
   const [activeTab, setActiveTab] = useState<'vaults' | 'activity'>('vaults')
@@ -233,12 +231,70 @@ export default function Portfolio ({
     }
   ]
 
+  interface VaultActivityItem {
+    id: string
+    type: string
+    time: string
+    token: string
+    amount: string
+    status: 'success'
+    tx: string
+  }
+
+  const activities: VaultActivityItem[] = [
+    {
+      id: '1',
+      type: 'EXECUTION',
+      time: '12m ago',
+      token: 'SOL',
+      amount: '+2.50',
+      status: 'success',
+      tx: '5K2b...9ZL1'
+    },
+    {
+      id: '2',
+      type: 'DEPOSIT',
+      time: '1h ago',
+      token: 'USDC',
+      amount: '500.00',
+      status: 'success',
+      tx: '2A7x...4mP9'
+    },
+    {
+      id: '3',
+      type: 'TP EXECUTION',
+      time: '3h ago',
+      token: 'JUP',
+      amount: '+1,200',
+      status: 'success',
+      tx: '9L1v...2qW8'
+    },
+    {
+      id: '4',
+      type: 'FEE CLAIM',
+      time: '1d ago',
+      token: 'SOL',
+      amount: '0.42',
+      status: 'success',
+      tx: '3Hsb...7fR4'
+    },
+    {
+      id: '5',
+      type: 'WITHDRAWAL',
+      time: '2d ago',
+      token: 'SOL',
+      amount: '-15.00',
+      status: 'success',
+      tx: '1V9x...6mP2'
+    }
+  ]
+
   return (
     <div className='min-h-screen   '>
       {/* ── Header ── */}
-      <header className='flex bg-[#091114] justify-between items-center px-10 py-7 border-b border-[#111d27]'>
+      <header className='flex  flex-col lg:flex-row bg-[#091114] justify-between items-center px-2 lg:px-10 py-7 border-b border-[#111d27] gap-4 lg:gap-0'>
         {/* Left: title */}
-        <div>
+        <div className='w-full lg:w-auto'>
           <p className='text-[32px] font-[900]  text-white  m-0'>PORTFOLIO</p>
           <p className='text-[13px] font-[500] text-[#5c7a78] tracking-wide mt-1 m-0'>
             Financial control center for non-custodial assets.
@@ -246,7 +302,7 @@ export default function Portfolio ({
         </div>
 
         {/* Right: stats */}
-        <div className='flex items-center gap-10'>
+        <div className='flex items-center gap-10 flex-wrap lg:flex-nowrap  justify-between px-2'>
           {stats &&
             stats.map((item, i) => (
               <div
@@ -273,7 +329,7 @@ export default function Portfolio ({
                       ? 'text-[#00C0A8]'
                       : item.tittle === 'Claimable Fees'
                       ? 'text-[#FE9A00]'
-                      : ''
+                      : 'text-white'
                   } tracking-tight`}
                 >
                   {item.type === 'compactCurrency'
@@ -289,12 +345,12 @@ export default function Portfolio ({
 
       {/* ── Tab bar ── */}
       <div className='flex justify-between items-center px-10 border-b border-[#111d27]'>
-        <div className='flex'>
+        <div className='flex w-1/2 lg:w-1/2 gap-6'>
           {(['vaults', 'activity'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 pt-4 pb-3 text-[11px] font-[900] tracking-[0.14em] border-b-2 transition-all cursor-pointer bg-transparent  ${
+              className={`px-5 pt-4 pb-3 text-[7px] md:text-[11px] font-[700] md:font-[900] tracking-[0.14em] border-b-2 transition-all cursor-pointer w-full   ${
                 activeTab === tab
                   ? 'text-white border-[#00ffa3]'
                   : 'text-[#273634] border-transparent hover:text-[#7a9ab0]'
@@ -304,7 +360,7 @@ export default function Portfolio ({
             </button>
           ))}
         </div>
-        <span className='text-[11px] text-[#273634] tracking-[0.15em] uppercase font-[900]'>
+        <span className='text-[7px] text-center lg:text-start md:text-[11px] text-[#273634] tracking-[0.15em] uppercase font-[700] md:font-[900]'>
           SYNC STATUS:
           <span className='text-[#00ffa3] font-[900]  '>LIVE INDEXER</span>
         </span>
@@ -313,7 +369,6 @@ export default function Portfolio ({
       {/* ── Content ── */}
       <main className='px-10 py-5 flex flex-col gap-3 '>
         {/* PINNED VAULTS */}
-
         {activeTab === 'vaults' ? (
           <>
             {connected ? (
@@ -378,8 +433,110 @@ export default function Portfolio ({
         ) : (
           <>
             {connected ? (
-              <div className='text-center text-[#2a3a4a] text-[12px] py-20 tracking-[0.15em] uppercase'>
-                No recent vault activity to display.
+              <div className='min-h-screen text-white    '>
+                {/* Header */}
+                <div className='hidden lg:grid grid-cols-5 text-xs tracking-widest text-[#5f7d84] uppercase mb-6 px-6'>
+                  <span>Event Type</span>
+                  <span>Token</span>
+                  <span>Amount</span>
+                  <span>Status</span>
+                  <span className='text-right'>Timestamp / Explorer</span>
+                </div>
+
+                {/* Activity List */}
+                <div className='space-y-4'>
+                  {activities.map(item => {
+                    const isPositive = item.amount.startsWith('+')
+                    const isNegative = item.amount.startsWith('-')
+
+                    return (
+                      <div
+                        key={item.id}
+                        className='
+            grid grid-cols-1 lg:grid-cols-5
+            gap-4 lg:gap-0
+            items-start lg:items-center
+            px-4 sm:px-6 py-4 sm:py-5
+            rounded-2xl 
+            bg-[#102221]
+            border border-[#0f3a40] hover:border-[#19d3c5]/40
+            transition-all duration-300
+          '
+                      >
+                        {/* Event Type */}
+                        <div className='flex items-center gap-4'>
+                          <div className='bg-[#0a1414] p-2 flex justify-center items-center rounded-lg'>
+                            <span
+                              className='bg-center bg-cover h-[20px] w-[20px] inline-block'
+                              style={{
+                                backgroundImage: `url("/images/refresh.svg")`
+                              }}
+                            ></span>
+                          </div>
+                          <div>
+                            <p className='font-[900] text-[11px] sm:text-[12px]'>
+                              {item.type}
+                            </p>
+                            <p className='text-[9px] sm:text-[10px] text-[#46514f] font-[700]'>
+                              {item.time}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Token */}
+                        <span className='font-[900] text-[12px] lg:text-[12px]'>
+                          {item.token}
+                        </span>
+
+                        {/* Amount */}
+                        <span
+                          className={`font-[900] text-[12px] ${
+                            isPositive
+                              ? 'text-[#19d3c5]'
+                              : isNegative
+                              ? 'text-red-400'
+                              : 'text-white'
+                          }`}
+                        >
+                          {item.amount}
+                        </span>
+
+                        {/* Status */}
+                        <div className='flex items-center gap-2'>
+                          <span
+                            className='bg-center bg-cover h-[14px] w-[14px]'
+                            style={{
+                              backgroundImage: `url("/images/success.svg")`
+                            }}
+                          ></span>
+                          <span className='text-[9px] font-[900] text-[#00c0a8] uppercase tracking-wider'>
+                            {item.status}
+                          </span>
+                        </div>
+
+                        {/* Explorer */}
+                        <div className='flex justify-start lg:justify-end'>
+                          <button
+                            className='flex items-center gap-2 px-4 py-2 
+              bg-[#0a1414] border border-[#23483b] 
+              rounded-lg hover:border-[#23483b]/70 transition'
+                          >
+                            <span className='text-[10px] font-[400] text-[#546462]'>
+                              {item.tx}
+                            </span>
+
+                            <span
+                              className='bg-center bg-cover h-[12px] w-[12px]'
+                              style={{
+                                backgroundImage: `url("/images/redirr.svg")`
+                              }}
+                            ></span>
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             ) : (
               <>
@@ -418,6 +575,20 @@ export default function Portfolio ({
             )}
           </>
         )}
+
+        <div className='flex justify-center items-center gap-3 mt-10'>
+          <span
+            className='h-[14px] w-[14px] inline-block bg-center bg-cover'
+            style={{
+              backgroundImage: `url("/images/badgechek.svg")`
+            }}
+          ></span>
+
+          <p className='text-[#46514f] font-[900] text-[10px] leading-[15px] tracking-[3px] uppercase'>
+            All assets remain in your control via Vault PDAs • No counterparty
+            risk • Verify on Solscan
+          </p>
+        </div>
       </main>
 
       {/* ── Add Strategy Modal ── */}
